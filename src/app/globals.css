@@ -36,6 +36,6 @@ body {
   }
 }
 
-main {
+body {
   display:flex;
 }

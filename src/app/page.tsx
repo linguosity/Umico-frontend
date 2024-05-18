@@ -1,8 +1,6 @@
 "use client";
 
-import { Checkbox, Sidebar, Table, Card } from "flowbite-react";
-import { BiBuoy } from "react-icons/bi";
-import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards } from "react-icons/hi";
+import { Table, Card } from "flowbite-react";
 import {useEffect, useState} from 'react';
 
 export default function Home() {
@@ -60,55 +58,11 @@ export default function Home() {
 
   return (
     <>
-      <aside>
-        <Sidebar id="default-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-          <Sidebar.Items className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-            <Sidebar.ItemGroup className="space-y-2 font-medium">
-              <Sidebar.Item href="#" icon={HiChartPie} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                Dashboard
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiViewBoards}>
-                Active Orders
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiInbox}>
-                Frames
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiUser}>
-                Prints
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiShoppingBag}>
-                Scans
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiArrowSmRight}>
-                Customers
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiTable}>
-                Sign Up
-              </Sidebar.Item>
-            </Sidebar.ItemGroup>
-            <Sidebar.ItemGroup>
-              <Sidebar.Item href="#" icon={HiChartPie}>
-                Upgrade to Pro
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiViewBoards}>
-                Documentation
-              </Sidebar.Item>
-              <Sidebar.Item href="#" icon={BiBuoy}>
-                Help
-              </Sidebar.Item>
-            </Sidebar.ItemGroup>
-          </Sidebar.Items>
-        </Sidebar>
-      </aside>
-
-      <div className="p-4 sm:ml-64">
-      <Card className="flex flex-col w-full p-6 bg-white border border-gray-200 rounded-lg shadow">
+      <div className="p-4 w-full">
+      <Card className="flex flex-col w-full p-4 bg-white border border-gray-200 rounded-lg shadow">
         <div className="overflow-x-auto">
           <Table hoverable>
             <Table.Head>
-              <Table.HeadCell>
-                <Checkbox />
-              </Table.HeadCell>
               <Table.HeadCell>Last name</Table.HeadCell>
               <Table.HeadCell>First name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
@@ -122,7 +76,6 @@ export default function Home() {
               {customerList.map((customer, idx) => (
                 <Table.Row key={idx}>
                   <Table.Cell>
-                    <Checkbox />
                   </Table.Cell>
                   <Table.Cell>{customer.last_name}</Table.Cell>
                   <Table.Cell>{customer.first_name}</Table.Cell>
@@ -139,6 +92,6 @@ export default function Home() {
         </div>
       </Card>
     </div>
-    </>
+      </>      
   );
 }
