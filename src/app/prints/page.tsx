@@ -2,27 +2,9 @@
 
 import { useState, useEffect } from "react";
 import {Card, Table } from 'flowbite-react';
+import { Print } from '../types/print'
 
 export default function Page() {
-
-  
-  // Prints Interface: Corresponds to the Address model in Django
-  interface Print {
-    id: number; // This represents the primary key
-    deadline: string; // ISO 8601 format date-time string
-    customer: number; // ForeignKey relation to Customer (represented by Customer ID)
-    created_at: string; // ISO 8601 format date-time string
-  
-    // PRINT JOB ATTRIBUTES
-    image_height: number; // Decimal value
-    image_width: number; // Decimal value
-    paper_height: number; // Decimal value
-    paper_width: number; // Decimal value
-    thumbnail: string; // URL to the thumbnail image
-    print_style: string; // String describing the print style
-    quantity: number; // Integer value for quantity
-    job_notes: string; // Text field for job notes
-  }
 
   //set customerList state to update when data fetch is complete
   const [printList, setPrintList] = useState<Print[]>([]);

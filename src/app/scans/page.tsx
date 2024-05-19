@@ -1,47 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {Card, Table } from 'flowbite-react';
+import { Card, Table } from 'flowbite-react';
+import { Scan } from '../types'
 
 export default function Page() {
-
-    // Employee Interface: Corresponds to the Employee model in Django
-  interface Customer {
-    id: number; // This represents the primary key
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone_number: string;
-    }
-
-  // Prints Interface: Corresponds to the Address model in Django
-  interface Scan {
-    id: number; // This represents the primary key
-    deadline: string; // ISO 8601 format date-time string
-    customer: Customer; // ForeignKey relation to Customer
-    created_at: string; // ISO 8601 format date-time string
-  
-    // SCAN JOB ATTRIBUTES
-    image_height: number; // Decimal value
-    image_width: number; // Decimal value
-    file_type: string; // Type of the file
-    dpi: number; // Decimal value for DPI
-    thumbnail: string; // URL to the thumbnail image
-    is_completed: boolean; // Boolean indicating if the scan is completed
-    client_notified: boolean; // Boolean indicating if the client is notified
-    notification_date: string | null; // ISO 8601 format date-time string, can be null
-    final_location: string; // Final location of the scan
-    payment_type: string; // Payment type for the scan
-    deposit_made: boolean; // Boolean indicating if the deposit is made
-    balance_paid: boolean; // Boolean indicating if the balance is paid
-  }
 
   //set customerList state to update when data fetch is complete
   const [scanList, setScanList] = useState<Scan[]>([]);
 
   const getScanData = async () => {
     try{
-      const res = await fetch('http://127.0.0.1:8000/prints/');
+      const res = await fetch('http://127.0.0.1:8000/scans/');
       // The return value is *not* serialized
       // You can return Date, Map, Set, etc.
       

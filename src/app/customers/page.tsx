@@ -1,8 +1,7 @@
 "use client";
 
-import { Table, Card } from "flowbite-react";
-import {useEffect, useState} from 'react';
-import Customers from './components/Customers'
+import { useState, useEffect } from "react";
+import {Card, Table } from 'flowbite-react';
 
 export default function Home() {
 

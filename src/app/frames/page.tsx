@@ -2,33 +2,16 @@
 
 import { useState, useEffect } from "react";
 import {Card, Table } from 'flowbite-react';
+import { Frame } from '../types/frames'
 
 export default function Page() {
 
-  // Prints Interface: Corresponds to the Address model in Django
-  interface Print {
-    id: number; // This represents the primary key
-    deadline: string; // ISO 8601 format date-time string
-    customer: number; // ForeignKey relation to Customer (represented by Customer ID)
-    created_at: string; // ISO 8601 format date-time string
-  
-    // PRINT JOB ATTRIBUTES
-    image_height: number; // Decimal value
-    image_width: number; // Decimal value
-    paper_height: number; // Decimal value
-    paper_width: number; // Decimal value
-    thumbnail: string; // URL to the thumbnail image
-    print_style: string; // String describing the print style
-    quantity: number; // Integer value for quantity
-    job_notes: string; // Text field for job notes
-  }
-
   //set customerList state to update when data fetch is complete
-  const [printList, setPrintList] = useState<Print[]>([]);
+  const [frameList, setFrameList] = useState<Frame[]>([]);
 
-  const getPrintData = async () => {
+  const getFrameData = async () => {
     try{
-      const res = await fetch('http://127.0.0.1:8000/prints/');
+      const res = await fetch('http://127.0.0.1:8000/frames/');
       // The return value is *not* serialized
       // You can return Date, Map, Set, etc.
       
@@ -37,9 +20,9 @@ export default function Page() {
         throw new Error('Failed to fetch data');
       }
       
-      const printData: Print[] = await res.json();
-      setPrintList(printData);
-      console.log(printData);
+      const frameData: Frame[] = await res.json();
+      setFrameList(frameData);
+      console.log(frameData);
 
     }catch(err){
       console.log('error fetching customer data', err)
@@ -48,7 +31,7 @@ export default function Page() {
   }
 
   useEffect(()=> {
-    getPrintData();
+    getFrameData();
   }, []);
   
   return (
@@ -57,31 +40,81 @@ export default function Page() {
         <div className="overflow-x-auto">
           <Table hoverable>
           <Table.Head>
-              <Table.HeadCell>Deadline</Table.HeadCell>
-              <Table.HeadCell>Image Height</Table.HeadCell>
-              <Table.HeadCell>Image Width</Table.HeadCell>
-              <Table.HeadCell>Paper Height</Table.HeadCell>
-              <Table.HeadCell>Paper Width</Table.HeadCell>
-              <Table.HeadCell>Thumbnail</Table.HeadCell>
-              <Table.HeadCell>Print Style</Table.HeadCell>
-              <Table.HeadCell>Quantity</Table.HeadCell>
-              <Table.HeadCell>Job Notes</Table.HeadCell>
-            </Table.Head>
-            <Table.Body>
-              {printList.map((print, idx) => (
-                <Table.Row key={idx}>
-                  <Table.Cell>{new Date(print.deadline).toLocaleString()}</Table.Cell>
-                  <Table.Cell>{print.image_height}</Table.Cell>
-                  <Table.Cell>{print.image_width}</Table.Cell>
-                  <Table.Cell>{print.paper_height}</Table.Cell>
-                  <Table.Cell>{print.paper_width}</Table.Cell>
-                  <Table.Cell><img src={print.thumbnail} alt="Thumbnail" className="w-16 h-16" /></Table.Cell>
-                  <Table.Cell>{print.print_style}</Table.Cell>
-                  <Table.Cell>{print.quantity}</Table.Cell>
-                  <Table.Cell>{print.job_notes}</Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
+  <Table.HeadCell>Deadline</Table.HeadCell>
+  <Table.HeadCell>Image Height</Table.HeadCell>
+  <Table.HeadCell>Image Width</Table.HeadCell>
+  <Table.HeadCell>Frame Height</Table.HeadCell>
+  <Table.HeadCell>Frame Width</Table.HeadCell>
+  <Table.HeadCell>Moulding</Table.HeadCell>
+  <Table.HeadCell>Mat</Table.HeadCell>
+  <Table.HeadCell>Mat Ply</Table.HeadCell>
+  <Table.HeadCell>Mat Window</Table.HeadCell>
+  <Table.HeadCell>Mat Double</Table.HeadCell>
+  <Table.HeadCell>Mat In Visible</Table.HeadCell>
+  <Table.HeadCell>Mat Inside Height</Table.HeadCell>
+  <Table.HeadCell>Mat Inside Width</Table.HeadCell>
+  <Table.HeadCell>Mat Outside Height</Table.HeadCell>
+  <Table.HeadCell>Mat Outside Width</Table.HeadCell>
+  <Table.HeadCell>Float Type</Table.HeadCell>
+  <Table.HeadCell>Float In Visible</Table.HeadCell>
+  <Table.HeadCell>Float In Total</Table.HeadCell>
+  <Table.HeadCell>Glazing</Table.HeadCell>
+  <Table.HeadCell>Thumbnail</Table.HeadCell>
+  <Table.HeadCell>Glazing Type</Table.HeadCell>
+  <Table.HeadCell>Spacers</Table.HeadCell>
+  <Table.HeadCell>Spacers Type</Table.HeadCell>
+  <Table.HeadCell>Canvas Floater</Table.HeadCell>
+  <Table.HeadCell>Straight to Frame</Table.HeadCell>
+  <Table.HeadCell>Art Location</Table.HeadCell>
+  <Table.HeadCell>Art Condition</Table.HeadCell>
+  <Table.HeadCell>Is Completed</Table.HeadCell>
+  <Table.HeadCell>Client Notified</Table.HeadCell>
+  <Table.HeadCell>Notification Date</Table.HeadCell>
+  <Table.HeadCell>Final Location</Table.HeadCell>
+  <Table.HeadCell>Payment Type</Table.HeadCell>
+  <Table.HeadCell>Deposit</Table.HeadCell>
+  <Table.HeadCell>Balance Paid</Table.HeadCell>
+</Table.Head>
+<Table.Body>
+  {frameList.map((frame, idx) => (
+    <Table.Row key={idx}>
+      <Table.Cell>{new Date(frame.deadline).toLocaleString()}</Table.Cell>
+      <Table.Cell>{frame.image_height}</Table.Cell>
+      <Table.Cell>{frame.image_width}</Table.Cell>
+      <Table.Cell>{frame.frame_height}</Table.Cell>
+      <Table.Cell>{frame.frame_width}</Table.Cell>
+      <Table.Cell>{frame.moulding}</Table.Cell>
+      <Table.Cell>{frame.mat}</Table.Cell>
+      <Table.Cell>{frame.mat_ply}</Table.Cell>
+      <Table.Cell>{frame.mat_window ? 'Yes' : 'No'}</Table.Cell>
+      <Table.Cell>{frame.mat_double ? 'Yes' : 'No'}</Table.Cell>
+      <Table.Cell>{frame.mat_in_visible}</Table.Cell>
+      <Table.Cell>{frame.mat_inside_height}</Table.Cell>
+      <Table.Cell>{frame.mat_inside_width}</Table.Cell>
+      <Table.Cell>{frame.mat_outside_height}</Table.Cell>
+      <Table.Cell>{frame.mat_outside_width}</Table.Cell>
+      <Table.Cell>{frame.float_type}</Table.Cell>
+      <Table.Cell>{frame.float_in_visible}</Table.Cell>
+      <Table.Cell>{frame.float_in_total}</Table.Cell>
+      <Table.Cell>{frame.glazing}</Table.Cell>
+      <Table.Cell><img src={frame.thumbnail} alt="Thumbnail" className="w-16 h-16" /></Table.Cell>
+      <Table.Cell>{frame.glazing_type}</Table.Cell>
+      <Table.Cell>{frame.spacers ? 'Yes' : 'No'}</Table.Cell>
+      <Table.Cell>{frame.spacers_type}</Table.Cell>
+      <Table.Cell>{frame.canvas_floater}</Table.Cell>
+      <Table.Cell>{frame.straight_to_frame ? 'Yes' : 'No'}</Table.Cell>
+      <Table.Cell>{frame.art_location}</Table.Cell>
+      <Table.Cell>{frame.art_condition}</Table.Cell>
+      <Table.Cell>{frame.is_completed ? 'Yes' : 'No'}</Table.Cell>
+      <Table.Cell>{frame.client_notified ? 'Yes' : 'No'}</Table.Cell>
+      <Table.Cell>{frame.notification_date ? new Date(frame.notification_date).toLocaleString() : 'N/A'}</Table.Cell>
+      <Table.Cell>{frame.final_location}</Table.Cell>
+      <Table.Cell>{frame.payment_type}</Table.Cell>
+      <Table.Cell>{frame.deposit ? 'Yes' : 'No'}</Table.Cell>
+      <Table.Cell>{frame.balance_paid ? 'Yes' : 'No'}</Table.Cell>
+    </Table.Row>
+  ))}
+</Table.Body>
           </Table>
         </div>
       </Card>
