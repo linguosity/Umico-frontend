@@ -2,30 +2,10 @@
 
 import { useState, useEffect } from "react";
 import {Card, Table } from 'flowbite-react';
+import { useRouter } from 'next/router';
+import { Customer } from '../types/customer';
 
-export default function Home() {
-
-  //
-  // Address Interface: Corresponds to the Address model in Django
-  interface Address {
-  id: number; // This represents the primary key
-  customer: number; // ForeignKey relation to Customer
-  street: string;
-  city: string;
-  state: string;
-  zip_code: string;
-  country: string;
-  }
-
-// Employee Interface: Corresponds to the Employee model in Django
-  interface Customer {
-  id: number; // This represents the primary key
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number: string;
-  shipping_addresses: Address[];
-  }
+const Customers = () => {
 
   //set customerList state to update when data fetch is complete
   const [customerList, setCustomerList] = useState<Customer[]>([]);
@@ -54,6 +34,16 @@ export default function Home() {
   useEffect(()=> {
     getCustomerData();
   }, []);
+
+  const handleEdit = (customerDetails: Customer) => {
+    const router = useRouter();
+    const customerData = {...customerDetails};
+    router.push({
+      pathname: `/customers/${customerData.id}`,
+      state: {customerData: customerDetails},
+    });
+    
+  }
 
 
   return (
@@ -85,6 +75,16 @@ export default function Home() {
                   <Table.Cell>{customer.shipping_addresses[0].city}</Table.Cell>
                   <Table.Cell>{customer.shipping_addresses[0].zip_code}</Table.Cell>
                   <Table.Cell>{customer.shipping_addresses[0].country}</Table.Cell>
+                  <Table.Cell>
+                    <a 
+                      href={`/customers/${customer.id}`} 
+                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                      onClick={(e) => {e.preventDefault();
+                        handleEdit(customer)}}
+                    >
+                      Edit
+                    </a>
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
@@ -95,3 +95,5 @@ export default function Home() {
       </>      
   );
 }
+
+export default Customers;

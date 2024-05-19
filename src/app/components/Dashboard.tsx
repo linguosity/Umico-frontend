@@ -10,7 +10,7 @@ export default function Dashboard() {
     <Sidebar>
         <Sidebar.Items>
             <Sidebar.ItemGroup>
-                <Sidebar.Item href="#" icon={HiChartPie} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                <Sidebar.Item href="/" icon={HiChartPie} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 Dashboard
                 </Sidebar.Item>
 
@@ -31,7 +31,7 @@ export default function Dashboard() {
                 <Sidebar.Item href="/scans" icon={HiShoppingBag}>
                 Scans
                 </Sidebar.Item>
-                <Sidebar.Item href="/" icon={HiUser}>
+                <Sidebar.Item href="/customers" icon={HiUser}>
                 Customers
                 </Sidebar.Item>
                 <Sidebar.Item href="#" icon={HiInbox}>

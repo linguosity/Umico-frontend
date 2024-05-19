@@ -63,6 +63,7 @@ export default function Home() {
         <div className="overflow-x-auto">
           <Table hoverable>
             <Table.Head>
+              <Table.HeadCell>Id</Table.HeadCell>
               <Table.HeadCell>Last name</Table.HeadCell>
               <Table.HeadCell>First name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
@@ -76,6 +77,7 @@ export default function Home() {
               {customerList.map((customer, idx) => (
                 <Table.Row key={idx}>
                   <Table.Cell>
+                    {customer.id}
                   </Table.Cell>
                   <Table.Cell>{customer.last_name}</Table.Cell>
                   <Table.Cell>{customer.first_name}</Table.Cell>
