@@ -3,14 +3,22 @@
 import { Card } from 'flowbite-react';
 import Image from 'next/image';
 import { Customer } from '../types/customer';
+import { Print } from '../types/print';
+import { Scan } from '../types/scan';
+import { Frame } from '../types/frames';
 import Link from 'next/link'
 
 interface CustomerPageProps {
     customerData: Customer;
+    prints: Print | null;
+    scans: Scan | null;
+    frames: Frame | null;
 }
 
-const CustomerPage: React.FC<CustomerPageProps> = ({ customerData }) => {
+const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans, frames }) => {
+    console.log(prints, scans, frames);
     return (
+        <>
         <Card className="max-w-sm">
             <div className="mb-4 flex items-center justify-between">
                 <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Customer Details</h5>
@@ -41,6 +49,19 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData }) => {
                 </ul>
             </div>
         </Card>
+        <Card className="max-w-sm">
+            <div className="mb-4 flex items-center justify-between">
+                <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Scans</h5>
+            </div>
+            <div className="flow-root">
+              <img src={scans?.thumbnail}>
+                
+              </img>
+            </div>
+        </Card>
+
+        </>
+        
     );
 };
 

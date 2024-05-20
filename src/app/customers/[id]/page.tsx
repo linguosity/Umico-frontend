@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Customer from '../../components/Customer';
 import { Customer as CustomerType} from '../../types/customer'
+import { Print } from '../../types/print'
+import { Scan } from '../../types/scan'
+import { Frame } from '../../types/frames'
 import EditCustomer from '../../components/EditCustomer'
 
 const Page = ({ params }: { params: { id: string } }) => {
@@ -11,6 +14,9 @@ const Page = ({ params }: { params: { id: string } }) => {
     const [id, setId] = useState<number | null>(null);
     const searchParams = useSearchParams();
     const [user, setUser] = useState<CustomerType | null>(null);
+    const [prints, setPrint] = useState<Print | null>(null);
+    const [scans, setScan] = useState<Scan| null>(null);
+    const [frames, setFrame] = useState<Frame | null>(null);
     const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
@@ -41,6 +47,10 @@ const Page = ({ params }: { params: { id: string } }) => {
                 const response = await fetch(`http://127.0.0.1:8000/customers/${id}`);
                 const customerData = await response.json();
                 setUser(customerData);
+                setScan(customerData.scans?.[0] || null);
+                setFrame(customerData.frames?.[0] || null);
+                setPrint(customerData.prints?.[0] || null);
+                console.log(user, scans, frames, prints);
             }
         }
 
@@ -59,7 +69,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     )
 
     const viewCustomer = (
-        <Customer customerData={user}>
+        <Customer customerData={user}  prints={prints} scans={scans} frames={frames}>
        
         </Customer>
     )

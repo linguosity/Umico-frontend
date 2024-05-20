@@ -1,3 +1,7 @@
+import { Scan } from './scan';
+import { Print } from './print';
+import { Frame } from './frames';
+
 export interface Address {
     id: number;
     customer: number;
@@ -15,4 +19,7 @@ export interface Address {
     email: string;
     phone_number: string;
     shipping_addresses: Address[];
+    scans?: Scan[];
+    prints?: Print[];
+    frames?: Frame[];
   }
