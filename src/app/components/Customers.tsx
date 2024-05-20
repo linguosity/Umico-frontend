@@ -2,6 +2,7 @@
 
 import { Table, Card } from "flowbite-react";
 import {useEffect, useState} from 'react';
+import Link from 'next/link'
 
 export default function Home() {
 
@@ -87,6 +88,11 @@ export default function Home() {
                   <Table.Cell>{customer.shipping_addresses[0].city}</Table.Cell>
                   <Table.Cell>{customer.shipping_addresses[0].zip_code}</Table.Cell>
                   <Table.Cell>{customer.shipping_addresses[0].country}</Table.Cell>
+                  <Table.Cell>
+                    <Link href={`/customers/${customer.id}?editMode=true`}>
+                      Edit
+                    </Link>
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>

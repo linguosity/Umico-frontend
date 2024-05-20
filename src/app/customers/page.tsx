@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import {Card, Table } from 'flowbite-react';
 import { useRouter } from 'next/router';
 import { Customer } from '../types/customer';
@@ -29,20 +29,6 @@ const Customers = () => {
       console.log('error fetching customer data', err)
     }
    
-  }
-
-  useEffect(()=> {
-    getCustomerData();
-  }, []);
-
-  const handleEdit = (customerDetails: Customer) => {
-    const router = useRouter();
-    const customerData = {...customerDetails};
-    router.push({
-      pathname: `/customers/${customerData.id}`,
-      state: {customerData: customerDetails},
-    });
-    
   }
 
 
@@ -79,8 +65,6 @@ const Customers = () => {
                     <a 
                       href={`/customers/${customer.id}`} 
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                      onClick={(e) => {e.preventDefault();
-                        handleEdit(customer)}}
                     >
                       Edit
                     </a>
