@@ -14,9 +14,9 @@ const Page = ({ params }: { params: { id: string } }) => {
     const [id, setId] = useState<number | null>(null);
     const searchParams = useSearchParams();
     const [user, setUser] = useState<CustomerType | null>(null);
-    const [prints, setPrint] = useState<Print | null>(null);
-    const [scans, setScan] = useState<Scan| null>(null);
-    const [frames, setFrame] = useState<Frame | null>(null);
+    const [prints, setPrint] = useState<Print[] | null>(null);
+    const [scans, setScan] = useState<Scan[] | null>(null);
+    const [frames, setFrame] = useState<Frame[] | null>(null);
     const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
@@ -47,9 +47,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                 const response = await fetch(`http://127.0.0.1:8000/customers/${id}`);
                 const customerData = await response.json();
                 setUser(customerData);
-                setScan(customerData.scans?.[0] || null);
-                setFrame(customerData.frames?.[0] || null);
-                setPrint(customerData.prints?.[0] || null);
+                setScan(customerData.scans || null);
+                setFrame(customerData.frames || null);
+                setPrint(customerData.prints|| null);
                 console.log(user, scans, frames, prints);
             }
         }
