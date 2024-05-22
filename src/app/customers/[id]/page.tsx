@@ -19,12 +19,13 @@ const Page = ({ params }: { params: { id: string } }) => {
     const [frames, setFrame] = useState<Frame[] | null>(null);
     const [isEditMode, setIsEditMode] = useState(false);
 
+    //grab customer 'Id' parameter from URL path
     useEffect(() => {
         const parsedId = parseInt(params.id, 10);
         if (!isNaN(parsedId)) {
-        setId(parsedId);
+            setId(parsedId);
         } else {
-        setId(null);
+            setId(null);
         }
     }, [params.id]);
 
@@ -59,7 +60,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     }, [id]);
 
     if(!user) {
-        return <div>Loding...</div>
+        return <div>Loading...</div>
     }
 
     const editCustomer= (
