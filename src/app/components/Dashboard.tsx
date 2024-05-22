@@ -1,6 +1,7 @@
 "use client";
 
-import { Sidebar } from "flowbite-react";
+import { Sidebar} from "flowbite-react";
+import Image from 'next/image';
 import { BiBuoy } from "react-icons/bi";
 import { HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards } from "react-icons/hi";
 
@@ -8,6 +9,7 @@ export default function Dashboard() {
   return (
     
     <Sidebar>
+      <img src="https://images.squarespace-cdn.com/content/v1/5a8749aff09ca4823e25c813/1582321464833-N5TD3V5GOWYXVCLKZK3A/Umi+Logo.png"/>
         <Sidebar.Items>
             <Sidebar.ItemGroup>
                 <Sidebar.Item href="/" icon={HiChartPie} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">

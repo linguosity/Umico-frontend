@@ -45,6 +45,7 @@ const EditCustomer: React.FC<EditCustomerProps> = ({ customerData }) => {
                 </div>
             </div>
         </Card>
+        
     );
 };
 
