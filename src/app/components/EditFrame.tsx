@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { Card, Label, FileInput, List, Checkbox} from 'flowbite-react';
+import { Card, Label, FileInput, List, Checkbox, Radio, TextInput} from 'flowbite-react';
 import Image from 'next/image'
 import { Frame as FrameType } from '../types/frames';
 import { Datepicker } from "flowbite-react";
@@ -56,42 +56,501 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                     <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left- dark:text-white dark:bg-gray-900">Framing</span>
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-8 m-8">
+            <div className="grid grid-cols-2 gap-4 m-4">
                 <div>
                     <div className="grid grid-cols-2">
+                        
                         <div className="relative w-full mb-5 group">
-                            <Datepicker 
-                                type="Date" 
-                                name="date" 
-                                id="date" 
-                                className="block py-2.5 px-0 w-4/5 text-sm text-gray-900 bg-transparent appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer z-50" 
-                                placeholder=" " 
-                                required 
-                                labelTodayButton="Today" 
-                                labelClearButton="Clear"
-                            />
-                            <Label htmlFor="date" className="peer-focus:font-medium  text-sm text-gray-500 absolute dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Today's Date</Label>
+                            {/* deadline */}
+                            <Datepicker type="Date" name="deadline" id="deadline" className="block py-2.5 px-0 w-4/5 text-xs text-gray-900 bg-transparent appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer z-10" placeholder=" " required />
+                            <Label htmlFor="deadline" className="peer-focus:font-medium text-xs text-gray-500 dark:text-gray-400 absolute duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Deadline</Label>
                         </div>
-                        <div className="relative w-full mb-5 group">
-                            <Datepicker type="Date" name="deadline" id="deadline" className="block py-2.5 px-0 w-4/5 text-sm text-gray-900 bg-transparent appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer z-10" placeholder=" " required />
-                            <Label htmlFor="deadline" className="peer-focus:font-medium text-sm text-gray-500 dark:text-gray-400 absolute duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Deadline</Label>
-                        </div>
-                    </div>
-
-                    <div className="relative z-0 w-full mb-5 group">
-                        <div id="fileUpload" className="max-w-md">
-                            <div className="mb-2 block">
-                                <Label htmlFor="file"/>
+                                   
+                        <div>
+                            {/* number orders PENDING DATABASE ADDITION */}
+                            <div className="relative flex items-center max-w-[8rem]">
+                                <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                    </svg>
+                                </button>
+                                <input type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                <button type="button" id="increment-button" data-input-counter-increment="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                    </svg>
+                                </button>
                             </div>
-                            <FileInput id="file" helperText="Upload an image of the art" />
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <div className="flex items-center space-x-2">
+                            <span className="text-sm font-medium text-gray-900 dark:text-white">Image dimensions:</span>
+                            <div className="flex items-center space-x-1">
+                                {/* image_width */}
+                                <TextInput
+                                id="image_width"
+                                name="image_width"
+                                type="number"
+                                placeholder="W"
+                                className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
+                                />
+                                <span className="text-sm font-medium text-gray-900 dark:text-white">x</span>
+                                {/* image_height */}
+                                <TextInput
+                                id="image_height"
+                                name="image_height"
+                                type="number"
+                                placeholder="H"
+                                className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
+                                />
+                            </div>
+                        </div>
+                        <div></div>
+                        <div>
+                            <div className="flex items-center space-x-2">
+                            <span className="text-sm font-medium text-gray-900 dark:text-white">Frame dimensions:</span>
+                            <div className="flex items-center space-x-1">
+                                {/* frame_width */}
+                                <TextInput
+                                name="frame_width"
+                                id="width"
+                                type="number"
+                                placeholder="W"
+                                className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
+                                />
+                                <span className="text-sm font-medium text-gray-900 dark:text-white">x</span>
+                                {/* frame_height */}
+                                <TextInput
+                                name="frame_height"
+                                id="height"
+                                type="number"
+                                placeholder="H"
+                                className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
+                                />
+                            </div>
+                        </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div>
+                    <div className="grid grid-cols-1">
+                        <div className="relative z-0 w-full mb-4 group">
+                            <div id="fileUpload" className="max-w-md">
+                                <div className="mb-2 block">
+                                    {/* thumbnail */}
+                                    <Label htmlFor="thumbnail"/>
+                                </div>
+                                <FileInput id="thumbnail" helperText="Upload" name="thumbnail"/>
+                            </div>
+                        </div>
+                        <div className="flex ">
+                            <img src={frame?.thumbnail} width="35%" className="h-auto max-w-xs rounded-lg" />
                         </div>
                     </div>
                 </div>
+                
+                <div>
+                   
+                </div>
+                <div>
+                    
+                </div>
+                <div className="w-full">
+                    <div className="inline-flex items-center justify-center w-full">
+                        <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                        <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left- dark:text-white dark:bg-gray-900">Mat</span>
+                    </div>
+                </div>
+                <div className="w-full">
+                    <div className="inline-flex items-center justify-center w-full">
+                        <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                        <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left- dark:text-white dark:bg-gray-900">Float</span>
+                    </div>
+                </div>
+                <div> 
+                    <div className="grid grid-cols-2">
+                        <div className="relative z-0 w-3/4 mb-5 group">
+                            {/* moulding */}
+                            <input type="text" name="moulding" id="moulding" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <Label htmlFor="moulding" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">moulding</Label>
+                        </div>
+                        <div className="relative z-0 w-3/4 mb-5 group">
+                            {/* moulding_number */}
+                            <input type="number" name="moulding_number" id="moulding_number" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <Label htmlFor="moulding_number" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">#</Label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    
+                </div>
+                <div>
+                    <div className="grid grid-cols-2">
+                        
+                        <div className="relative z-0 w-3/4 mb-5 group">
+                            {/* mat */}
+                            <input type="text" name="mat" id="mat" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <Label htmlFor="mat" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">mat</Label>
+                        </div>
+                        <div className="relative z-0 w-3/4 mb-5 group">
+                            {/* mat_number */}
+                            <input type="number" name="mat_number" id="mat_number" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <Label htmlFor="mat_number" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">#</Label>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+                <div>
+                    <div className="grid grid-cols-2">
+                        <div className="grid grid-cols-2">
+                            <div className="grid grid-cols-1 gap-4" id="checkbox">
+                                <fieldset>
+                                    <div className="group mb-4">
+                                        {/* mat_ply */}
+                                        <Radio id="mat_ply_4" name="mat_ply" defaultChecked/>
+                                        <Label htmlFor="mat_ply_4">4-ply</Label>
+                                    </div>
+                                    <div className="group">
+                                         {/* mat_ply */}
+                                        <Radio id="mat_ply_8" name="mat_ply" />
+                                        <Label htmlFor="mat_ply_8">8-ply</Label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div className="grid grid-cols-1 gap-8" id="checkbox">
+                                <fieldset>
+                                    <div className="group mb-4">
+                                         {/* mat_window */}
+                                         <Checkbox id="mat_window" name="mat_window" />
+                                        <Label htmlFor="mat_window">window</Label>
+                                    </div>
+                                    <div className="group gap-2">
+                                         {/* mat_double */}
+                                         <Checkbox id="mat_double" name="mat_double"/>
+                                        <Label htmlFor="mat_double">double mat</Label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            </div>
+                        <div>
+                        <div>
+                        <div>
+                        <div>
+                                <label htmlFor="quantity-input" className="block mb-2 text-xs text-gray-900 dark:text-white">in. visible</label>
+                                <div className="relative flex items-center max-w-[8rem]">
+                                    <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                        <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        </svg>
+                                    </button>
+                                    {/* mat_in_visible */}
+                                    <input type="number" id="mat_in_visible" name="mat_in_visible" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
+                                    <button type="button" id="mat_in_visible" data-input-counter-increment="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                        <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            
+                        </div>
+                    </div>
+                    <div>
+                        <form className="max-w-xs mx-auto">
+                            <label htmlFor="quantity-input" className="block mb-2 text-xs text-gray-900 dark:text-white">in. total</label>
+                            <div className="relative flex items-center max-w-[8rem]">
+                                <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                    </svg>
+                                </button>
+                                {/* mat_in_total */}
+                                <input type="text" id="mat_in_total" name="mat_in_total" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
+                                <button type="button" id="mat_in_total" data-input-counter-increment="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+                <div className="w-full grid grid-cols-3 gap-4">
+                    <div>
+                        {/* float_type */}
+                        <fieldset>
+                            <div className="grid grid-cols-1 gap-4" id="checkbox">
+                                <div className="group">
+                                    <Radio id="float_type" name="float_typee" name="flat" defaultChecked/>
+                                    <Label htmlFor="glazing_glass">float</Label>
+                                </div>
+                                <div className="group">
+                                    <Radio id="float_type" name="float_type" name="raised"/>
+                                    <Label htmlFor="glazing_plexi">raised</Label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div>
+                        <div>
+                           
+                                <label htmlFor="quantity-input" className="block mb-2 text-xs text-gray-900 dark:text-white">in. visible</label>
+                                <div className="relative flex items-center max-w-[8rem]">
+                                    <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                        <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        </svg>
+                                    </button>
+                                    {/* float_in_visible */}
+                                    <input type="text" id="float_in_visible" name="float_in_visible" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
+                                    <button type="button" id="float_in_visible" data-input-counter-increment="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                        <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                           
+                        </div>
+                    </div>
+                    <div>
+                        <form className="max-w-xs mx-auto">
+                            <label htmlFor="quantity-input" className="block mb-2 text-xs text-gray-900 dark:text-white">in. total</label>
+                            <div className="relative flex items-center max-w-[8rem]">
+                                <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                    </svg>
+                                </button>
 
-                <div className="relative w-full">
-                    <img src="https://cdn.midjourney.com/88deed3d-ddb3-464e-a833-2ebafc77ba67/0_1.jpeg" width="50%" className="h-auto max-w-xs rounded-lg" />
+                                {/* float_in_total */}
+                                <input type="text" id="float_in_total" name="float_in_total" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
+                                <button type="button" id="float_in_total" data-input-counter-increment="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div className="grid grid-cols-3 w-full">
+                    <div>
+                        <label htmlFor="quantity-input" className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">inside dimensions</label>
+                        <label htmlFor="quantity-input" className="block mb-2 text-xs font-medium text-gray-900 dark:text-white">outside dimensions</label>
+                    </div>
+
+                    <div>
+                    <div>
+                            <form className="max-w-xs mx-auto">
+                                
+                                <div className="relative flex items-center max-w-[8rem]">
+                                    <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                        <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        </svg>
+                                    </button>
+                                    <input type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                    <button type="button" id="increment-button" data-input-counter-increment="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                        <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                                <div className="relative flex items-center max-w-[8rem]">
+                                    <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                        <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        </svg>
+                                    </button>
+                                    <input type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                    <button type="button" id="increment-button" data-input-counter-increment="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                        <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div>
+                            <form className="max-w-xs mx-auto">
+                               
+                                <div className="relative flex items-center max-w-[8rem]">
+                                    <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                        <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        </svg>
+                                    </button>
+                                    <input type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                    <button type="button" id="increment-button" data-input-counter-increment="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                        <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    <div>
+                    <div>
+                        <form className="max-w-xs mx-auto">
+                            <label htmlFor="quantity-input" className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"></label>
+                            <div className="relative flex items-center max-w-[8rem]">
+                                <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                    </svg>
+                                </button>
+                                <input type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                <button type="button" id="increment-button" data-input-counter-increment="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+                </div>
+            
+                <div className="w-full grid grid-cols-3 gap-4">
+                    
+                </div>
+
+                <div className="w-full">
+                    <div className="inline-flex items-center justify-center w-full">
+                        <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                        <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left- dark:text-white dark:bg-gray-900">Glazing</span>
+                    </div>
+                </div>
+                <div className="w-full">
+                    <div className="inline-flex items-center justify-center w-full">
+                        <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                        <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left- dark:text-white dark:bg-gray-900">Spacers</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div className="">
+
+                        <fieldset>
+                            <div className="grid grid-cols-2 gap-4" id="checkbox">
+                                <div className="group">
+                                    <Radio id="glazing_glass" name="glazing_type" defaultChecked/>
+                                    <Label htmlFor="glazing_glass">Glass</Label>
+                                </div>
+                                <div className="group">
+                                    <Radio id="glazing_plexi" name="glazing_type" />
+                                    <Label htmlFor="glazing_plexi">Plexiglass</Label>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <ul className="items-center w-full text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div className="flex items-center ps-3">
+                                    <input id="horizontal-list-radio-license" type="radio" value="" name="list-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <label htmlFor="horizontal-list-radio-license" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Premium Clear </label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div className="flex items-center ps-3">
+                                    <input id="horizontal-list-radio-id" type="radio" value="" name="list-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <label htmlFor="horizontal-list-radio-id" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Conservation Clear</label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div className="flex items-center ps-3">
+                                    <input id="horizontal-list-radio-military" type="radio" value="" name="list-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <label htmlFor="horizontal-list-radio-military" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Museum</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <div className="">
+                        <fieldset>
+                        <div className="grid grid-cols-2 gap-4" id="checkbox">
+                            <div className="group">
+                                <Radio id="glaze_yes" name="glaze_type" defaultChecked/>
+                                <Label htmlFor="glaze_yes">Yes</Label>
+                            </div>
+                            <div className="group">
+                                <Radio id="glaze_no" name="glaze_type"/>
+                                <Label htmlFor="glaze_no">No</Label>
+                            </div>
+                        </div>
+                        </fieldset>
+
+                        <ul className="items-center w-full text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div className="flex items-center ps-3">
+                                    <input id="horizontal-list-radio-license" type="radio" value="" name="list-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <label htmlFor="horizontal-list-radio-license" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Premium Clear </label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div className="flex items-center ps-3">
+                                    <input id="horizontal-list-radio-id" type="radio" value="" name="list-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <label htmlFor="horizontal-list-radio-id" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Conservation Clear</label>
+                                </div>
+                            </li>
+                            <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div className="flex items-center ps-3">
+                                    <input id="horizontal-list-radio-military" type="radio" value="" name="list-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <label htmlFor="horizontal-list-radio-military" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Museum</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+               
+            </div>
+            <div className="w-full">
+                <div className="inline-flex items-center justify-center w-full">
+                    <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                    <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left- dark:text-white dark:bg-gray-900">Canvas Floater</span>
+                </div>
+            </div>
+            <div className="grid grid-cols-2">
+                <div>
+                    <div>
+                        <form className="max-w-xs mx-auto">
+                            <label htmlFor="quantity-input" className="block mb-2 text-xs font-medium text-gray-900 dark:text-white"></label>
+                            <div className="relative flex items-center max-w-[8rem]">
+                                <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                    </svg>
+                                </button>
+                                <input type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="0.25" required />
+                                <button type="button" id="increment-button" data-input-counter-increment="quantity-input" className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                    <svg className="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div>
+                    <div className="flex items-center gap-2">
+                        <Checkbox id="straight_to_frame" />
+                        <Label htmlFor="straight_to_frame">straight to frame</Label>
+                    </div>
+                </div>
+            </div>
+            
             <div className="w-full">
                 <div className="inline-flex items-center justify-center w-full">
                     <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
@@ -102,24 +561,24 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                 <div>
                     
                     <div className="relative z-0 w-full mb-5 group">
-                        <input type="text" name="current_location" id="current_location" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <Label htmlFor="current_location" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Artwork Location</Label>
+                        <input type="text" name="current_location" id="current_location" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <Label htmlFor="current_location" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Artwork Location</Label>
                     </div>
                     <div className="relative z-0 w-full mb-5 group">
-                        <input type="text" name="artwork_condition" id="artwork_condition" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <Label htmlFor="artwork_condition" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Artwork Condition</Label>
+                        <input type="text" name="artwork_condition" id="artwork_condition" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <Label htmlFor="artwork_condition" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Artwork Condition</Label>
                     </div>
                    
                     <div className="grid md:grid-cols-2 md:gap-6">
-                        <div className="flex max-w-md flex-col gap-4" id="checkbox">
+                        <div className="grid grid-cols-2 gap-8" id="checkbox">
                         
                             <div className="flex items-center gap-2">
-                                <Checkbox id="promotion" />
-                                <Label htmlFor="promotion">Completed</Label>
+                                <Checkbox id="is_completed" />
+                                <Label htmlFor="is_completed">Completed</Label>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Checkbox id="age" />
-                                <Label htmlFor="age">Notified</Label>
+                                <Checkbox id="client_notified" />
+                                <Label htmlFor="client_notified">Notified</Label>
                             </div>
                             <Datepicker/>
                         </div>
@@ -128,22 +587,26 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                 </div>
                 <div>
                     <div className="relative z-0 w-full mb-5 group">
-                        <input type="text" name="final_location" id="floating_repeat_password" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                        <Label htmlFor="floating_repeat_password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Final Location</Label>
+                        <input type="text" name="final_location" id="floating_repeat_password" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <Label htmlFor="floating_repeat_password" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Final Location</Label>
                     </div>
 
                     <div className="relative z-0 w-full mb-5 group">
-                            <input type="text" name="floating_company" id="floating_company" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                            <Label htmlFor="floating_company" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Payment Type</Label>
+                            <input type="text" name="floating_company" id="floating_company" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <Label htmlFor="floating_company" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Payment Type</Label>
                     </div>
-                    <div className="flex max-w-md flex-col gap-4" id="checkbox">
+                    <div className="grid grid-cols-2 gap-4" id="checkbox">
                         
                             <div className="flex items-center gap-2">
                                 <Checkbox id="promotion" />
-                                <Label htmlFor="promotion">Balance Paid</Label>
+                                <Label htmlFor="promotion">balance paid</Label>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Checkbox id="promotion" />
+                                <Label htmlFor="promotion">deposit</Label>
                             </div>
                             
-                        </div>
+                    </div>
                 </div>
             </div>
             

@@ -12,11 +12,14 @@ export interface Frame {
   frame_height: number; // Decimal value
   frame_width: number; // Decimal value
   moulding: string; // String for moulding type
+  moulding_number: bigint; //Integer
   mat: string; // String for mat type
+  mat_number: bigint; //integer
   mat_ply: string; // String for mat ply
   mat_window: boolean; // Boolean for mat window
   mat_double: boolean; // Boolean for double mat
   mat_in_visible: number; // Decimal value for mat in visible
+  mat_in_total: number;
   mat_inside_height: number; // Decimal value for mat inside height
   mat_inside_width: number; // Decimal value for mat inside width
   mat_outside_height: number; // Decimal value for mat outside height
