@@ -64,6 +64,7 @@ export default function Home() {
         <div className="overflow-x-auto">
           <Table hoverable>
             <Table.Head>
+              <Table.HeadCell></Table.HeadCell>
               <Table.HeadCell>Id</Table.HeadCell>
               <Table.HeadCell>Last name</Table.HeadCell>
               <Table.HeadCell>First name</Table.HeadCell>
@@ -78,6 +79,9 @@ export default function Home() {
               {customerList.map((customer, idx) => (
                 <Table.Row key={idx}>
                   <Table.Cell>
+                  <Link href={`/customers/${customer.id}`}><span className="text-blue-400">View</span></Link>
+                  </Table.Cell>
+                  <Table.Cell>
                     {customer.id}
                   </Table.Cell>
                   <Table.Cell>{customer.last_name}</Table.Cell>
@@ -88,6 +92,7 @@ export default function Home() {
                   <Table.Cell>{customer.shipping_addresses[0].city}</Table.Cell>
                   <Table.Cell>{customer.shipping_addresses[0].zip_code}</Table.Cell>
                   <Table.Cell>{customer.shipping_addresses[0].country}</Table.Cell>
+                  
                   <Table.Cell>
                     <Link href={`/customers/${customer.id}?editMode=true`}>
                       Edit
