@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, Label, FileInput, List, Checkbox, Radio, TextInput, Button, Datepicker} from 'flowbite-react'
+import Link from 'next/link';
 import { Frame as FrameType } from '../types/frames';
 
 interface FrameProps {
@@ -7,14 +9,20 @@ interface FrameProps {
 }
 
 const Frame: React.FC<FrameProps> = ({frame}) => {
-    return(
-        <>
-            <div className="m-4 grid grid-flow-row auto-rows-max">
+
+    const router = useRouter(); // Initialize useRouter
+
+    useEffect(() => {
+        console.log("Frame prop updated in child component:", frame);
+    }, [frame]);
+    
+    return (
+        <div className="m-4 grid grid-flow-row auto-rows-max">
             <Card>
                 <List horizontal>
                     <List.Item>
                         <svg className="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
                         </svg>
                     </List.Item>
                     <List.Item>
@@ -47,7 +55,6 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                    
                 </List>
             </Card>
-            
             <div className="w-full">
                 <div className="inline-flex items-center justify-center w-full">
                     <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
@@ -60,7 +67,7 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                         
                         <div className="relative w-full mb-5 group">
                             {/* deadline */}
-                            <Datepicker disabled datepicker-format="yyyy/MM/dd" value={frame?.deadline} name="deadline" id="deadline" className="block py-2.5 px-0 w-4/5 text-xs text-gray-900 bg-transparent appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer z-10" required />
+                            <Datepicker readOnly datepicker-format="yyyy/MM/dd" data-date={frame?.deadline} value={frame?.deadline} name="deadline" id="deadline" className="block py-2.5 px-0 w-4/5 text-xs text-gray-900 bg-transparent appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer z-10" required />
                             <Label htmlFor="deadline" className="peer-focus:font-medium text-xs text-gray-500 dark:text-gray-400 absolute duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Deadline</Label>
                         </div>
                                    
@@ -69,13 +76,13 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                 <input type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                 <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                 </button>
                             </div>*/}
@@ -195,11 +202,11 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                         <fieldset >
                             <div className="grid grid-cols-1 gap-4" id="checkbox">
                                 <div className="group">
-                                    <Radio id="float_type_float" disabled  name="float_type" defaultChecked={frame?.float_type === 'float'}/>
+                                    <Radio id="float_type_float" readOnly value='float'  name="float_type" defaultChecked={frame?.float_type === 'float'}/>
                                     <Label htmlFor="float_type_float">float</Label>
                                 </div>
                                 <div className="group">
-                                    <Radio id="float_type_raised" disabled name="raised" defaultChecked={frame?.float_type === 'raised'}/>
+                                    <Radio id="float_type_raised" readOnly value='raised' name="raised" defaultChecked={frame?.float_type === 'raised'}/>
                                     <Label htmlFor="float_type_raised">raised</Label>
                                 </div>
                             </div>
@@ -212,14 +219,14 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                                 <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                     {/* float_in_visible */}
                                     <input type="text" id="float_in_visible" readOnly name="float_in_visible" value={frame?.float_in_visible} data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
                                     <button type="button" id="increment-button" data-input-counter-increment="float_in_visible" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -231,7 +238,7 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
 
@@ -239,7 +246,7 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                                 <input type="text" id="float_in_total" readOnly name="float_in_total" value={frame?.float_in_total} data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
                                 <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                             </div>
@@ -269,12 +276,12 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                                 <fieldset>
                                     <div className="group mb-4">
                                         {/* mat_ply */}
-                                        <Radio id="mat_ply_4" disabled name="mat_ply" defaultChecked={frame?.mat_ply=== '4-ply'}/>
+                                        <Radio id="mat_ply_4" readOnly name="mat_ply" defaultChecked={frame?.mat_ply=== '4-ply'}/>
                                         <Label htmlFor="mat_ply_4">4-ply</Label>
                                     </div>
                                     <div className="group">
                                          {/* mat_ply */}
-                                        <Radio id="mat_ply_8" disabled name="mat_ply" defaultChecked={frame?.mat_ply=== '8-ply'}/>
+                                        <Radio id="mat_ply_8" readOnly name="mat_ply" defaultChecked={frame?.mat_ply=== '8-ply'}/>
                                         <Label htmlFor="mat_ply_8">8-ply</Label>
                                     </div>
                                 </fieldset>
@@ -283,12 +290,12 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                                 <fieldset>
                                     <div className="group mb-4">
                                          {/* mat_window */}
-                                         <Checkbox id="mat_window" readOnly defaultChecked={frame?.mat_window} name="mat_window" />
+                                         <Checkbox id="mat_window" disabled defaultChecked={frame?.mat_window} name="mat_window" />
                                         <Label htmlFor="mat_window">window</Label>
                                     </div>
                                     <div className="group gap-2">
                                          {/* mat_double */}
-                                         <Checkbox id="mat_double" readOnly defaultChecked={frame?.mat_double} name="mat_double"/>
+                                         <Checkbox id="mat_double" disabled defaultChecked={frame?.mat_double} name="mat_double"/>
                                         <Label htmlFor="mat_double">double mat</Label>
                                     </div>
                                 </fieldset>
@@ -302,14 +309,14 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                                 <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                     {/* mat_in_visible */}
                                     <input type="number" id="mat_in_visible" readOnly value={frame?.mat_in_visible} name="mat_in_visible" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
                                     <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -321,14 +328,14 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                 {/* mat_in_total */}
                                 <input type="text" id="mat_in_total" readOnly value={frame?.mat_in_total} name="mat_in_total" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
                                 <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                 </button>
                             </div>
@@ -351,14 +358,14 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                                 <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                     {/* mat_inside_height */}
                                     <input type="text" id="mat_inside_height" readOnly value={frame?.mat_inside_height} name="mat_inside_height" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                     <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -368,14 +375,14 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                                 <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                     {/* mat_outside_width */}
                                     <input type="text" id="mat_inside_width" readOnly value={frame?.mat_outside_width} name="mat_inside_width" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                     <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -388,7 +395,7 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                                 <div className="relative flex items-center max-w-[8rem]">
                                     <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                         </svg>
                                     </button>
 
@@ -396,7 +403,7 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                                     <input type="text" id="mat_outside_height" readOnly value={frame?.mat_outside_height} name="mat_outside_height" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                     <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -407,14 +414,14 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                 {/* mat_outside_width */}
                                 <input type="text" id="mat_outside_width" readOnly value={frame?.mat_outside_width} name="mat_outside_width" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                 <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                             </div>
@@ -448,11 +455,11 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                             <div className="grid grid-cols-2 gap-4" id="checkbox">
                                 <div className="group">
                                     {/* glazing */}
-                                    <Radio id="glazing_glass" disabled name="glazing" defaultChecked={frame?.glazing === 'Glass'}/>
+                                    <Radio id="glazing_glass" readOnly name="glazing" value="glass" defaultChecked={frame?.glazing === 'glass'}/>
                                     <Label htmlFor="glazing_glass">Glass</Label>
                                 </div>
                                 <div className="group">
-                                    <Radio id="glazing_plexi" disabled name="glazing" defaultChecked={frame?.glazing === 'Plexiglass'}/>
+                                    <Radio id="glazing_plexi" readOnly name="glazing" value="plexiglass" defaultChecked={frame?.glazing === 'plexiglass'}/>
                                     <Label htmlFor="glazing_plexi">Plexiglass</Label>
                                 </div>
                             </div>
@@ -462,19 +469,19 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
                                     {/* glazing_type */}
-                                    <input id="premium_clear" disabled defaultChecked={frame?.glazing_type === 'Premium Clear'} name="glazing_type" type="radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="premium_clear" readOnly value='pc' defaultChecked={frame?.glazing_type === 'pc'} name="glazing_type" type="radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="premium_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Premium Clear </label>
                                 </div>
                             </li>
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
-                                    <input id="conservation_clear" disabled defaultChecked={frame?.glazing_type === 'Conservation Clear'} type="radio"  name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="conservation_clear" readOnly value='cc' defaultChecked={frame?.glazing_type === 'cc'} type="radio"  name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="conservation_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Conservation Clear</label>
                                 </div>
                             </li>
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
-                                    <input id="museum" type="radio" disabled defaultChecked={frame?.glazing_type === 'Museum'} name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="museum" type="radio" readOnly value='m' defaultChecked={frame?.glazing_type === 'm'} name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="museum" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Museum</label>
                                 </div>
                             </li>
@@ -487,11 +494,11 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                         <div className="grid grid-cols-2 gap-4" id="checkbox">
                             <div className="group">
                                 {/* spacers */}
-                                <Radio id="spacers_true" disabled name="spacers" value="true" defaultChecked={frame?.spacers === true}/>
+                                <Radio id="spacers_true" readOnly name="spacers" value="true" defaultChecked={frame?.spacers === true}/>
                                 <Label htmlFor="spacers_true">Yes</Label>
                             </div>
                             <div className="group">
-                                <Radio id="spacers_false" disabled name="spacers" value="false" defaultChecked={frame?.spacers === false}/>
+                                <Radio id="spacers_false" readOnly name="spacers" value="false" defaultChecked={frame?.spacers === false}/>
                                 <Label htmlFor="spacers_false">No</Label>
                             </div>
                         </div>
@@ -501,19 +508,19 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
                                     {/* spacers_type */}
-                                    <input id="spacers_clear" disabled type="radio" defaultChecked={frame?.spacers_type === 'clear'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="spacers_clear" readOnly type="radio" value='c' defaultChecked={frame?.spacers_type === 'c'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="spacers_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">clear </label>
                                 </div>
                             </li>
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
-                                    <input id="spacers_white" disabled type="radio" defaultChecked={frame?.spacers_type === 'white'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="spacers_white" readOnly type="radio" value='w' defaultChecked={frame?.spacers_type === 'w'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="spacers_white" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">white</label>
                                 </div>
                             </li>
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
-                                    <input id="spacers_match" disabled type="radio" defaultChecked={frame?.spacers_type === 'match'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="spacers_match" readOnly type="radio" value='m' defaultChecked={frame?.spacers_type === 'm'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="spacers_match" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">match</label>
                                 </div>
                             </li>
@@ -535,14 +542,14 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                 {/* canvas_floater */}
                                 <input type="text" id="canvas_floater" readOnly value={frame?.canvas_floater} name="canvas_floater" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
                                 <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                             </div>
@@ -552,7 +559,7 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                 <div>
                     <div className="flex items-center gap-2">
                         {/* straight_to_frame */}
-                        <Checkbox id="straight_to_frame" disabled defaultChecked={frame?.straight_to_frame === true} readOnly name="straight_to_frame"/>
+                        <Checkbox id="straight_to_frame" defaultChecked={frame?.straight_to_frame === true} disabled name="straight_to_frame"/>
                         <Label htmlFor="straight_to_frame">straight to frame</Label>
                     </div>
                 </div>
@@ -588,11 +595,11 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                             </div>
                             <div className="flex items-center gap-2">
                                 {/* client_notified */}
-                                <Checkbox id="client_notified" disabled defaultChecked={frame?.client_notified === true} name="client_notified" />
+                                <Checkbox id="client_notified" disabled defaultChecked={frame?.client_notified} name="client_notified" />
                                 <Label htmlFor="client_notified">Notified</Label>
                             </div>
                             {/* notification_date */}
-                            <Datepicker disabled name="notification_date" datepicker-format="yyyy/MM/dd"/>
+                            <Datepicker readOnly name="notification_date" data-date={frame?.notification_date} datepicker-format="yyyy/MM/dd"/>
                         </div>
                         <div></div>
                     </div>
@@ -600,38 +607,52 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
                 <div>
                     <div className="relative z-0 w-full mb-5 group">
                         {/* final_location */}
-                        <input type="text" readOnly name="final_location" id="final_location" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <input type="text" readOnly value={frame?.final_location} name="final_location" id="final_location" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                         <Label htmlFor="final_location" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Final Location</Label>
                     </div>
 
                     <div className="relative z-0 w-full mb-5 group">
                             {/* payment_type */}
-                            <input type="text" readOnly name="payment_type" id="floating_company" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <input type="text" readOnly value={frame?.payment_type} name="payment_type" id="floating_company" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                             <Label htmlFor="payment_type" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Payment Type</Label>
                     </div>
                     <div className="grid grid-cols-2 gap-4" id="checkbox">
                         
                             <div className="flex items-center gap-2">
                                 {/* deposit */}
-                                <Checkbox id="deposit" disabled name="deposit" />
+                                <Checkbox id="deposit" disabled name="deposit" defaultChecked={frame?.balance_paid}/>
                                 <Label htmlFor="deposit">balance paid</Label>
                             </div>
                             <div className="flex items-center gap-2">
                                 {/* balance_paid */}
-                                <Checkbox id="balance_paid" disabled name="balance_paid"/>
+                                <Checkbox id="balance_paid" disabled name="balance_paid" defaultChecked={frame?.deposit}/>
                                 <Label htmlFor="balance_paid">deposit</Label>
                             </div>
                     </div>
                     
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <button type="button" onClick={() => router.back()} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Back</button>
+                    </div>
+                    <div>
+                    <Link href="?editMode=true">
+                        <button type="button" className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Edit </button>
+                    </Link>
+                    </div>
+
+                </div>   
+                
+                   
+                </div>
+               
                 
             </div>
             
-            
-        </div>
-        </div>
-        </>
-       
-    )
+        
+
+    );
 }
 
 export default Frame;

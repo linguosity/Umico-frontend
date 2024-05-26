@@ -1,5 +1,6 @@
 'use client'
-import React, {useState} from 'react';
+
+import React, {useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, Label, FileInput, List, Checkbox, Radio, TextInput, Button, Datepicker} from 'flowbite-react';
 import Image from 'next/image'
@@ -9,37 +10,38 @@ import { update } from 'firebase/database';
 
 interface EditFrameProps {
     frame: FrameType | null;
+    onRefresh: () => Promise<void>; // Define the type of the onRefresh function
 }
 
-const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
+const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
 
     const [form, setForm] = useState(frame);
     const router = useRouter(); // Initialize useRouter
 
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, type, checked, value } = e.target;
         setForm({
-            ...form!, 
-            [e.target.name]: e.target.value});
-        console.log(form)
+            ...form!,
+            [name]: type === 'checkbox' ? checked : value
+        });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if(form){
             //pass update function frame id and customer id to frameOperation
-            updateFrame(form, frame?.customer.id ?? 0, frame?.id ?? 0);
+            await updateFrame(form, frame?.customer.id ?? 0, frame?.id ?? 0);
+            onRefresh();  // Refresh frame data after update
             router.push(`http://localhost:3000/customers/${frame?.customer.id}/frames/${frame?.id}`)
         }
        
     }
 
-    const removeFrame = (e: React.FormEvent) => {
-        e.preventDefault()
-       
-        //pass delete function frame id and customer id to frameOperation
-        deleteFrame(frame?.id ?? 0, frame?.customer.id ?? 0)
-        router.push('/customer');
-    }
+    useEffect(() => {
+        console.log("Frame prop updated in child component:", frame);
+    }, [frame]);
+    
 
 
     return(
@@ -48,7 +50,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                 <List horizontal>
                     <List.Item>
                         <svg className="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
                         </svg>
                     </List.Item>
                     <List.Item>
@@ -85,7 +87,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
             <div className="w-full">
                 <div className="inline-flex items-center justify-center w-full">
                     <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-                    <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left- dark:text-white dark:bg-gray-900">Framing</span>
+                    <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left- dark:text-white dark:bg-gray-900"><span className="text-blue-400">Edit</span> Framing</span>
                 </div>
             </div>
             <div className="grid grid-cols-2 gap-4 m-4">
@@ -94,7 +96,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                         
                         <div className="relative w-full mb-5 group">
                             {/* deadline */}
-                            <Datepicker onChange={handleChange} datepicker-format="yyyy/MM/dd" value={frame?.deadline} name="deadline" id="deadline" className="block py-2.5 px-0 w-4/5 text-xs text-gray-900 bg-transparent appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer z-10" required />
+                            <Datepicker onChange={handleChange} datepicker-format="yyyy/MM/dd" value={form?.deadline} name="deadline" id="deadline" className="block py-2.5 px-0 w-4/5 text-xs text-gray-900 bg-transparent appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer z-10" required />
                             <Label htmlFor="deadline" className="peer-focus:font-medium text-xs text-gray-500 dark:text-gray-400 absolute duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Deadline</Label>
                         </div>
                                    
@@ -103,13 +105,13 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                 <input type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                 <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                 </button>
                             </div>*/}
@@ -124,7 +126,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                                 id="image_width"
                                 onChange={handleChange}
                                 name="image_width"
-                                value={frame?.image_width}
+                                value={form?.image_width}
                                 type="number"
                                 placeholder="W"
                                 className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
@@ -135,7 +137,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                                 id="image_height"
                                 onChange={handleChange}
                                 name="image_height"
-                                value={frame?.image_height}
+                                value={form?.image_height}
                                 type="number"
                                 placeholder="H"
                                 className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
@@ -151,7 +153,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                                 <TextInput
                                 name="frame_width"
                                 onChange={handleChange}
-                                value={frame?.frame_width}
+                                value={form?.frame_width}
                                 id="width"
                                 type="number"
                                 placeholder="W"
@@ -161,7 +163,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                                 {/* frame_height */}
                                 <TextInput
                                 name="frame_height"
-                                value={frame?.frame_height}
+                                value={form?.frame_height}
                                 onChange={handleChange}
                                 id="height"
                                 type="number"
@@ -186,7 +188,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                             </div>
                         </div>
                         <div className="flex ">
-                            <img src={frame?.thumbnail} width="35%" className="h-auto max-w-xs rounded-lg" />
+                            <img src={form?.thumbnail} width="35%" className="h-auto max-w-xs rounded-lg" />
                         </div>
                     </div>
                 </div>
@@ -213,12 +215,12 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                     <div className="grid grid-cols-2">
                         <div className="relative z-0 w-3/4 mb-5 group">
                             {/* moulding */}
-                            <input type="text" name="moulding" value={frame?.moulding} onChange={handleChange} id="moulding" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <input type="text" name="moulding" value={form?.moulding} onChange={handleChange} id="moulding" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                             <Label htmlFor="moulding" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">moulding</Label>
                         </div>
                         <div className="relative z-0 w-3/4 mb-5 group">
                             {/* moulding_number */}
-                            <input type="number" name="moulding_number" value={frame?.moulding_number.toString()} onChange={handleChange} id="moulding_number" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <input type="number" name="moulding_number" value={form?.moulding_number.toString()} onChange={handleChange} id="moulding_number" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                             <Label htmlFor="moulding_number" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">#</Label>
                         </div>
                     </div>
@@ -229,11 +231,11 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                         <fieldset >
                             <div className="grid grid-cols-1 gap-4" id="checkbox">
                                 <div className="group">
-                                    <Radio id="float_type_float" onChange={handleChange}  name="float_type" defaultChecked={frame?.float_type === 'float'}/>
+                                    <Radio id="float_type_float" onChange={handleChange} value='float'  name="float_type" defaultChecked={form?.float_type === 'float'}/>
                                     <Label htmlFor="float_type_float">float</Label>
                                 </div>
                                 <div className="group">
-                                    <Radio id="float_type_raised" onChange={handleChange} name="raised" defaultChecked={frame?.float_type === 'raised'}/>
+                                    <Radio id="float_type_raised" onChange={handleChange} value='raised' name="raised" defaultChecked={form?.float_type === 'raised'}/>
                                     <Label htmlFor="float_type_raised">raised</Label>
                                 </div>
                             </div>
@@ -246,14 +248,14 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                                 <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                     {/* float_in_visible */}
-                                    <input type="text" id="float_in_visible" onChange={handleChange} name="float_in_visible" value={frame?.float_in_visible} data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
+                                    <input type="text" id="float_in_visible" onChange={handleChange} name="float_in_visible" value={form?.float_in_visible} data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
                                     <button type="button" id="increment-button" data-input-counter-increment="float_in_visible" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -265,15 +267,15 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
 
                                 {/* float_in_total */}
-                                <input type="text" id="float_in_total" onChange={handleChange} name="float_in_total" value={frame?.float_in_total} data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
+                                <input type="text" id="float_in_total" onChange={handleChange} name="float_in_total" value={form?.float_in_total} data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
                                 <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                             </div>
@@ -285,12 +287,12 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                         
                         <div className="relative z-0 w-3/4 mb-5 group">
                             {/* mat */}
-                            <input type="text" name="mat" id="mat" onChange={handleChange} value={frame?.mat} className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <input type="text" name="mat" id="mat" onChange={handleChange} value={form?.mat} className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                             <Label htmlFor="mat" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">mat</Label>
                         </div>
                         <div className="relative z-0 w-3/4 mb-5 group">
                             {/* mat_number */}
-                            <input type="number" name="mat_number" onChange={handleChange} value={frame?.mat_number.toString()} id="mat_number" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <input type="number" name="mat_number" onChange={handleChange} value={form?.mat_number.toString()} id="mat_number" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                             <Label htmlFor="mat_number" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">#</Label>
                         </div>
                     </div>
@@ -303,12 +305,12 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                                 <fieldset>
                                     <div className="group mb-4">
                                         {/* mat_ply */}
-                                        <Radio id="mat_ply_4" onChange={handleChange} name="mat_ply" defaultChecked={frame?.mat_ply=== '4-ply'}/>
+                                        <Radio id="mat_ply_4" onChange={handleChange} name="mat_ply" defaultChecked={form?.mat_ply=== '4-ply'}/>
                                         <Label htmlFor="mat_ply_4">4-ply</Label>
                                     </div>
                                     <div className="group">
                                          {/* mat_ply */}
-                                        <Radio id="mat_ply_8" onChange={handleChange} name="mat_ply" defaultChecked={frame?.mat_ply=== '8-ply'}/>
+                                        <Radio id="mat_ply_8" onChange={handleChange} name="mat_ply" defaultChecked={form?.mat_ply=== '8-ply'}/>
                                         <Label htmlFor="mat_ply_8">8-ply</Label>
                                     </div>
                                 </fieldset>
@@ -317,12 +319,12 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                                 <fieldset>
                                     <div className="group mb-4">
                                          {/* mat_window */}
-                                         <Checkbox id="mat_window" onChange={handleChange} defaultChecked={frame?.mat_window} name="mat_window" />
+                                         <Checkbox id="mat_window" onChange={handleChange} defaultChecked={form?.mat_window} name="mat_window" />
                                         <Label htmlFor="mat_window">window</Label>
                                     </div>
                                     <div className="group gap-2">
                                          {/* mat_double */}
-                                         <Checkbox id="mat_double" onChange={handleChange} defaultChecked={frame?.mat_double} name="mat_double"/>
+                                         <Checkbox id="mat_double" onChange={handleChange} defaultChecked={form?.mat_double} name="mat_double"/>
                                         <Label htmlFor="mat_double">double mat</Label>
                                     </div>
                                 </fieldset>
@@ -336,14 +338,14 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                                 <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                     {/* mat_in_visible */}
-                                    <input type="number" id="mat_in_visible" onChange={handleChange} value={frame?.mat_in_visible} name="mat_in_visible" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
+                                    <input type="number" id="mat_in_visible" onChange={handleChange} value={form?.mat_in_visible} name="mat_in_visible" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
                                     <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -355,14 +357,14 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                 {/* mat_in_total */}
-                                <input type="text" id="mat_in_total" onChange={handleChange} value={frame?.mat_in_total} name="mat_in_total" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
+                                <input type="text" id="mat_in_total" onChange={handleChange} value={form?.mat_in_total} name="mat_in_total" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" required />
                                 <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                 </button>
                             </div>
@@ -385,14 +387,14 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                                 <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                     {/* mat_inside_height */}
-                                    <input type="text" id="mat_inside_height" onChange={handleChange} value={frame?.mat_inside_height} name="mat_inside_height" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                    <input type="text" id="mat_inside_height" onChange={handleChange} value={form?.mat_inside_height} name="mat_inside_height" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                     <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -402,14 +404,14 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                                 <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                     {/* mat_outside_width */}
-                                    <input type="text" id="mat_inside_width" onChange={handleChange} value={frame?.mat_outside_width} name="mat_inside_width" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                    <input type="text" id="mat_inside_width" onChange={handleChange} value={form?.mat_outside_width} name="mat_inside_width" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                     <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -422,15 +424,15 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                                 <div className="relative flex items-center max-w-[8rem]">
                                     <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                         </svg>
                                     </button>
 
                                     {/* mat_outside_height */}
-                                    <input type="text" id="mat_outside_height" onChange={handleChange} value={frame?.mat_outside_height} name="mat_outside_height" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                    <input type="text" id="mat_outside_height" onChange={handleChange} value={form?.mat_outside_height} name="mat_outside_height" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                     <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -441,14 +443,14 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                 {/* mat_outside_width */}
-                                <input type="text" id="mat_outside_width" onChange={handleChange} value={frame?.mat_outside_width} name="mat_outside_width" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
+                                <input type="text" id="mat_outside_width" onChange={handleChange} value={form?.mat_outside_width} name="mat_outside_width" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0" required />
                                 <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                             </div>
@@ -482,11 +484,11 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                             <div className="grid grid-cols-2 gap-4" id="checkbox">
                                 <div className="group">
                                     {/* glazing */}
-                                    <Radio id="glazing_glass" onChange={handleChange} name="glazing" defaultChecked={frame?.glazing === 'Glass'}/>
+                                    <Radio id="glazing_glass" onChange={handleChange} name="glazing" value="glass" defaultChecked={form?.glazing === 'glass'}/>
                                     <Label htmlFor="glazing_glass">Glass</Label>
                                 </div>
                                 <div className="group">
-                                    <Radio id="glazing_plexi" name="glazing" defaultChecked={frame?.glazing === 'Plexiglass'}/>
+                                    <Radio id="glazing_plexi" onChange={handleChange} name="glazing" value="plexiglass" defaultChecked={form?.glazing === 'plexiglass'}/>
                                     <Label htmlFor="glazing_plexi">Plexiglass</Label>
                                 </div>
                             </div>
@@ -496,19 +498,19 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
                                     {/* glazing_type */}
-                                    <input id="premium_clear" onChange={handleChange} defaultChecked={frame?.glazing_type === 'Premium Clear'} name="glazing_type" type="radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="premium_clear" onChange={handleChange} value='pc' defaultChecked={form?.glazing_type === 'pc'} name="glazing_type" type="radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="premium_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Premium Clear </label>
                                 </div>
                             </li>
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
-                                    <input id="conservation_clear" onChange={handleChange} defaultChecked={frame?.glazing_type === 'Conservation Clear'} type="radio"  name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="conservation_clear" onChange={handleChange} value='cc' defaultChecked={form?.glazing_type === 'cc'} type="radio"  name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="conservation_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Conservation Clear</label>
                                 </div>
                             </li>
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
-                                    <input id="museum" type="radio" onChange={handleChange} defaultChecked={frame?.glazing_type === 'Museum'} name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="museum" type="radio" onChange={handleChange} value='m' defaultChecked={form?.glazing_type === 'm'} name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="museum" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Museum</label>
                                 </div>
                             </li>
@@ -521,11 +523,11 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                         <div className="grid grid-cols-2 gap-4" id="checkbox">
                             <div className="group">
                                 {/* spacers */}
-                                <Radio id="spacers_true" onChange={handleChange} name="spacers" value="true" defaultChecked={frame?.spacers === true}/>
+                                <Radio id="spacers_true" onChange={handleChange} name="spacers" value="true" defaultChecked={form?.spacers === true}/>
                                 <Label htmlFor="spacers_true">Yes</Label>
                             </div>
                             <div className="group">
-                                <Radio id="spacers_false" onChange={handleChange} name="spacers" value="false" defaultChecked={frame?.spacers === false}/>
+                                <Radio id="spacers_false" onChange={handleChange} name="spacers" value="false" defaultChecked={form?.spacers === false}/>
                                 <Label htmlFor="spacers_false">No</Label>
                             </div>
                         </div>
@@ -535,19 +537,19 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
                                     {/* spacers_type */}
-                                    <input id="spacers_clear" onChange={handleChange} type="radio" defaultChecked={frame?.spacers_type === 'clear'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="spacers_clear" onChange={handleChange} type="radio" value='c' defaultChecked={form?.spacers_type === 'c'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="spacers_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">clear </label>
                                 </div>
                             </li>
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
-                                    <input id="spacers_white" onChange={handleChange} type="radio" defaultChecked={frame?.spacers_type === 'white'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="spacers_white" onChange={handleChange} type="radio" value='w' defaultChecked={form?.spacers_type === 'w'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="spacers_white" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">white</label>
                                 </div>
                             </li>
                             <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                 <div className="flex items-center ps-3">
-                                    <input id="spacers_match" onChange={handleChange} type="radio" defaultChecked={frame?.spacers_type === 'match'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+                                    <input id="spacers_match" onChange={handleChange} type="radio" value='m' defaultChecked={form?.spacers_type === 'm'} name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
                                     <label htmlFor="spacers_match" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">match</label>
                                 </div>
                             </li>
@@ -569,14 +571,14 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
                                     </svg>
                                 </button>
                                 {/* canvas_floater */}
-                                <input type="text" id="canvas_floater" onChange={handleChange} value={frame?.canvas_floater} name="canvas_floater" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                <input type="text" id="canvas_floater" onChange={handleChange} value={form?.canvas_floater} name="canvas_floater" data-input-counter aria-describedby="helper-text-explanation" className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-xs focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
                                 <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                         <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
                                         </svg>
                                     </button>
                             </div>
@@ -586,7 +588,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                 <div>
                     <div className="flex items-center gap-2">
                         {/* straight_to_frame */}
-                        <Checkbox id="straight_to_frame" defaultChecked={frame?.straight_to_frame === true} onChange={handleChange} name="straight_to_frame"/>
+                        <Checkbox id="straight_to_frame" defaultChecked={form?.straight_to_frame === true} onChange={handleChange} name="straight_to_frame"/>
                         <Label htmlFor="straight_to_frame">straight to frame</Label>
                     </div>
                 </div>
@@ -603,12 +605,12 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                     
                     <div className="relative z-0 w-full mb-5 group">
                         {/* art_location */}
-                        <input type="text" onChange={handleChange} value={frame?.art_location} name="art_location" id="art_location" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <input type="text" onChange={handleChange} value={form?.art_location} name="art_location" id="art_location" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                         <Label htmlFor="art_location" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Artwork Location</Label>
                     </div>
                     <div className="relative z-0 w-full mb-5 group">
                         {/* artwork_condition */}
-                        <input type="text" onChange={handleChange} value={frame?.art_condition} name="art_condition" id="art_condition" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <input type="text" onChange={handleChange} value={form?.art_condition} name="art_condition" id="art_condition" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                         <Label htmlFor="art_condition" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Artwork Condition</Label>
                     </div>
                    
@@ -617,12 +619,12 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                         
                             <div className="flex items-center gap-2">
                                 {/* is_completed */}
-                                <Checkbox id="is_completed" onChange={handleChange} defaultChecked={frame?.is_completed === true} name="is_completed"/>
+                                <Checkbox id="is_completed" onChange={handleChange} defaultChecked={form?.is_completed === true} name="is_completed"/>
                                 <Label htmlFor="is_completed">Completed</Label>
                             </div>
                             <div className="flex items-center gap-2">
                                 {/* client_notified */}
-                                <Checkbox id="client_notified" onChange={handleChange} defaultChecked={frame?.client_notified === true} name="client_notified" />
+                                <Checkbox id="client_notified" onChange={handleChange} defaultChecked={form?.client_notified} name="client_notified" />
                                 <Label htmlFor="client_notified">Notified</Label>
                             </div>
                             {/* notification_date */}
@@ -634,33 +636,58 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame }) => {
                 <div>
                     <div className="relative z-0 w-full mb-5 group">
                         {/* final_location */}
-                        <input type="text" onChange={handleChange} name="final_location" id="final_location" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                        <input type="text" onChange={handleChange} value={form?.final_location} name="final_location" id="final_location" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                         <Label htmlFor="final_location" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Final Location</Label>
                     </div>
 
                     <div className="relative z-0 w-full mb-5 group">
                             {/* payment_type */}
-                            <input type="text" onChange={handleChange} name="payment_type" id="floating_company" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <input type="text" onChange={handleChange} value={form?.payment_type} name="payment_type" id="floating_company" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                             <Label htmlFor="payment_type" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Payment Type</Label>
                     </div>
                     <div className="grid grid-cols-2 gap-4" id="checkbox">
                         
                             <div className="flex items-center gap-2">
                                 {/* deposit */}
-                                <Checkbox id="deposit" onChange={handleChange} name="deposit" />
+                                <Checkbox id="deposit" onChange={handleChange} name="deposit" defaultChecked={form?.balance_paid}/>
                                 <Label htmlFor="deposit">balance paid</Label>
                             </div>
                             <div className="flex items-center gap-2">
                                 {/* balance_paid */}
-                                <Checkbox id="balance_paid" onChange={handleChange} name="balance_paid"/>
+                                <Checkbox id="balance_paid" onChange={handleChange} name="balance_paid" defaultChecked={form?.deposit}/>
                                 <Label htmlFor="balance_paid">deposit</Label>
                             </div>
                     </div>
                     
                 </div>
-                    <div><Button type="submit" color="blue" className="xl">Submit</Button></div>
-                    <div><Button type="submit" color="red" className="xl danger" onClick={removeFrame}>Delete</Button>
-                </div>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
+                    </div>
+                    <div>
+                        <button type="button" onClick={() => router.back()} className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Back</button>
+                    </div>
+
+                </div>   
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        
+                    </div>
+                    <div>
+                        <button 
+                            type="button" 
+                            onClick={() => {
+                                if (frame?.id !== undefined && frame?.customer.id !== undefined) {
+                                    deleteFrame(frame.id, frame.customer.id, router);
+                                }
+                            }} 
+                            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                        >
+                            Delete
+                        </button>
+                    </div>
+
+                </div>   
                 
             </div>
             </form>

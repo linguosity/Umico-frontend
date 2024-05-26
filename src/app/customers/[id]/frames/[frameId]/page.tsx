@@ -5,6 +5,7 @@ import { Frame as FrameType } from "../../../../types/frames";
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Frame from "../../../../components/Frame";
+import { useCallback } from 'react';
 
 const Page = ({ params }: { params: { id: string, frameId: string } }) => {
     const [id, setId] = useState<number | null>(null);
@@ -39,27 +40,31 @@ const Page = ({ params }: { params: { id: string, frameId: string } }) => {
         setIsEditMode(editMode === 'true');
     }, [searchParams]);
 
-    // Fetch frame data from the API
-    useEffect(() => {
-        const fetchFrame = async () => {
-            if (id && frameId) {
-                const response = await fetch(`http://127.0.0.1:8000/customers/${id}/frames/${frameId}`);
-                const frameData = await response.json();
-                setFrame(frameData);
-            }
-        };
+    // Define fetchFrame using useCallback to prevent unnecessary re-definitions
+    const fetchFrame = useCallback(async () => {
+        if (id && frameId) {
+            const response = await fetch(`http://127.0.0.1:8000/customers/${id}/frames/${frameId}/`);
+            const frameData = await response.json();
+            setFrame(frameData);
+            console.log("Current frame data:", frameData);
 
-        fetchFrame();
+        }
     }, [id, frameId]);
+
+    // Call fetchFrame on component mount and when id, frameId, or isEditMode changes
+    useEffect(() => {
+        fetchFrame();
+    }, [fetchFrame]);
+
 
     if (!frame) {
         return <div>Loading...</div>;
     }
 
     return isEditMode ? (
-        <EditFrame frame={frame} />
+        <EditFrame key={frame.id} frame={frame} onRefresh={fetchFrame} />
     ) : (
-        <Frame frame={frame} />
+        <Frame key={frame.id} frame={frame}/>
     );
 };
 
