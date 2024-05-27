@@ -57,9 +57,9 @@ export const updateFrame = async (form: Frame, id: number, frame_id: number) => 
 
 export const deleteFrame = async (frame_id: number, customerId: number, router: any) => {
 
-    const URL = `http://127.0.0.1:8000/customers/${customerId}/frames/`
+    const URL = `http://127.0.0.1:8000/customers/${customerId}/delete_frame`
     const URL_REDIRECT = `http://127.0.0.1:3000/customers/${customerId}`
-
+    console.log("hello");
     try{
         const response = await fetch(URL, {
             method: "DELETE",
@@ -73,6 +73,7 @@ export const deleteFrame = async (frame_id: number, customerId: number, router: 
         });
 
         if (response.ok) {
+            console.log(URL_REDIRECT);
             router.push(URL_REDIRECT);
         } else {
             console.error("Failed to delete the frame");

@@ -58,9 +58,9 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans
             </Table.Head>
             <Table.Body className="divide-y">
 
-            { frames?.map((frame, idx) => (
-                <>          
-                <Table.Row key={idx} >
+            { frames?.map((frame) => (
+                      
+                <Table.Row key={frame.id} >
                     <Table.Cell>{frame.deadline ? new Date(frame.deadline).toLocaleString() : 'N/A'}</Table.Cell>
                     <Table.Cell>{frame.image_height} x {frame.image_width}</Table.Cell>
                     
@@ -127,7 +127,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans
                         </Link>
                     </Table.Cell>
                 </Table.Row>
-                </>                
+                        
             ))}
             </Table.Body>
         </Table>
@@ -157,9 +157,9 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans
                                     <Table.HeadCell>Job Notes</Table.HeadCell>
                                 </Table.Head>
                                 <Table.Body className="divide-y">
-            { prints?.map((print, idx) => (
+            { prints?.map((print) => (
                         
-                                <Table.Row key={idx}>
+                                <Table.Row key={print.id}>
                                     <Table.Cell>{print.deadline ? new Date(print.deadline).toLocaleString() : 'N/A'}</Table.Cell>
                                     <Table.Cell>{print.image_height}</Table.Cell>
                                     <Table.Cell>{print.image_width}</Table.Cell>
@@ -211,9 +211,9 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans
                                     <Table.HeadCell>Balance Paid</Table.HeadCell>
                                     </Table.Head>
                                     <Table.Body className="divide-y">
-            { scans?.map((scan, idx) => (
+            { scans?.map((scan) => (
                     
-                                    <Table.Row key={idx}>
+                                    <Table.Row key={scan.id}>
                                     <Table.Cell>{scan.deadline? new Date(scan.deadline).toLocaleString() : 'N/A'}</Table.Cell>    
                                     <Table.Cell>{scan.image_height}</Table.Cell>
                                     <Table.Cell>{scan.image_width}</Table.Cell>
