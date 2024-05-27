@@ -70,9 +70,10 @@ const Page = ({ params }: { params: { id: string } }) => {
     )
 
     const viewCustomer = (
-        <Customer customerData={user}  prints={prints} scans={scans} frames={frames}>
-       
-        </Customer>
+        <>
+            <Customer customerData={user}  prints={prints} scans={scans} frames={frames}>
+            </Customer>
+        </>
     )
 
     return isEditMode ? editCustomer: viewCustomer;

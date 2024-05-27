@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Table, Tabs, List, Checkbox, Label} from 'flowbite-react';
+import { Card, Table, Tabs, List, Checkbox, Label, Accordion} from 'flowbite-react';
 import Image from 'next/image';
 import { Customer } from '../types/customer';
 import { Print } from '../types/print';
@@ -9,6 +9,7 @@ import { Frame } from '../types/frames';
 import Link from 'next/link'
 import { HiAdjustments, HiClipboardList, HiUserCircle } from "react-icons/hi";
 import { MdDashboard } from "react-icons/md";
+import AddFrame from '../components/AddFrame';
 
 interface CustomerPageProps {
     customerData: Customer;
@@ -131,6 +132,17 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans
             </Table.Body>
         </Table>
 
+        <div>
+            <Accordion collapseAll>
+                <Accordion.Panel>
+                    <Accordion.Title>Add Frame</Accordion.Title>
+                    <Accordion.Content>
+                            <AddFrame id={customerData?.id} />
+                    </Accordion.Content>
+                </Accordion.Panel>
+            </Accordion>
+        </div>
+
         </Tabs.Item>
         <Tabs.Item title="Prints" icon={MdDashboard}>
             <Table hoverable>
@@ -166,8 +178,18 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans
             ))}
 
             </Table.Body>
-                        </Table>
-
+            </Table>
+            
+            <div>
+                <Accordion collapseAll>
+                    <Accordion.Panel>
+                        <Accordion.Title>Add Print</Accordion.Title>
+                        <Accordion.Content>
+                        </Accordion.Content>
+                    </Accordion.Panel>
+                </Accordion>
+            </div>
+            
         </Tabs.Item>
 
         <Tabs.Item title="Scans" icon={HiAdjustments}>
@@ -214,9 +236,18 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans
                 ))}
                 </Table.Body>
             </Table>
-                        
+            <div>
+                <Accordion collapseAll>
+                    <Accordion.Panel>
+                        <Accordion.Title>Add Scan</Accordion.Title>
+                        <Accordion.Content>
+                        </Accordion.Content>
+                    </Accordion.Panel>
+                </Accordion>
+            </div>
         </Tabs.Item>
         </Tabs>
+        
         </>
     );
 };

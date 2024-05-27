@@ -13,7 +13,7 @@ export interface Address {
   }
   
   export interface Customer {
-    id: number;
+    id: number | null;
     first_name: string;
     last_name: string;
     email: string;

@@ -1,12 +1,47 @@
 "use client"
 
 import { Frame } from '../types/frames';
+import { useRouter } from 'next/navigation';
 
-//const [frame, setFrame] = useState<Frame | null>(null);
+
+export const createFrame = async (form: Frame, customerId: number, router: any) => {
+
+    const URL = `http://127.0.0.1:8000/customers/${customerId}/add_frame/`;
+    const URL_REDIRECT = `http://127.0.0.1:3000/customers/${customerId}`;
+
+    const adjustedData = {
+        ...form,
+        customer: customerId, // Only send customer ID if that's what the backend expects
+    };
+
+    try{
+        console.log('Sending data:', adjustedData);
+        const response = await fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
+            },
+            
+            body: JSON.stringify(adjustedData),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+
+    } catch (error) {
+        console.error('Failed to create the frame:', error);
+        throw error;
+    }
+
+};
 
 export const updateFrame = async (form: Frame, id: number, frame_id: number) => {
 
-    const URL = `http://127.0.0.1:8000/customers/${id}/frames/${frame_id}/`
+    const URL = `http://127.0.0.1:8000/customers/${id}/frames/${frame_id}/`;
 
     //make post request to create people
     await fetch(URL, {
@@ -22,7 +57,7 @@ export const updateFrame = async (form: Frame, id: number, frame_id: number) => 
 
 export const deleteFrame = async (frame_id: number, customerId: number, router: any) => {
 
-    const URL = `http://127.0.0.1:8000/customers/${customerId}/frames/${frame_id}/`
+    const URL = `http://127.0.0.1:8000/customers/${customerId}/frames/`
     const URL_REDIRECT = `http://127.0.0.1:3000/customers/${customerId}`
 
     try{
