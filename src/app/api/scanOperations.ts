@@ -37,7 +37,7 @@ export const createScan = async (form: Scan, customerId: number, router: any) =>
 };
 
 export const updateScan = async (form: Scan, id: number, scan_id: number) => {
-    const URL = `http://127.0.0.1:8000/customers/${id}/scans/${scan_id}/`;
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${id}/scans/${scan_id}/`;
 
     await fetch(URL, {
         method: "PUT",

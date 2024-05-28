@@ -33,7 +33,7 @@ export default function Home() {
 
   const getCustomerData = async () => {
     try{
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/customers/', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/`, {
         credentials: 'include'
       });
       // The return value is *not* serialized

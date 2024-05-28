@@ -11,7 +11,7 @@ export default function Page() {
 
   const getScanData = async () => {
     try{
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/scans/', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/scans/`, {
         credentials: 'include'
       });
       // The return value is *not* serialized

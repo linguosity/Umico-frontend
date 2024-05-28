@@ -11,7 +11,7 @@ export default function Page() {
 
   const getPrintData = async () => {
     try{
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/prints/', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prints/`, {
         credentials: 'include'
       });
       // The return value is *not* serialized

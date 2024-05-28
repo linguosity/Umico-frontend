@@ -11,7 +11,7 @@ export default function Page() {
 
   const getFrameData = async () => {
     try{
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/frames/', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/frames/`, {
         credentials: 'include'
     });
       // The return value is *not* serialized
