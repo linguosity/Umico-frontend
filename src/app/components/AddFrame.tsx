@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, Label, FileInput, List, Checkbox, Radio, TextInput, Button, Datepicker} from 'flowbite-react';
 import Image from 'next/image'
@@ -12,7 +12,7 @@ interface EditFrameProps {
     id: number | null;
 }
 
-const addFrame: React.FC<EditFrameProps> = ({ id }) => {
+const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
     // Initializing state with default values for required fields
     const [form, setForm] = useState<FrameType>({
         id: 0, // Assuming a temporary default ID
@@ -716,4 +716,4 @@ const addFrame: React.FC<EditFrameProps> = ({ id }) => {
     )
 }
 
-export default addFrame;
+export default AddFrame;
