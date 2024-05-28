@@ -673,14 +673,15 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
                         
                     </div>
                     <div>
-                        <button 
-                            type="button" 
+                    <button
+                            type="button"
                             onClick={() => {
-                                if (frame?.id !== undefined && frame?.customer !== undefined) {
-                                    deleteFrame(frame.id, frame?.customer, router);
+                                const customerId = frame?.customer.id ?? 0;
+                                const frameId = frame?.id ?? 0;
+                                if (frameId && customerId) {
+                                    deleteFrame(frameId, customerId, router);
                                 }
-                                
-                            }} 
+                            }}
                             className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                         >
                             Delete
