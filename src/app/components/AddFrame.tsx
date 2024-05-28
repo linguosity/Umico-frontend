@@ -3,10 +3,8 @@
 import React, { useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, Label, FileInput, List, Checkbox, Radio, TextInput, Button, Datepicker} from 'flowbite-react';
-import Image from 'next/image'
 import { Frame as FrameType } from '../types/frames';
 import { createFrame } from '../api/frameOperations';
-import { update } from 'firebase/database';
 
 interface EditFrameProps {
     id: number | null;
