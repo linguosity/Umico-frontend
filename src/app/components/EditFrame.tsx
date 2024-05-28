@@ -6,7 +6,6 @@ import { Card, Label, FileInput, List, Checkbox, Radio, TextInput, Button, Datep
 import Image from 'next/image'
 import { Frame as FrameType } from '../types/frames';
 import { updateFrame, deleteFrame } from '../api/frameOperations';
-import { update } from 'firebase/database';
 
 interface EditFrameProps {
     frame: FrameType | null;
