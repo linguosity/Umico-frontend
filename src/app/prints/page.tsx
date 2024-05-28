@@ -11,7 +11,9 @@ export default function Page() {
 
   const getPrintData = async () => {
     try{
-      const res = await fetch('http://127.0.0.1:8000/prints/');
+      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/prints/', {
+        credentials: 'include'
+      });
       // The return value is *not* serialized
       // You can return Date, Map, Set, etc.
       

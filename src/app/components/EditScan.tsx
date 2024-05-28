@@ -28,7 +28,7 @@ const EditScan: React.FC<EditScanProps> = ({ scan, onRefresh }) => {
         if (form) {
             await updateScan(form, scan?.customer.id ?? 0, scan?.id ?? 0);
             onRefresh();
-            router.push(`http://localhost:3000/customers/${scan?.customer.id}/scans/${scan?.id}`);
+            router.push(`${process.env.NEXT_PUBLIC_API_URL}/customers/${scan?.customer.id}/scans/${scan?.id}`);
         }
     };
 

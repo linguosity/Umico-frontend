@@ -43,7 +43,9 @@ const Page = ({ params }: { params: { id: string, frameId: string } }) => {
     // Define fetchFrame using useCallback to prevent unnecessary re-definitions
     const fetchFrame = useCallback(async () => {
         if (id && frameId) {
-            const response = await fetch(`http://127.0.0.1:8000/customers/${id}/frames/${frameId}/`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/${id}/frames/${frameId}/`, {
+                credentials: 'include'
+            });
             const frameData = await response.json();
             setFrame(frameData);
             console.log("Current frame data:", frameData);

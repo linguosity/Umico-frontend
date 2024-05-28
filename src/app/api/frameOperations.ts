@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 
 export const createFrame = async (form: Frame, customerId: number, router: any) => {
 
-    const URL = `http://127.0.0.1:8000/customers/${customerId}/add_frame/`;
-    const URL_REDIRECT = `http://127.0.0.1:3000/customers/${customerId}`;
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/add_frame/`;
+    const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}`;
 
     const adjustedData = {
         ...form,
@@ -21,7 +21,7 @@ export const createFrame = async (form: Frame, customerId: number, router: any) 
                 'Content-Type': 'application/json',
                 "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
             },
-            
+            credentials: 'include',
             body: JSON.stringify(adjustedData),
         });
         
@@ -40,7 +40,7 @@ export const createFrame = async (form: Frame, customerId: number, router: any) 
 
 export const updateFrame = async (form: Frame, id: number, frame_id: number) => {
 
-    const URL = `http://127.0.0.1:8000/customers/${id}/frames/${frame_id}/`;
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${id}/frames/${frame_id}/`;
 
     //make post request to create people
     await fetch(URL, {
@@ -49,6 +49,7 @@ export const updateFrame = async (form: Frame, id: number, frame_id: number) => 
             "Content-Type": "application/json",
             "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
         }, 
+        credentials: 'include',
         body: JSON.stringify(form),
     });
 
@@ -56,8 +57,8 @@ export const updateFrame = async (form: Frame, id: number, frame_id: number) => 
 
 export const deleteFrame = async (frame_id: number, customerId: number, router: any) => {
 
-    const URL = `http://127.0.0.1:8000/customers/${customerId}/delete_frame`
-    const URL_REDIRECT = `http://127.0.0.1:3000/customers/${customerId}`
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/delete_frame`
+    const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}`
    
 
     try{
@@ -67,7 +68,7 @@ export const deleteFrame = async (frame_id: number, customerId: number, router: 
                 "Content-Type": "application/json",
                 "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
             }, 
-    
+        credentials: 'include',
         body: JSON.stringify({frame_id, customerId }),
     
         });

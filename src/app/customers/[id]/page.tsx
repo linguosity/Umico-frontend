@@ -45,7 +45,9 @@ const Page = ({ params }: { params: { id: string } }) => {
         //fetch user data from Api
         const fetchUser = async() => {
             if(id){
-                const response = await fetch(`http://127.0.0.1:8000/customers/${id}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/${id}`, {
+                    credentials: 'include'
+                });
                 const customerData = await response.json();
                 setUser(customerData);
                 setScan(customerData.scans || null);

@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 
 export const createPrint = async (form: Print, customerId: number, router: any) => {
    
-    const URL = `http://127.0.0.1:8000/customers/${customerId}/add_print/`;
-    const URL_REDIRECT = `http://127.0.0.1:3000/customers/${customerId}`;
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/add_print/`;
+    const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}`;
 
     const adjustedData = {
         ...form,
@@ -21,6 +21,7 @@ export const createPrint = async (form: Print, customerId: number, router: any) 
                 'Content-Type': 'application/json',
                 "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
             },
+            credentials: 'include',
             body: JSON.stringify(adjustedData),
         });
         
@@ -37,7 +38,7 @@ export const createPrint = async (form: Print, customerId: number, router: any) 
 };
 
 export const updatePrint = async (form: Print, id: number, print_id: number) => {
-    const URL = `http://127.0.0.1:8000/customers/${id}/prints/${print_id}/`;
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${id}/prints/${print_id}/`;
 
     await fetch(URL, {
         method: "PUT",
@@ -45,14 +46,15 @@ export const updatePrint = async (form: Print, id: number, print_id: number) => 
             "Content-Type": "application/json",
             "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
         }, 
+        credentials: 'include',
         body: JSON.stringify(form),
     });
 };
 
 export const deletePrint = async (print_id: number, customerId: number, router: any) => {
     
-    const URL = `http://127.0.0.1:8000/customers/${customerId}/delete_print`;
-    const URL_REDIRECT = `http://127.0.0.1:3000/customers/${customerId}`;
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/delete_print`;
+    const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}`;
    
 
     try{
@@ -62,6 +64,7 @@ export const deletePrint = async (print_id: number, customerId: number, router: 
                 "Content-Type": "application/json",
                 "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
             }, 
+            credentials: 'include',
             body: JSON.stringify({print_id, customerId }),
         });
 

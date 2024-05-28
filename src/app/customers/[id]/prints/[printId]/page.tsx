@@ -39,7 +39,9 @@ const PrintPage = ({ params }: { params: { id: string, printId: string } }) => {
 
     const fetchPrint = useCallback(async () => {
         if (id && printId) {
-            const response = await fetch(`http://127.0.0.1:8000/customers/${id}/prints/${printId}/`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/${id}/prints/${printId}/`, {
+                credentials: 'include'
+            });
             const printData = await response.json();
             setPrint(printData);
             console.log("Current print data:", printData);
