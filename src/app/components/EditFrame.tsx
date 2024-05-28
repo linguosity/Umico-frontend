@@ -46,7 +46,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
 
     return(
         <div className="m-4 grid grid-flow-row auto-rows-max">
-            <Card>
+            <Card className="bg-amber-200">
                 <List horizontal>
                     <List.Item>
                         <svg className="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

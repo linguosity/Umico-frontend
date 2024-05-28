@@ -17,4 +17,5 @@ export interface Scan {
   payment_type: string;
   deposit_made: boolean;
   balance_paid: boolean;
+  job_notes: string;
 }

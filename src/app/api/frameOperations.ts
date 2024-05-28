@@ -15,7 +15,6 @@ export const createFrame = async (form: Frame, customerId: number, router: any) 
     };
 
     try{
-        console.log('Sending data:', adjustedData);
         const response = await fetch(URL, {
             method: 'POST',
             headers: {
@@ -59,7 +58,8 @@ export const deleteFrame = async (frame_id: number, customerId: number, router: 
 
     const URL = `http://127.0.0.1:8000/customers/${customerId}/delete_frame`
     const URL_REDIRECT = `http://127.0.0.1:3000/customers/${customerId}`
-    console.log("hello");
+   
+
     try{
         const response = await fetch(URL, {
             method: "DELETE",
