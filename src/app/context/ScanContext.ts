@@ -1,1 +1,0 @@
-import { Scan } from '../types/scan'
