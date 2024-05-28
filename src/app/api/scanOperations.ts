@@ -59,7 +59,7 @@ export const deleteScan = async (scan_id: number, customerId: number, router: an
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
+                "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
             }, 
             credentials: 'include',
             body: JSON.stringify({scan_id, customerId }),

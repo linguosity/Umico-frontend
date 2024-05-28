@@ -46,7 +46,10 @@ const Page = ({ params }: { params: { id: string } }) => {
         const fetchUser = async() => {
             if(id){
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/${id}`, {
-                    credentials: 'include'
+                    credentials: 'include',
+                    headers: {
+                        "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
+                      }
                 });
                 const customerData = await response.json();
                 setUser(customerData);

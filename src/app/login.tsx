@@ -13,6 +13,8 @@ const Login = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
+      
       },
       body: JSON.stringify({ username, password }),
     });

@@ -44,7 +44,10 @@ const Page = ({ params }: { params: { id: string, frameId: string } }) => {
     const fetchFrame = useCallback(async () => {
         if (id && frameId) {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/${id}/frames/${frameId}/`, {
-                credentials: 'include'
+                credentials: 'include',
+                headers: {
+                    "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
+                  }
             });
             const frameData = await response.json();
             setFrame(frameData);

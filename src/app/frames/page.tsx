@@ -12,7 +12,10 @@ export default function Page() {
   const getFrameData = async () => {
     try{
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/frames/`, {
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
+        }
     });
       // The return value is *not* serialized
       // You can return Date, Map, Set, etc.

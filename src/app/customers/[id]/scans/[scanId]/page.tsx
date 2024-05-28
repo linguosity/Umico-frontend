@@ -43,7 +43,10 @@ const ScanPage = ({ params }: { params: { id: string, scanId: string } }) => {
     const fetchScan = useCallback(async () => {
         if (id && scanId) {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/${id}/scans/${scanId}/`, {
-                credentials: 'include'
+                credentials: 'include',
+                headers: {
+                    "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
+                  }
             });
             const scanData = await response.json();
             setScan(scanData);

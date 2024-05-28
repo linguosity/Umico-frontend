@@ -19,7 +19,7 @@ export const createPrint = async (form: Print, customerId: number, router: any) 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
+                "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
             },
             credentials: 'include',
             body: JSON.stringify(adjustedData),
@@ -44,7 +44,7 @@ export const updatePrint = async (form: Print, id: number, print_id: number) => 
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
+            "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
         }, 
         credentials: 'include',
         body: JSON.stringify(form),
@@ -62,7 +62,7 @@ export const deletePrint = async (print_id: number, customerId: number, router: 
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
+                "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
             }, 
             credentials: 'include',
             body: JSON.stringify({print_id, customerId }),
