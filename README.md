@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Umico App Frontend
 
-First, run the development server:
+🌐 **Live Demo**: [Umico App Frontend](https://umicoframesfe-eb05e3b38331.herokuapp.com/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📜 Description
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Umico is a comprehensive platform designed for managing and processing various types of orders, particularly focusing on artwork handling and framing. The frontend is built with modern web technologies to provide an intuitive and responsive user experience.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Next.js**: v14.2.3
+- **React**: v18
+- **Tailwind CSS**: v3.4.1
+- **Flowbite**: v2.3.0
+- **TypeScript**: v5
+- **Node.js**: v20.x
 
-## Learn More
+## 🚀 Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+### Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repo**:
+   ```sh
+   git clone https://github.com/yourusername/umico-app.git
+   cd umico-app
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. **Install dependencies**:
+   ```sh
+   npm install
+   ```
 
-## Deploy on Vercel
+3. **Run the development server**:
+   ```sh
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📐 Wireframes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+_(Add wireframe images here)_
+
+## 📝 User Stories / MVP
+
+### Order Management
+- **Creating Different Types of Orders**: Support for scans, prints, frames, and custom requests.
+- **Order Details**: Provide detailed views of each order to keep track of necessary information.
+- **Due Dates and Client Information**: Maintain comprehensive records of clients’ personal and transaction details.
+- **Advanced User Roles and Permissions**: Manage different user roles to control access levels.
+
+## 🚧 Future Features
+- **Repeating Orders**: Facilitate easy reordering of previous orders.
+- **Order Status Tracking**: Enable real-time tracking of order statuses.
+- **Rush Orders**: Prioritize orders based on due dates.
+- **Calculating Frame/Matte Size**: Automated calculations for framing processes.
+- **Manual Input of Prices**: Allow manual entry of pricing information.
+- **Tracking Deposits and Balance Payments**: Keep records of all financial transactions.
+- **Art Documentation**: Record and store images of artwork before and after processing.
