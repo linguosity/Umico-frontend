@@ -5,7 +5,7 @@
 
 ## 📜 Description
 
-Umico is a comprehensive platform designed for managing and processing various types of orders, particularly focusing on artwork handling and framing. The frontend is built with modern web technologies to provide an intuitive and responsive user experience.
+Umico is a comprehensive platform designed for managing and processing various types of orders, particularly focusing on artwork scanning and framing. The frontend is built with modern web technologies to provide an intuitive and responsive user experience.
 
 ## 🛠️ Technologies Used
 
