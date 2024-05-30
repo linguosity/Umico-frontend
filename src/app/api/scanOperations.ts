@@ -19,7 +19,7 @@ export const createScan = async (form: Scan, customerId: number, router: any) =>
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
+                "Authorization":  `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
             },
             credentials: 'include',
             body: JSON.stringify(adjustedData),
@@ -44,7 +44,7 @@ export const updateScan = async (form: Scan, id: number, scan_id: number) => {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Token 3ce57f1f41bb58e5ea2d8ff460f3409989311e2d"
+            "Authorization":  `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
         }, 
         credentials: 'include',
         body: JSON.stringify(form),
