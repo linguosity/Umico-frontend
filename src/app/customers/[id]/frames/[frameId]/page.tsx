@@ -18,6 +18,7 @@ const Page = ({ params }: { params: { id: string, frameId: string } }) => {
     useEffect(() => {
         const parsedId = parseInt(params.id, 10);
         if (!isNaN(parsedId)) {
+            console.log("Customer id:", params.id);
             setId(parsedId);
         } else {
             setId(null);
@@ -28,6 +29,7 @@ const Page = ({ params }: { params: { id: string, frameId: string } }) => {
     useEffect(() => {
         const parsedFrameId = parseInt(params.frameId, 10);
         if (!isNaN(parsedFrameId)) {
+            console.log("Frame id:", parsedFrameId);
             setFrameId(parsedFrameId);
         } else {
             setFrameId(null);
@@ -43,6 +45,9 @@ const Page = ({ params }: { params: { id: string, frameId: string } }) => {
     // Guidance by ChatGPT to implement fetchFrame with useCallback.
     const fetchFrame = useCallback(async () => {
         if (id && frameId) {
+            console.log("Fetching frame for customer id:", id);
+            console.log("Fetching frame with frame id:", frameId);
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/${id}/frames/${frameId}/`, {
                 credentials: 'include',
                 headers: {
@@ -50,8 +55,9 @@ const Page = ({ params }: { params: { id: string, frameId: string } }) => {
                   }
             });
             const frameData = await response.json();
+
+            console.log("Fetched frame data:", frameData);
             setFrame(frameData);
-            console.log("Current frame data:", frameData);
 
         }
     }, [id, frameId]);

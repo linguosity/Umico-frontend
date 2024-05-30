@@ -75,7 +75,7 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
             ...form!,
             [name]: type === 'checkbox' ? checked : value
         });
-        console.log(form);
+        
     };
     
     const handleSubmit = async (e: React.FormEvent) => {

@@ -37,8 +37,6 @@ const AddPrint: React.FC<AddPrintProps> = ({ id }) => {
             ...form,
             [name]: newValue
         });
-
-        console.log(form.print_style);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {

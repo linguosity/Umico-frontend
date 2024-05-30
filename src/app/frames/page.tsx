@@ -27,7 +27,6 @@ export default function Page() {
       
       const frameData: Frame[] = await res.json();
       setFrameList(frameData);
-      console.log(frameData);
 
     }catch(err){
       console.log('error fetching customer data', err)

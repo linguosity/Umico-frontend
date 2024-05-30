@@ -27,7 +27,6 @@ export default function Page() {
       
       const printData: Print[] = await res.json();
       setPrintList(printData);
-      console.log(printData);
 
     }catch(err){
       console.log('error fetching customer data', err)

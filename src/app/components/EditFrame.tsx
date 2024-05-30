@@ -13,7 +13,7 @@ interface EditFrameProps {
 }
 
 const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
-
+    console.log("Fresh from parent component passed as prop:",frame);
     const [form, setForm] = useState(frame);
     const router = useRouter(); // Initialize useRouter
 
@@ -28,8 +28,12 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
         if(form){
             //pass update function frame id and customer id to frameOperation
+            console.log("editframe handlesubmit Submitting form with data:", form);
+            console.log("editframe handlesubmit Frame customer id:", frame?.customer.id);
+            console.log("editframe handlesubmit Frame id", frame?.id);
             await updateFrame(form, frame?.customer.id ?? 0, frame?.id ?? 0);
             onRefresh();  // Refresh frame data after update
             router.push(`${process.env.NEXT_PUBLIC_API_URL}/customers/${frame?.customer.id}/frames/${frame?.id}`)
@@ -674,8 +678,8 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
                     <button
                             type="button"
                             onClick={() => {
-                                console.log("frame customer id", frame?.customer.id);
-                                console.log("frame id", frame?.id)
+                                console.log("DELETE BUTTON: frame customer id", frame?.customer.id);
+                                console.log("DELETE BUTTON: frame id", frame?.id)
                                 
                                 const customerId = frame?.customer?.id ?? 0;
                                 const frameId = frame?.id ?? 0;

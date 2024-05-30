@@ -48,7 +48,6 @@ const PrintPage = ({ params }: { params: { id: string, printId: string } }) => {
             });
             const printData = await response.json();
             setPrint(printData);
-            console.log("Current print data:", printData);
         }
     }, [id, printId]);
 

@@ -22,7 +22,7 @@ interface CustomerPageProps {
 }
 
 const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans, frames }) => {
-    console.log(prints, scans, frames);
+   
     return (
         <>
             <Card className="m-4 bg-amber-200">

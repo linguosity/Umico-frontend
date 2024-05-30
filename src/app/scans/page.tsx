@@ -27,7 +27,6 @@ export default function Page() {
       
       const scanData: Scan[] = await res.json();
       setScanList(scanData);
-      console.log(scanData);
 
     }catch(err){
       console.log('error fetching customer data', err)

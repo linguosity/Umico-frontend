@@ -14,9 +14,6 @@ const ScanPage = ({ params }: { params: { id: string, scanId: string } }) => {
     const [scan, setScan] = useState<ScanType | null>(null);
     const [isEditMode, setIsEditMode] = useState(false);
     
-    console.log("customer id: ", id)
-    console.log("scan id: ", scanId)
-    
     useEffect(() => {
         const parsedId = parseInt(params.id, 10);
         if (!isNaN(parsedId)) {

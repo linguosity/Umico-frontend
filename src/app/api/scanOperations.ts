@@ -67,7 +67,6 @@ export const deleteScan = async (scan_id: number, customerId: number, router: an
         });
 
         if (response.ok) {
-            console.log(URL_REDIRECT);
             router.push(URL_REDIRECT);
         } else {
             console.error("Failed to delete the scan");

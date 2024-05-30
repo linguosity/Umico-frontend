@@ -13,7 +13,7 @@ const Frame: React.FC<FrameProps> = ({frame}) => {
     const router = useRouter(); // Initialize useRouter
 
     useEffect(() => {
-        console.log("Frame prop updated in child component:", frame);
+        console.log("Frame prop updated in Frame no-edit child component:", frame);
     }, [frame]);
     
     return (

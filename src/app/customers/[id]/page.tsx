@@ -53,10 +53,10 @@ const Page = ({ params }: { params: { id: string } }) => {
                 });
                 const customerData = await response.json();
                 setUser(customerData);
+                console.log("Dynamic customer page index: ", customerData.frames);
                 setScan(customerData.scans || null);
                 setFrame(customerData.frames || null);
                 setPrint(customerData.prints|| null);
-                console.log(user, scans, frames, prints);
             }
         }
 

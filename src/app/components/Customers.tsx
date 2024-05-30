@@ -33,9 +33,6 @@ export default function Home() {
 
   const getCustomerData = async () => {
 
-    console.log("token", process.env.NEXT_PUBLIC_API_TOKEN);
-    console.log("token", process.env.NEXT_PUBLIC_API_URL);
-
     try{
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/`, {
         method: 'GET',
@@ -55,7 +52,7 @@ export default function Home() {
       
       const customerData: Customer[] = await res.json();
       setCustomerList(customerData);
-      console.log(customerData);
+      
 
     }catch(err){
       console.log('error fetching customer data', err)
