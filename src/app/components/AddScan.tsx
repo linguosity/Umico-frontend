@@ -53,6 +53,8 @@ const AddScan: React.FC<AddScanProps> = ({ id }) => {
                     deadline: form.deadline ? new Date(form.deadline).toISOString() : new Date().toISOString(),
                 };
 
+                const { customer, ...dataWithoutCustomer } = adjustedData;
+                
                 await createScan(adjustedData as ScanType, id ?? 0, router);
                 router.push(`/`);
             } catch (error) {
