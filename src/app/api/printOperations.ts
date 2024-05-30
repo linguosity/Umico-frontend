@@ -8,6 +8,7 @@ export const createPrint = async (form: Print, customerId: number, router: any) 
     const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/add_print/`;
     const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}`;
 
+    // Adjusted with ChatGPT's assistance to send customerId instead of customer object.
     const adjustedData = {
         ...form,
         customer: customerId,

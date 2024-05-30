@@ -40,6 +40,7 @@ const ScanPage = ({ params }: { params: { id: string, scanId: string } }) => {
         setIsEditMode(editMode === 'true');
     }, [searchParams]);
 
+    // Guidance by ChatGPT to implement fetchFrame with useCallback.
     const fetchScan = useCallback(async () => {
         if (id && scanId) {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/${id}/scans/${scanId}/`, {

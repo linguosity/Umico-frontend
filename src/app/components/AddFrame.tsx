@@ -2,18 +2,22 @@
 
 import React, { useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, Label, FileInput, List, Checkbox, Radio, TextInput, Button, Datepicker} from 'flowbite-react';
+import { Card, Label, FileInput, List, Checkbox, Radio, TextInput, Datepicker} from 'flowbite-react';
 import { Frame as FrameType } from '../types/frames';
 import { createFrame } from '../api/frameOperations';
 
+
+// Guidance by ChatGPT to understand the TypeScript interface.
 interface EditFrameProps {
     id: number | null;
 }
 
+// Applied TypeScript with ChatGPT's help for the React component.
 const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
     // Initializing state with default values for required fields
     const [form, setForm] = useState<FrameType>({
         id: 0, // Assuming a temporary default ID
+        // Formatted date with ChatGPT's assistance for TypeScript compatibility.
         deadline: new Date().toISOString(), // Set to current date-time as default
         customer: {
             id: id ?? 0,
@@ -23,6 +27,7 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
             phone_number: '',
             shipping_addresses: []
         }, // Initialize customer with necessary defaults
+        // Formatted date with ChatGPT's assistance for TypeScript compatibility.
         created_at: new Date().toISOString(), // Set to current date-time
         image_height: 0,
         image_width: 0,
@@ -77,7 +82,7 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
         e.preventDefault();
         if (form) {
             try {
-                console.log('Form data before submission:', form);
+                // Guidance by ChatGPT to reconcile form inputs for API.
                 const adjustedData = {
                     ...form,
                     spacers: form.spacers === true, // Ensure spacers is a boolean

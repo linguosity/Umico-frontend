@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
+//Django docs
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

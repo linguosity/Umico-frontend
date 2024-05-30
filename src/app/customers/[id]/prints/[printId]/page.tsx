@@ -37,6 +37,7 @@ const PrintPage = ({ params }: { params: { id: string, printId: string } }) => {
         setIsEditMode(editMode === 'true');
     }, [searchParams]);
 
+    // Guidance by ChatGPT to implement fetchFrame with useCallback.
     const fetchPrint = useCallback(async () => {
         if (id && printId) {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/${id}/prints/${printId}/`, {

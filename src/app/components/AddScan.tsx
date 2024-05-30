@@ -6,12 +6,15 @@ import { Radio, Card, Label, FileInput, List, Checkbox, TextInput, Button, Datep
 import { Scan as ScanType } from '../types/scan';
 import { createScan } from '../api/scanOperations';
 
+
+// Guidance by ChatGPT to understand the TypeScript interface.
 interface AddScanProps {
     id: number | null;
 }
 
 const AddScan: React.FC<AddScanProps> = ({ id }) => {
     const [form, setForm] = useState<Partial<ScanType>>({
+        // Formatted date with ChatGPT's assistance for TypeScript compatibility.
         deadline: new Date().toISOString(),
         image_height: 0,
         image_width: 0,
@@ -30,6 +33,7 @@ const AddScan: React.FC<AddScanProps> = ({ id }) => {
     
     const router = useRouter();
 
+    // Guidance by ChatGPT to reconcile form inputs for API.
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, type, value } = e.target;
         const newValue = (type === 'checkbox' || type === 'radio') && e.target instanceof HTMLInputElement ? (type === 'checkbox' ? e.target.checked : parseInt(value)) : value;
@@ -43,6 +47,7 @@ const AddScan: React.FC<AddScanProps> = ({ id }) => {
         e.preventDefault();
         if (form) {
             try {
+                // Guidance by ChatGPT to reconcile form inputs for API.
                 const adjustedData = {
                     ...form,
                     deadline: form.deadline ? new Date(form.deadline).toISOString() : new Date().toISOString(),

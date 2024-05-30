@@ -1,5 +1,6 @@
 import { Customer } from './customer';
 
+// Structured with ChatGPT's guidance to match the client's order form to the defined TypeScript interfaces.
 export interface Print {
   id: number;
   deadline: string;

@@ -9,6 +9,7 @@ export const createFrame = async (form: Frame, customerId: number, router: any) 
     const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/add_frame/`;
     const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}`;
 
+    // Adjusted with ChatGPT's help to send customerId instead of customer object.
     const adjustedData = {
         ...form,
         customer: customerId, // Only send customer ID if that's what the backend expects
@@ -24,6 +25,9 @@ export const createFrame = async (form: Frame, customerId: number, router: any) 
             credentials: 'include',
             body: JSON.stringify(adjustedData),
         });
+
+        console.log(process.env.NEXT_PUBLIC_API_TOKEN);
+        console.log(process.env.NEXT_PUBLIC_API_URL);
         
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

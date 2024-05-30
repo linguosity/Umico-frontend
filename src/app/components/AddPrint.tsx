@@ -6,6 +6,8 @@ import { Card, Label, FileInput, List, Radio, TextInput, Button, Datepicker } fr
 import { Print as PrintType } from '../types/print';
 import { createPrint } from '../api/printOperations';
 
+
+// Guidance by ChatGPT to understand the TypeScript interface.
 interface AddPrintProps {
     id: number | null;
 }
@@ -13,6 +15,7 @@ interface AddPrintProps {
 const AddPrint: React.FC<AddPrintProps> = ({ id }) => {
     const [form, setForm] = useState<Partial<PrintType>>({
         id: 0, //assuming default temporary ID
+        // Formatted date with ChatGPT's assistance for TypeScript compatibility.
         deadline: new Date().toISOString(),
         image_height: 0,
         image_width: 0,
@@ -26,6 +29,7 @@ const AddPrint: React.FC<AddPrintProps> = ({ id }) => {
     
     const router = useRouter();
 
+    // Guidance by ChatGPT to reconcile form inputs for API.
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, type, value } = e.target;
         const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : type === 'radio' ? value : value;
@@ -41,7 +45,7 @@ const AddPrint: React.FC<AddPrintProps> = ({ id }) => {
         e.preventDefault();
         if (form) {
             try {
-                console.log('Form data before submission:', form);
+                // Guidance by ChatGPT to reconcile form inputs for API.
                 const adjustedData = {
                     ...form,
                     deadline: form.deadline ? new Date(form.deadline).toISOString() : "", // Format deadline correctly
@@ -49,9 +53,7 @@ const AddPrint: React.FC<AddPrintProps> = ({ id }) => {
     
                 // Remove customer property as it will be sent separately
                 const { customer, ...dataWithoutCustomer } = adjustedData;
-    
-                // Adding additional logs to verify data
-                console.log('Adjusted data without customer:', dataWithoutCustomer);
+
     
                 await createPrint(dataWithoutCustomer as PrintType, id ?? 0, router);
                 router.push('/'); // Reload the page

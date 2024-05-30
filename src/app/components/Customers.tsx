@@ -34,6 +34,7 @@ export default function Home() {
   const getCustomerData = async () => {
     try{
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/`, {
+        method: 'GET',
         credentials: 'include',
         headers: {
           "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
@@ -44,7 +45,7 @@ export default function Home() {
      
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary
-        throw new Error('Failed to fetch data');
+        throw new Error(`${res.statusText}`);
       }
       
       const customerData: Customer[] = await res.json();
