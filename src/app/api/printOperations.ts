@@ -54,7 +54,7 @@ export const updatePrint = async (form: Print, id: number, print_id: number) => 
 
 export const deletePrint = async (print_id: number, customerId: number, router: any) => {
     
-    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/delete_print`;
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/delete_print/`;
     const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL_REDIRECT}/customers/${customerId}`;
    
 

@@ -52,7 +52,7 @@ export const updateScan = async (form: Scan, id: number, scan_id: number) => {
 };
 
 export const deleteScan = async (scan_id: number, customerId: number, router: any) => {
-    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/delete_scan`;
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/delete_scan/`;
     const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL_REDIRECT}/customers/${customerId}`;
     
     try{

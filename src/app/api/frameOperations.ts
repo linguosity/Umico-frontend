@@ -59,8 +59,8 @@ export const updateFrame = async (form: Frame, id: number, frame_id: number) => 
 
 export const deleteFrame = async (frame_id: number, customerId: number, router: any) => {
 
-    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/delete_frame`
-    const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}`
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/delete_frame/`
+    const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL_REDIRECT}/customers/${customerId}`
    
 
     try{
@@ -70,9 +70,8 @@ export const deleteFrame = async (frame_id: number, customerId: number, router: 
                 "Content-Type": "application/json",
                 "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
             }, 
-        credentials: 'include',
-        body: JSON.stringify({frame_id, customerId }),
-    
+            credentials: 'include',
+            body: JSON.stringify({frame_id, customerId }),
         });
 
         if (response.ok) {
