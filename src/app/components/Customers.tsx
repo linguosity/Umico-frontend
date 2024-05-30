@@ -33,9 +33,9 @@ export default function Home() {
 
   const getCustomerData = async () => {
 
-    console.log(process.env.NEXT_PUBLIC_API_TOKEN);
-    console.log(process.env.NEXT_PUBLIC_API_URL);
-    
+    console.log("token", process.env.NEXT_PUBLIC_API_TOKEN);
+    console.log("token", process.env.NEXT_PUBLIC_API_URL);
+
     try{
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/`, {
         method: 'GET',
