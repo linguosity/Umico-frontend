@@ -16,11 +16,11 @@ export default function Dashboard() {
                 Dashboard
                 </Sidebar.Item>
 
-                <Sidebar.Collapse icon={HiShoppingBag} label="New">
+                {/* <Sidebar.Collapse icon={HiShoppingBag} label="New">
                     <Sidebar.Item href="#">Frame</Sidebar.Item>
                     <Sidebar.Item href="#">Print</Sidebar.Item>
                     <Sidebar.Item href="#">Scan</Sidebar.Item>
-                </Sidebar.Collapse>
+                </Sidebar.Collapse> */}
                 <Sidebar.Item href="#" icon={HiViewBoards}>
                 Active Orders
                 </Sidebar.Item>
@@ -36,7 +36,7 @@ export default function Dashboard() {
                 <Sidebar.Item href="/customers" icon={HiUser}>
                 Customers
                 </Sidebar.Item>
-                <Sidebar.Item href="#" icon={HiInbox}>
+                {/* <Sidebar.Item href="#" icon={HiInbox}>
                 Archive
                 </Sidebar.Item>
                 <Sidebar.Item href="#" icon={HiTable}>
@@ -47,7 +47,7 @@ export default function Dashboard() {
                 </Sidebar.Item>
                 <Sidebar.Item href="#" icon={BiBuoy}>
                 Help
-                </Sidebar.Item>
+                </Sidebar.Item> */}
             </Sidebar.ItemGroup>
         </Sidebar.Items>
     </Sidebar>

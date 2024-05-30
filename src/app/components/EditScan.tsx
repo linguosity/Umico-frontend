@@ -190,6 +190,7 @@ const EditScan: React.FC<EditScanProps> = ({ scan, onRefresh }) => {
                                 onClick={() => {
                                     const customerId = scan?.customer?.id ?? 0;
                                     const scanId = scan?.id ?? 0;
+                                    console.log(`Customer ${customerId} and frame ${scanId}`)
                                     if (scanId && customerId) {
                                         deleteScan(scanId, customerId, router);
                                     }

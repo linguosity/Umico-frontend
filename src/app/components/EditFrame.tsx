@@ -676,8 +676,10 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
                     <button
                             type="button"
                             onClick={() => {
+                                
                                 const customerId = frame?.customer?.id ?? 0;
                                 const frameId = frame?.id ?? 0;
+                                console.log(`Customer ${customerId} and frame ${frameId}`)
                                 if (frameId && customerId) {
                                     deleteFrame(frameId, customerId, router);
                                 }
