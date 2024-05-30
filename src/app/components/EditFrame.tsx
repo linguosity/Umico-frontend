@@ -33,7 +33,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
             //pass update function frame id and customer id to frameOperation
             console.log("editframe handlesubmit Submitting form with data:", form);
             console.log("editframe handlesubmit Frame customer id:", frame?.customer.id);
-            console.log("editframe handlesubmit Frame id", frame?.id);
+            console.log("Frame id", frame?.id);
             await updateFrame(form, frame?.customer.id ?? 0, frame?.id ?? 0);
             onRefresh();  // Refresh frame data after update
             router.push(`${process.env.NEXT_PUBLIC_API_URL}/customers/${frame?.customer.id}/frames/${frame?.id}`)
@@ -678,8 +678,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
                     <button
                             type="button"
                             onClick={() => {
-                                console.log("DELETE BUTTON: frame customer id", frame?.customer.id);
-                                console.log("DELETE BUTTON: frame id", frame?.id)
+                                console.log("DELETE BUTTON: frame customer id", frame?.customer);
                                 
                                 const customerId = frame?.customer?.id ?? 0;
                                 const frameId = frame?.id ?? 0;
