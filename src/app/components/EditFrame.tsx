@@ -674,10 +674,10 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
                     <button
                             type="button"
                             onClick={() => {
-                                console.log("frame customer id", frame?.customer.id;
+                                console.log("frame customer id", frame?.customer.id);
                                 console.log("frame id", frame?.id)
-                                )
-                                const customerId = frame?.customer ?? 0;
+                                
+                                const customerId = frame?.customer?.id ?? 0;
                                 const frameId = frame?.id ?? 0;
                                 console.log(`Customer ${customerId} and frame ${frameId}`)
                                 if (frameId && customerId) {
