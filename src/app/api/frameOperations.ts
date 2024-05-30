@@ -75,7 +75,7 @@ export const deleteFrame = async (frame_id: number, customerId: number, router: 
         });
 
         if (response.ok) {
-            console.log(URL_REDIRECT);
+          
             router.push(URL_REDIRECT);
         } else {
             console.error("Failed to delete the frame");

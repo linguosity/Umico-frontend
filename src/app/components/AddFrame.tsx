@@ -15,18 +15,10 @@ interface EditFrameProps {
 // Applied TypeScript with ChatGPT's help for the React component.
 const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
     // Initializing state with default values for required fields
-    const [form, setForm] = useState<FrameType>({
+    const [form, setForm] = useState<Partial<FrameType>>({
         id: 0, // Assuming a temporary default ID
         // Formatted date with ChatGPT's assistance for TypeScript compatibility.
         deadline: new Date().toISOString(), // Set to current date-time as default
-        customer: {
-            id: id ?? 0,
-            first_name: '',
-            last_name: '',
-            email: '',
-            phone_number: '',
-            shipping_addresses: []
-        }, // Initialize customer with necessary defaults
         // Formatted date with ChatGPT's assistance for TypeScript compatibility.
         created_at: new Date().toISOString(), // Set to current date-time
         image_height: 0,
@@ -50,7 +42,7 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
         float_in_visible: 0,
         float_in_total: 0,
         glazing: '',
-        thumbnail: 'default_thumbnail', // Provide a default value
+        thumbnail: 'https://dummyimage.com/50x50/000000/fff.png', // Provide a default value
         glazing_type: '',
         spacers: false,
         spacers_type: '',

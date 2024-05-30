@@ -4,6 +4,7 @@ import { Scan } from '../types/scan';
 import { useRouter } from 'next/navigation';
 
 export const createScan = async (form: Scan, customerId: number, router: any) => {
+    
     const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/add_scan/`;
     const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}`;
 
@@ -14,7 +15,6 @@ export const createScan = async (form: Scan, customerId: number, router: any) =>
     };
 
     try{
-        console.log('Sending data:', adjustedData);
         const response = await fetch(URL, {
             method: 'POST',
             headers: {
