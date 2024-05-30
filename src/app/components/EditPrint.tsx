@@ -220,6 +220,8 @@ const EditPrint: React.FC<EditPrintProps> = ({ print, onRefresh }) => {
                         <button
                                 type="button"
                                 onClick={() => {
+                                    console.log("print id", print?.id);
+                                    console.log("print customer id", print?.customer.id);
                                     const customerId = print?.customer?.id ?? 0;
                                     const printId = print?.id ?? 0;
                                     if (printId && customerId) {

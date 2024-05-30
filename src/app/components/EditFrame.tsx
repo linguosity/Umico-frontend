@@ -41,8 +41,6 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
         console.log("Frame prop updated in child component:", frame);
     }, [frame]);
     
-
-
     return(
         <div className="m-4 grid grid-flow-row auto-rows-max">
             <Card className="bg-amber-200">
@@ -676,8 +674,10 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
                     <button
                             type="button"
                             onClick={() => {
-                                
-                                const customerId = frame?.customer?.id ?? 0;
+                                console.log("frame customer id", frame?.customer.id;
+                                console.log("frame id", frame?.id)
+                                )
+                                const customerId = frame?.customer ?? 0;
                                 const frameId = frame?.id ?? 0;
                                 console.log(`Customer ${customerId} and frame ${frameId}`)
                                 if (frameId && customerId) {
