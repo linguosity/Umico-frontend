@@ -4,8 +4,8 @@ import { Scan } from '../types/scan';
 import { useRouter } from 'next/navigation';
 
 export const createScan = async (form: Scan, customerId: number, router: any) => {
-    const URL = `http://127.0.0.1:8000/customers/${customerId}/add_scan/`;
-    const URL_REDIRECT = `http://127.0.0.1:3000/customers/${customerId}`;
+    const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}/add_scan/`;
+    const URL_REDIRECT = `${process.env.NEXT_PUBLIC_API_URL}/customers/${customerId}`;
 
     // Adjusted with ChatGPT's help to send customerId instead of customer object.
     const adjustedData = {
