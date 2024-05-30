@@ -32,6 +32,10 @@ export default function Home() {
   const [customerList, setCustomerList] = useState<Customer[]>([]);
 
   const getCustomerData = async () => {
+
+    console.log(process.env.NEXT_PUBLIC_API_TOKEN);
+    console.log(process.env.NEXT_PUBLIC_API_URL);
+    
     try{
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/`, {
         method: 'GET',
@@ -42,6 +46,7 @@ export default function Home() {
       });
       // The return value is *not* serialized
       // You can return Date, Map, Set, etc.
+
      
       if (!res.ok) {
         // This will activate the closest `error.js` Error Boundary

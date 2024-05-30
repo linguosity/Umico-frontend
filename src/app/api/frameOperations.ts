@@ -26,8 +26,6 @@ export const createFrame = async (form: Frame, customerId: number, router: any) 
             body: JSON.stringify(adjustedData),
         });
 
-        console.log(process.env.NEXT_PUBLIC_API_TOKEN);
-        console.log(process.env.NEXT_PUBLIC_API_URL);
         
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
