@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Card, Label, FileInput, List, Checkbox, Radio, TextInput, Datepicker} from 'flowbite-react';
 import { Frame as FrameType } from '../types/frames';
 import { createFrame } from '../api/frameOperations';
+import { data } from 'autoprefixer';
 
 
 // Guidance by ChatGPT to understand the TypeScript interface.
@@ -84,6 +85,8 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
 
                 // Remove customer property as it will be sent separately
                 const { customer, ...dataWithoutCustomer } = adjustedData;
+                console.log("customer", customer);
+                console.log("data without customer", dataWithoutCustomer);
 
                 await createFrame(dataWithoutCustomer as FrameType, id ?? 0, router);
                 router.push('/'); // Reload the page

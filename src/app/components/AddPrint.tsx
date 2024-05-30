@@ -51,7 +51,8 @@ const AddPrint: React.FC<AddPrintProps> = ({ id }) => {
     
                 // Remove customer property as it will be sent separately
                 const { customer, ...dataWithoutCustomer } = adjustedData;
-
+                console.log("customer", customer);
+                console.log("data without customer", dataWithoutCustomer);
     
                 await createPrint(dataWithoutCustomer as PrintType, id ?? 0, router);
                 router.push('/'); // Reload the page
