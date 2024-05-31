@@ -36,7 +36,7 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
             console.log("Frame id", frame?.id);
             await updateFrame(form, frame?.customer.id ?? 0, frame?.id ?? 0);
             onRefresh();  // Refresh frame data after update
-            router.push(`${process.env.NEXT_PUBLIC_API_URL}/customers/${frame?.customer.id}/frames/${frame?.id}`)
+            router.push(`${process.env.NEXT_PUBLIC_API_URL_REDIRECT}/customers/${frame?.customer.id}/frames/${frame?.id}`)
         }
        
     }
