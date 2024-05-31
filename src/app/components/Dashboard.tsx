@@ -12,7 +12,7 @@ export default function Dashboard() {
       <img src="https://images.squarespace-cdn.com/content/v1/5a8749aff09ca4823e25c813/1582321464833-N5TD3V5GOWYXVCLKZK3A/Umi+Logo.png"/>
         <Sidebar.Items>
             <Sidebar.ItemGroup>
-                <Sidebar.Item href="/" icon={HiChartPie} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                <Sidebar.Item href="/" icon={HiChartPie} className="flex items-center p-2 text-[rgb(31,107,151)] rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                 Dashboard
                 </Sidebar.Item>
 
@@ -24,16 +24,16 @@ export default function Dashboard() {
                 {/* <Sidebar.Item href="#" icon={HiViewBoards}>
                 Active Orders
                 </Sidebar.Item> */}
-                <Sidebar.Item href="/frames" icon={HiInbox}>
+                <Sidebar.Item href="/frames" icon={HiInbox} className="text-[rgb(31,107,151)]">
                 Frames
                 </Sidebar.Item>
-                <Sidebar.Item href="/prints" icon={HiUser}>
+                <Sidebar.Item href="/prints" icon={HiUser} className="text-[rgb(31,107,151)]">
                 Prints
                 </Sidebar.Item>
-                <Sidebar.Item href="/scans" icon={HiShoppingBag}>
+                <Sidebar.Item href="/scans" icon={HiShoppingBag} className="text-[rgb(31,107,151)]">
                 Scans
                 </Sidebar.Item>
-                <Sidebar.Item href="/customers" icon={HiUser}>
+                <Sidebar.Item href="/customers" icon={HiUser} className="text-[rgb(31,107,151)]">
                 Customers
                 </Sidebar.Item>
                 {/* <Sidebar.Item href="#" icon={HiInbox}>
