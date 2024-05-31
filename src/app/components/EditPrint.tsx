@@ -28,7 +28,7 @@ const EditPrint: React.FC<EditPrintProps> = ({ print, onRefresh }) => {
         if(form){
             await updatePrint(form, print?.customer.id ?? 0, print?.id ?? 0);
             onRefresh();
-            router.push(`${process.env.NEXT_PUBLIC_API_URL}/customers/${print?.customer.id}/prints/${print?.id}`);
+            router.push(`${process.env.NEXT_PUBLIC_API_URL_REDIRECT}/customers/${print?.customer.id}/prints/${print?.id}`);
         }
     }
 

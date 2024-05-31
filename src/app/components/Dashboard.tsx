@@ -21,9 +21,9 @@ export default function Dashboard() {
                     <Sidebar.Item href="#">Print</Sidebar.Item>
                     <Sidebar.Item href="#">Scan</Sidebar.Item>
                 </Sidebar.Collapse> */}
-                <Sidebar.Item href="#" icon={HiViewBoards}>
+                {/* <Sidebar.Item href="#" icon={HiViewBoards}>
                 Active Orders
-                </Sidebar.Item>
+                </Sidebar.Item> */}
                 <Sidebar.Item href="/frames" icon={HiInbox}>
                 Frames
                 </Sidebar.Item>
