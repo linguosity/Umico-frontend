@@ -49,23 +49,28 @@ const AddCustomer: React.FC<EditCustomerProps> = ({ customer }) => {
         const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
 
         if (['street', 'city', 'state', 'zip_code', 'country'].includes(name)) {
-            setForm({
-                ...form,
-                shipping_addresses: [{ ...form.shipping_addresses[0], [name]: newValue }]
-            });
+            setForm(prevForm => ({
+                ...prevForm,
+                shipping_addresses: [{ ...prevForm.shipping_addresses[0], [name]: newValue }]
+            }));
         } else {
-            setForm({
-                ...form,
+            setForm(prevForm => ({
+                ...prevForm,
                 [name]: newValue
-            });
+            }));
         }
+        console.log("Updated form state:", form);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (form) {
             try {
-                await createCustomer(form, router);
+                const customerData = {
+                    ...form
+                };
+                console.log('Submitting form data:', JSON.stringify(customerData, null, 2));
+                await createCustomer(customerData, router);
             } catch (error) {
                 console.error('Failed to create the customer:', error);
             }

@@ -133,10 +133,10 @@ export default function Home() {
                   <Table.Cell>{customer.first_name}</Table.Cell>
                   <Table.Cell>{customer.email}</Table.Cell>
                   <Table.Cell>{customer.phone_number}</Table.Cell>
-                  <Table.Cell>{customer.shipping_addresses[0].street}</Table.Cell>
-                  <Table.Cell>{customer.shipping_addresses[0].city}</Table.Cell>
-                  <Table.Cell>{customer.shipping_addresses[0].zip_code}</Table.Cell>
-                  <Table.Cell>{customer.shipping_addresses[0].country}</Table.Cell>
+                  <Table.Cell>{customer.shipping_addresses[0]?.street || 0}</Table.Cell>
+                  <Table.Cell>{customer.shipping_addresses[0]?.city || 0}</Table.Cell>
+                  <Table.Cell>{customer.shipping_addresses[0]?.zip_code || 0}</Table.Cell>
+                  <Table.Cell>{customer.shipping_addresses[0]?.country || 0}</Table.Cell>
                   
                   <Table.Cell>
                     <Link href={`/customers/${customer.id}?editMode=true`}>
