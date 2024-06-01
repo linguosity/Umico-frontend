@@ -48,7 +48,7 @@ const AddCustomer: React.FC<EditCustomerProps> = ({ customer }) => {
         const { name, value, type } = e.target;
         const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
 
-        if (name === 'street' || name === 'city' || name === 'state' || name === 'zip_code' || name === 'country') {
+        if (['street', 'city', 'state', 'zip_code', 'country'].includes(name)) {
             setForm({
                 ...form,
                 shipping_addresses: [{ ...form.shipping_addresses[0], [name]: newValue }]
@@ -120,21 +120,21 @@ const AddCustomer: React.FC<EditCustomerProps> = ({ customer }) => {
                             <div className="mb-2 block">
                                 <Label htmlFor="street" value="Street" />
                             </div>
-                            <TextInput name="street" id="street" placeholder="" required value={form.shipping_addresses[0]?.street} onChange={handleChange} />
+                            <TextInput name="street" id="street" placeholder="" required value={form.shipping_addresses[0]?.street || ''} onChange={handleChange} />
                         </div>
                         {/* City */}
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="city" value="City" />
                             </div>
-                            <TextInput name="city" id="city" placeholder="" required value={form.shipping_addresses[0]?.city} onChange={handleChange} />
+                            <TextInput name="city" id="city" placeholder="" required value={form.shipping_addresses[0]?.city || ''} onChange={handleChange} />
                         </div>
                         {/* State */}
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="state" value="Select your state" />
                             </div>
-                            <Select id="state" name="state" required value={form.shipping_addresses[0]?.state} onChange={handleChange}>
+                            <Select id="state" name="state" required value={form.shipping_addresses[0]?.state || ''} onChange={handleChange}>
                                 <option value="" disabled>Select a state</option>
                                 {usStates.map(state => (
                                     <option key={state} value={state}>{state}</option>
@@ -146,14 +146,14 @@ const AddCustomer: React.FC<EditCustomerProps> = ({ customer }) => {
                             <div className="mb-2 block">
                                 <Label htmlFor="zip_code" value="Zip Code" />
                             </div>
-                            <TextInput id="zip_code" name="zip_code" placeholder="" required value={form.shipping_addresses[0]?.zip_code} onChange={handleChange} />
+                            <TextInput id="zip_code" name="zip_code" placeholder="" required value={form.shipping_addresses[0]?.zip_code || ''} onChange={handleChange} />
                         </div>
                         {/* Country */}
                         <div>
                             <div className="mb-2 block">
                                 <Label htmlFor="country" value="Select your country" />
                             </div>
-                            <Select id="country" name="country" required value={form.shipping_addresses[0]?.country} onChange={handleChange}>
+                            <Select id="country" name="country" required value={form.shipping_addresses[0]?.country || ''} onChange={handleChange}>
                                 <option value="" disabled>Select a country</option>
                                 <option>United States</option>
                                 <option>Canada</option>
