@@ -23,7 +23,7 @@ export default function RootLayout({
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
       </Head>
       <body className={inter.className}>
-        <aside>
+        <aside id="logo-sidebar">
           <Dashboard />
         </aside>
         <main>

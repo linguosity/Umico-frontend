@@ -71,6 +71,7 @@ const AddCustomer: React.FC<EditCustomerProps> = ({ customer }) => {
                 };
                 console.log('Submitting form data:', JSON.stringify(customerData, null, 2));
                 await createCustomer(customerData, router);
+                router.refresh();
             } catch (error) {
                 console.error('Failed to create the customer:', error);
             }
