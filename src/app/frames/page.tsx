@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {Card, Table, Timeline, Button } from 'flowbite-react';
+import {Card, Table, Timeline, Button, TableHeadCell, Checkbox, Label} from 'flowbite-react';
 import { Frame } from '../types/frames'
 import { HiCalendar, HiArrowNarrowRight } from 'react-icons/hi';
 
@@ -28,6 +28,7 @@ export default function Page() {
       
       const frameData: Frame[] = await res.json();
       setFrameList(frameData);
+      console.log("api", frameData);
 
     }catch(err){
       console.log('error fetching customer data', err)
@@ -59,12 +60,14 @@ export default function Page() {
         </Timeline>
       </Card>
       </div> */}
-      <div className="p-4 w-full"></div>
-        <Card className="flex flex-col w-full p-4 bg-white border border-gray-200 rounded-lg shadow">
+      <div className="p-4 w-full">
           <div className="overflow-x-auto">
             <Table hoverable>
               <Table.Head>
+                <Table.HeadCell>Client</Table.HeadCell>
                 <Table.HeadCell>Deadline</Table.HeadCell>
+                <Table.HeadCell>Job Status </Table.HeadCell>
+                <Table.HeadCell> Payment Status </Table.HeadCell>
                 <Table.HeadCell>Image Dimensions</Table.HeadCell>
                 <Table.HeadCell>Frame Dimensions</Table.HeadCell>
                 <Table.HeadCell>Moulding</Table.HeadCell>
@@ -89,18 +92,48 @@ export default function Page() {
                 <Table.HeadCell>Straight to Frame</Table.HeadCell>
                 <Table.HeadCell>Art Location</Table.HeadCell>
                 <Table.HeadCell>Art Condition</Table.HeadCell>
-                <Table.HeadCell>Is Completed</Table.HeadCell>
-                <Table.HeadCell>Client Notified</Table.HeadCell>
                 <Table.HeadCell>Notification Date</Table.HeadCell>
                 <Table.HeadCell>Final Location</Table.HeadCell>
                 <Table.HeadCell>Payment Type</Table.HeadCell>
-                <Table.HeadCell>Deposit</Table.HeadCell>
-                <Table.HeadCell>Balance Paid</Table.HeadCell>
               </Table.Head>
               <Table.Body>
                 {frameList.map((frame, idx) => (
                   <Table.Row key={idx}> 
-                    <Table.Cell>{new Date(frame.deadline).toLocaleString()}</Table.Cell>
+                    <Table.Cell>{frame.customer.last_name}, {frame.customer.first_name}</Table.Cell>
+                    <Table.Cell>{new Date(frame.deadline).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</Table.Cell>
+
+                    <Table.Cell>
+                        <div className="flex max-w-md flex-col gap-4" id="checkbox">
+                            <div className="flex items-center gap-2">
+                                <Checkbox id="mat_window" checked={frame.is_completed} disabled/>
+                                <Label htmlFor="accept" className="flex">
+                                    completed
+                                </Label>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Checkbox id="mat_double" checked={frame.client_notified} disabled/>
+                                <Label htmlFor="promotion">
+                                    client notified
+                                </Label>
+                            </div>
+                        </div>
+                    </Table.Cell>
+                    <Table.Cell>
+                        <div className="flex max-w-md flex-col gap-4" id="checkbox">
+                            <div className="flex items-center gap-2">
+                                <Checkbox id="mat_window" checked={frame.deposit} disabled/>
+                                <Label htmlFor="accept" className="flex">
+                                    deposit
+                                </Label>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Checkbox id="mat_double" checked={frame.balance_paid} disabled/>
+                                <Label htmlFor="promotion">
+                                    balance paid
+                                </Label>
+                            </div>
+                        </div>
+                    </Table.Cell>
                     <Table.Cell>{frame.image_width} x {frame.image_height}</Table.Cell>
                     <Table.Cell>{frame.frame_width} x {frame.frame_height}</Table.Cell>
                     <Table.Cell>{frame.moulding}</Table.Cell>
@@ -127,7 +160,9 @@ export default function Page() {
                     <Table.Cell>{frame.art_condition}</Table.Cell>
                     <Table.Cell>{frame.is_completed ? 'Yes' : 'No'}</Table.Cell>
                     <Table.Cell>{frame.client_notified ? 'Yes' : 'No'}</Table.Cell>
-                    <Table.Cell>{frame.notification_date ? new Date(frame.notification_date).toLocaleString() : 'N/A'}</Table.Cell>
+                    <Table.Cell> {frame.notification_date ? 
+                        new Date(frame.notification_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'N/A'}          
+                    </Table.Cell>
                     <Table.Cell>{frame.final_location}</Table.Cell>
                     <Table.Cell>{frame.payment_type}</Table.Cell>
                     <Table.Cell>{frame.deposit ? 'Yes' : 'No'}</Table.Cell>
@@ -137,7 +172,7 @@ export default function Page() {
               </Table.Body>
             </Table>
           </div>
-        </Card>
+        </div>
   </>
   );
 }

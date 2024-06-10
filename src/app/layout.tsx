@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Head from 'next/head'
 
-import Dashboard from "./components/Dashboard";
+import Navbar from "./components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,9 +22,9 @@ export default function RootLayout({
        <Head>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
       </Head>
-      <body className={`${inter.className} flex`}>
-        <Dashboard/>
-        <main className="flex-1 p-4 z-0">
+      <body className={`${inter.className} flex flex-col`}>
+        <Navbar/>
+        <main className="flex-1 p-4 z-1">
           {children}
         </main>
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>

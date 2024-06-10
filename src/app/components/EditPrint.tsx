@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Card, Label, FileInput, List, Checkbox, Radio, TextInput, Button, Datepicker} from 'flowbite-react';
 import { Print as PrintType } from '../types/print';
 import { updatePrint, deletePrint } from '../api/printOperations';
+import CustomerCard from './CustomerCard';
 
 interface EditPrintProps {
     print: PrintType | null;
@@ -38,39 +39,8 @@ const EditPrint: React.FC<EditPrintProps> = ({ print, onRefresh }) => {
 
     return (
         <div className="m-4 grid grid-flow-row auto-rows-max">
-            <Card className="bg-amber-200">
-                <List horizontal>
-                    <List.Item>
-                        <svg className="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-                        </svg>
-                    </List.Item>
-                    <List.Item>
-                        <h5>Print ID:</h5>
-                    </List.Item>
-                    <List.Item>
-                        <h5>{print?.id}</h5>
-                    </List.Item>
-                    <List.Item>
-                        |
-                    </List.Item>
-                    <List.Item>
-                        <h5 className="text-l font-semibold tracking-tight text-gray-900 dark:text-white">
-                            {print?.customer.last_name}, {print?.customer.first_name}
-                        </h5>
-                    </List.Item>
-                    <List.Item>
-                        <p className="font-regular text-gray-700 dark:text-gray-400">
-                            {print?.customer.phone_number}
-                        </p>
-                    </List.Item>
-                    <List.Item>
-                        <p className="font-regular text-gray-700 dark:text-gray-400">
-                            {print?.customer.email}
-                        </p>
-                    </List.Item>
-                </List>
-            </Card>
+            
+            {print?.customer && <CustomerCard customer={print.customer} />}
 
             <form onSubmit={handleSubmit}>
                 <div className="w-full">

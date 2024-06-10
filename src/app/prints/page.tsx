@@ -40,10 +40,10 @@ export default function Page() {
   
   return (
     <div className="p-4 w-full">
-      <Card className="flex flex-col w-full p-4 bg-white border border-gray-200 rounded-lg shadow">
-        <div className="overflow-x-auto">
+      <div className="overflow-x-auto">
           <Table hoverable>
           <Table.Head>
+              <Table.HeadCell> Client </Table.HeadCell>
               <Table.HeadCell>Deadline</Table.HeadCell>
               <Table.HeadCell>Image Height</Table.HeadCell>
               <Table.HeadCell>Image Width</Table.HeadCell>
@@ -57,7 +57,8 @@ export default function Page() {
             <Table.Body>
               {printList.map((print, idx) => (
                 <Table.Row key={idx}>
-                  <Table.Cell>{new Date(print.deadline).toLocaleString()}</Table.Cell>
+                  <Table.Cell key={idx}> {print.customer.last_name}, {print.customer.first_name} </Table.Cell>
+                  <Table.Cell>{new Date(print.deadline).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</Table.Cell>
                   <Table.Cell>{print.image_height}</Table.Cell>
                   <Table.Cell>{print.image_width}</Table.Cell>
                   <Table.Cell>{print.paper_height}</Table.Cell>
@@ -71,7 +72,6 @@ export default function Page() {
             </Table.Body>
           </Table>
         </div>
-      </Card>
     </div>
   );
 }

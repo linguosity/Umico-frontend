@@ -117,7 +117,6 @@ export default function Home() {
     </List>
 </Card>
       <div className="p-4">
-      <Card className="flex flex-col p-4 bg-white rounded-lg shadow-md">
         <div className="overflow-x-auto">
           <Table hoverable>
             <Table.Head>
@@ -167,13 +166,13 @@ export default function Home() {
                   <Table.Cell>
                       
                     {customer.prints && customer.prints.length > 0 && (
-                      <Badge className="bg-none text-gray-800 text-xxs font-light me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-300">print</Badge>
+                      <Badge color="indigo" className="text-xxs font-light me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-300"> {customer.prints.length} prints</Badge>
                     )}
                     {customer.scans && customer.scans.length > 0 && (
-                      <Badge className="bg-none text-gray-800 text-xxs font-light me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-300">scan</Badge>
+                      <Badge color="purple" className="text-xxs font-light me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-300">{customer.scans.length} scans</Badge>
                     )}
                     {customer.frames && customer.frames.length > 0 && (
-                      <Badge className="bg-none text-gray-800 text-xxs font-light me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-300">frame</Badge>
+                      <Badge color="pink" className="text-xxs font-light me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-300">{customer.frames.length} frames</Badge>
                     )}
                   </Table.Cell>
                 </Table.Row>
@@ -183,7 +182,7 @@ export default function Home() {
           </Table>
         </div>
         
-      </Card>
+    
       <div>
             <Accordion collapseAll>
                 <Accordion.Panel>
