@@ -49,3 +49,33 @@ body {
   background-color: white !important;
   opacity: 1 !important;
 }
+
+/* global.css */
+
+.modal-backdrop {
+  animation: blurIn 0.5s ease-in-out forwards;
+}
+
+.modal-content {
+  animation: modalAppear 1s ease-in-out forwards;
+}
+
+@keyframes blurIn {
+  from {
+      backdrop-filter: blur(0);
+  }
+  to {
+      backdrop-filter: blur(10px);
+  }
+}
+
+@keyframes modalAppear {
+  from {
+      opacity: 0;
+      transform: translateY(850px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
