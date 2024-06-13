@@ -53,11 +53,11 @@ body {
 /* global.css */
 
 .modal-backdrop {
-  animation: blurIn 0.5s ease-in-out forwards;
+  animation: blurIn 0.3s ease-in-out forwards;
 }
 
 .modal-content {
-  animation: modalAppear 1s ease-in-out forwards;
+  animation: modalAppear 0.3 ease-in-out forwards;
 }
 
 @keyframes blurIn {

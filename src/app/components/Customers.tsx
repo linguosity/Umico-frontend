@@ -1,6 +1,6 @@
 "use client";
 
-import { Table, Card, List, Accordion, Badge } from "flowbite-react";
+import { Table, Card, List, Accordion, Badge, Button, Modal} from "flowbite-react";
 import AddCustomer from '../components/AddCustomer';
 import Loading from '../components/Loading';
 import {Suspense, useEffect, useState,} from 'react';
@@ -10,6 +10,7 @@ import { Print } from '../types/print';
 import { Scan } from '../types/scan';
 import { Frame } from '../types/frames';
 import Image from 'next/image';
+import EditCustomer from "./EditCustomer";
 
 export default function Home() {
 
@@ -40,7 +41,9 @@ export default function Home() {
 
   //set customerList state to update when data fetch is complete
   const [customerList, setCustomerList] = useState<Customer[]>([]);
-  
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+
   const getCustomerData = async () => {
 
     try{
@@ -75,47 +78,20 @@ export default function Home() {
     getCustomerData();
   }, []);
 
+  const openEditModal = (customer: Customer) => {
+    setSelectedCustomer(customer);
+    setOpenModal(true);
+  };
+
+  const closeEditModal = () => {
+    setSelectedCustomer(null);
+    setOpenModal(false);
+  };
+
 
   return (
     <div > 
-      <Card className="bg-amber-200">
-   
-    <List horizontal>
-        <List.Item>
-            <svg className="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-            </svg>
-        </List.Item>
-        <List.Item>
-            <h5>Customer</h5>
-        </List.Item>
-        <List.Item>
-            <h5>{customerList.length}</h5>
-        </List.Item>
-        <List.Item>
-            |
-        </List.Item>
-        <List.Item>
-            <h5 className="text-l font-semibold tracking-tight text-gray-900 dark:text-white">
-                
-            </h5>
-        </List.Item>
-        <List.Item>
-            <p className="font-regular text-gray-700 dark:text-gray-400">
-                
-            </p>
-        </List.Item>
-        <List.Item>
-            <p className="font-regular text-gray-700 dark:text-gray-400">
-                
-            </p>
-        </List.Item>
-        <List.Item>
-             
-        </List.Item>
-       
-    </List>
-</Card>
+     
       <div className="p-4">
         <div className="overflow-x-auto">
           <Table hoverable>
@@ -135,15 +111,16 @@ export default function Home() {
                 
                 <Table.Row key={idx}>
                   <Table.Cell>
-                    <Link href={`/customers/${customer.id}`}>
+                    {/* <Link href={`/customers/${customer.id}`}>
                       <span className="text-blue-400">
                         <svg className="w-6 h-6 hover:text-gray-800 text-gray-300 dark:text-white hover:text-blue-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                           <path stroke="currentColor" strokeWidth="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
                           <path stroke="currentColor" strokeWidth="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                         </svg>
                       </span>
-                    </Link>
-                    <Link href={`/customers/${customer.id}?editMode=true`}>
+                    </Link> */}
+                    
+                    <Link href={'#'} onClick={() => openEditModal(customer)}>
                         <span className="text-blue-400">
                           <svg className="w-6 h-6 hover:text-gray-800 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
@@ -175,14 +152,23 @@ export default function Home() {
                       <Badge color="pink" className="text-xxs font-light me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-300">{customer.frames.length} frames</Badge>
                     )}
                   </Table.Cell>
+                  <Modal 
+                    dismissible
+                    show={openModal} 
+                    size={'lg'} 
+                    onClose={closeEditModal}
+                    className={`bg-opacity-20 backdrop-blur-sm`}
+                  >
+                      {selectedCustomer && <EditCustomer customerData={selectedCustomer} />}
+                  </Modal>
                 </Table.Row>
+                
                  
               ))}
             </Table.Body>
           </Table>
         </div>
-        
-    
+    {/* 
       <div>
             <Accordion collapseAll>
                 <Accordion.Panel>
@@ -194,7 +180,7 @@ export default function Home() {
                     </Accordion.Content>
                 </Accordion.Panel>
             </Accordion>
-        </div>
+        </div> */}
     </div>
       </div>      
   );

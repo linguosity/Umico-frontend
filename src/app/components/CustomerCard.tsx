@@ -45,14 +45,14 @@ const CustomerCard: NextPage<CustomerCardProps> = ({ customer }) => {
       </div>
       <div className="grid grid-cols-3">
         <div className="flex items-center justify-left mb-4 mx-4">
-          <ListGroup className="w-24">
-            <ListGroup.Item icon={HiPlusCircle} onClick={() => toggleModal('frame')}><span className="text-gray-400">Add Frame</span></ListGroup.Item>
-            <ListGroup.Item icon={HiPlusCircle} onClick={() => toggleModal('print')}><span className="text-gray-400">Add Print</span></ListGroup.Item>
-            <ListGroup.Item icon={HiPlusCircle} onClick={() => toggleModal('scan')}><span className="text-gray-400">Add Scan</span></ListGroup.Item>
+          <ListGroup className="w-32">
+            <ListGroup.Item icon={HiPlusCircle} onClick={() => toggleModal('frame')}><span className="text-gray-400">Frame</span></ListGroup.Item>
+            <ListGroup.Item icon={HiPlusCircle} onClick={() => toggleModal('print')}><span className="text-gray-400">Print</span></ListGroup.Item>
+            <ListGroup.Item icon={HiPlusCircle} onClick={() => toggleModal('scan')}><span className="text-gray-400">Scan</span></ListGroup.Item>
           </ListGroup>
         </div>
-        <div className="flex items-center justify-left mb-4">
-          <ListGroup className="w-16">
+        <div className="flex items-center justify-left mb-4 mx-6">
+          <ListGroup className="w-24">
             <ListGroup.Item icon={HiUserRemove}></ListGroup.Item>
             <ListGroup.Item>
               <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -90,7 +90,6 @@ const CustomerCard: NextPage<CustomerCardProps> = ({ customer }) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={() => toggleModal(null)}>Close</Button>
         </Modal.Footer>
       </Modal>
     </div>

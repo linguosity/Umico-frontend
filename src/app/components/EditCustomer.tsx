@@ -22,30 +22,29 @@ const EditCustomer: React.FC<EditCustomerProps> = ({ customerData }) => {
                         <div className="mb-2 block">
                         <Label htmlFor="small" value="First name" />
                         </div>
-                        <TextInput id="small" type="text" sizing="sm" value={customerData.first_name}/>
+                        <TextInput id="small" type="text" sizing="sm" defaultValue={customerData.first_name}/>
                     </div>
                     <div>
                         <div className="mb-2 block">
                         <Label htmlFor="small" value="First name" />
                         </div>
-                        <TextInput id="small" type="text" sizing="sm" value={customerData.last_name}/>
+                        <TextInput id="small" type="text" sizing="sm" defaultValue={customerData.last_name}/>
                     </div>
                     <div>
                         <div className="mb-2 block">
                         <Label htmlFor="email2" value="Email" />
                         </div>
-                        <TextInput id="email2" type="email" placeholder={customerData.email} required shadow />
+                        <TextInput id="email2" type="email" defaultValue={customerData.email} required shadow />
                     </div>
                     <div>
                         <div className="mb-2 block">
                         <Label htmlFor="small" value="Phone number" />
                         </div>
-                        <TextInput id="small" type="text" sizing="sm" value={customerData.phone_number}/>
+                        <TextInput id="small" type="text" sizing="sm" defaultValue={customerData.phone_number}/>
                     </div>
                 </div>
             </div>
         </Card>
-        
     );
 };
 
