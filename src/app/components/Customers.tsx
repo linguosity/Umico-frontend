@@ -157,7 +157,7 @@ export default function Home() {
                     show={openModal} 
                     size={'lg'} 
                     onClose={closeEditModal}
-                    className={`bg-opacity-20 backdrop-blur-sm`}
+                    className={`bg-transparent backdrop-blur-sm`}
                   >
                       {selectedCustomer && <EditCustomer customerData={selectedCustomer} />}
                   </Modal>
