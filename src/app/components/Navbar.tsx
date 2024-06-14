@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Dashboard from "../components/Dashboard";
 import Image from 'next/image';
 
@@ -142,7 +143,11 @@ const Navbar: React.FC = () => {
           <ul>
             {results.map((result) => (
               <li key={result.id} className="p-4 border-b hover:bg-gray-100">
-                {result.first_name} {result.last_name}
+                <Link href={`/customers/${result.id}`}>
+                  <a>
+                    {result.first_name} {result.last_name}
+                  </a>
+                </Link>
               </li>
             ))}
           </ul>
