@@ -144,9 +144,7 @@ const Navbar: React.FC = () => {
             {results.map((result) => (
               <li key={result.id} className="p-4 border-b hover:bg-gray-100">
                 <Link href={`/customers/${result.id}`}>
-                  <a>
                     {result.first_name} {result.last_name}
-                  </a>
                 </Link>
               </li>
             ))}

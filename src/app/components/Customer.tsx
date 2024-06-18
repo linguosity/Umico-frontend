@@ -222,7 +222,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans
                                     <Table.Cell>{scan.notification_date ? new Date(scan.notification_date).toLocaleString() : 'N/A'}</Table.Cell>
                                     <Table.Cell>{scan.final_location}</Table.Cell>
                                     <Table.Cell>{scan.payment_type}</Table.Cell>
-                                    <Table.Cell>{scan.deposit_made ? 'Yes' : 'No'}</Table.Cell>
+                                    <Table.Cell>{scan.deposit ? 'Yes' : 'No'}</Table.Cell>
                                     <Table.Cell>{scan.balance_paid ? 'Yes' : 'No'}</Table.Cell>
                                     <Table.Cell>
                                         <Link href={`${customerData.id}/scans/${scan.id}?editMode=true`} className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">

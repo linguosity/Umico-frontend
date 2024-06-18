@@ -16,7 +16,7 @@ export interface Scan {
   notification_date: string | null;
   final_location: string;
   payment_type: string;
-  deposit_made: boolean;
+  deposit: boolean;
   balance_paid: boolean;
   job_notes: string;
 }

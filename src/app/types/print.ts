@@ -14,4 +14,9 @@ export interface Print {
   print_style: string;
   quantity: number;
   job_notes: string;
+  is_completed: boolean;
+  balance_paid: boolean;
+  deposit: boolean;
+  notification_date: string;
+  client_notified: boolean;
 }

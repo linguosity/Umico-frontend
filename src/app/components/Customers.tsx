@@ -1,52 +1,53 @@
 "use client";
 
-import { Table, Card, List, Accordion, Badge, Button, Modal} from "flowbite-react";
-import AddCustomer from '../components/AddCustomer';
-import Loading from '../components/Loading';
-import {Suspense, useEffect, useState,} from 'react';
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import { Print } from '../types/print';
-import { Scan } from '../types/scan';
-import { Frame } from '../types/frames';
-import Image from 'next/image';
+import { Table, Badge, Modal, Checkbox, Label } from "flowbite-react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Print } from "../types/print";
+import { Scan } from "../types/scan";
+import { Frame } from "../types/frames";
 import EditCustomer from "./EditCustomer";
 
 export default function Home() {
-
-  //
-  // Address Interface: Corresponds to the Address model in Django
   interface Address {
-  id: number; // This represents the primary key
-  customer: number; // ForeignKey relation to Customer
-  street: string;
-  city: string;
-  state: string;
-  zip_code: string;
-  country: string;
+    id: number; // This represents the primary key
+    customer: number; // ForeignKey relation to Customer
+    street: string;
+    city: string;
+    state: string;
+    zip_code: string;
+    country: string;
   }
 
-// Employee Interface: Corresponds to the Employee model in Django
   interface Customer {
-  id: number; // This represents the primary key
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number: string;
-  shipping_addresses: Address[];
-  prints?: Print[];
-  scans?: Scan[];
-  frames?: Frame[];
+    id: number; // This represents the primary key
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone_number: string;
+    shipping_addresses: Address[];
+    prints?: Print[];
+    scans?: Scan[];
+    frames?: Frame[];
   }
 
-  //set customerList state to update when data fetch is complete
+  interface Job {
+    type: 'print' | 'scan' | 'frame';
+    id: number;
+    created_at: string;
+    is_completed: boolean;
+    client_notified: boolean;
+    notification_date: string | null;
+    deposit: boolean;
+    balance_paid: boolean;
+  }
+
   const [customerList, setCustomerList] = useState<Customer[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
   const getCustomerData = async () => {
-
-    try{
+    try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers/`, {
         method: 'GET',
         credentials: 'include',
@@ -54,27 +55,21 @@ export default function Home() {
           "Authorization": `Token ${process.env.NEXT_PUBLIC_API_TOKEN}`
         }
       });
-      // The return value is *not* serialized
-      // You can return Date, Map, Set, etc.
 
-     
       if (!res.ok) {
-        // This will activate the closest `error.js` Error Boundary
         throw new Error(`${res.statusText}`);
       }
-      
+
       const customerData: Customer[] = await res.json();
       setCustomerList(customerData);
       console.log(customerData);
-      
 
-    }catch(err){
+    } catch (err) {
       console.log('error fetching customer data', err)
     }
-   
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     getCustomerData();
   }, []);
 
@@ -88,100 +83,122 @@ export default function Home() {
     setOpenModal(false);
   };
 
+  
+  const getCustomerJobs = (customer: Customer): Job[] => {
+    const jobs: Job[] = [];
+
+    if (customer.prints) {
+      customer.prints.forEach((print) => {
+        jobs.push({ 
+          type: 'print',
+          id: print.id,
+          created_at: print.created_at,
+          is_completed: print.is_completed,
+          client_notified: print.client_notified,
+          notification_date: print.notification_date,
+          deposit: print.deposit,
+          balance_paid: print.balance_paid,
+        });
+      });
+    }
+
+    if (customer.scans) {
+      customer.scans.forEach((scan) => {
+        jobs.push({ 
+          type: 'scan',
+          id: scan.id,
+          created_at: scan.created_at,
+          is_completed: scan.is_completed,
+          client_notified: scan.client_notified,
+          notification_date: scan.notification_date,
+          deposit: scan.deposit,  // Added missing property
+          balance_paid: scan.balance_paid,
+        });
+      });
+    }
+
+    if (customer.frames) {
+      customer.frames.forEach((frame) => {
+        jobs.push({ 
+          type: 'frame',
+          id: frame.id,
+          created_at: frame.created_at,
+          is_completed: frame.is_completed,
+          client_notified: frame.client_notified,
+          notification_date: frame.notification_date,
+          deposit: frame.deposit,
+          balance_paid: frame.balance_paid,
+        });
+      });
+    }
+
+    return jobs;
+  };
 
   return (
-    <div > 
-     
+    <div>
       <div className="p-4">
         <div className="overflow-x-auto">
           <Table hoverable>
             <Table.Head>
               <Table.HeadCell></Table.HeadCell>
-              {/* 
-              <Table.HeadCell>Id</Table.HeadCell> 
-              */}
-              <Table.HeadCell> Name </Table.HeadCell>
-              <Table.HeadCell>Email</Table.HeadCell>
-              <Table.HeadCell>Phone</Table.HeadCell>
-              <Table.HeadCell>Address</Table.HeadCell>
-              <Table.HeadCell>Order</Table.HeadCell>
+              <Table.HeadCell> Customer </Table.HeadCell>
+              <Table.HeadCell>Order Date</Table.HeadCell>
+              <Table.HeadCell>Order </Table.HeadCell>
+              <Table.HeadCell>Status</Table.HeadCell>
             </Table.Head>
-            <Table.Body>
-              {customerList.map((customer, idx) => (
-                
-                <Table.Row key={idx}>
-                  <Table.Cell>
-                    {/* <Link href={`/customers/${customer.id}`}>
-                      <span className="text-blue-400">
-                        <svg className="w-6 h-6 hover:text-gray-800 text-gray-300 dark:text-white hover:text-blue-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                          <path stroke="currentColor" strokeWidth="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
-                          <path stroke="currentColor" strokeWidth="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                        </svg>
-                      </span>
-                    </Link> */}
-                    
-                    <Link href={'#'} onClick={() => openEditModal(customer)}>
+            <Table.Body className="divide-y">
+              {customerList.map((customer, idx) => {
+                const jobs = getCustomerJobs(customer);
+                return jobs.map((job, jobIdx) => (
+                  <Table.Row key={`${idx}-${jobIdx}`}>
+                    <Table.Cell>
+                      <Link href={'#'} onClick={() => openEditModal(customer)}>
                         <span className="text-blue-400">
                           <svg className="w-6 h-6 hover:text-gray-800 text-gray-300 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
                           </svg>
                         </span>
-                    </Link>
-                  </Table.Cell>
-                  {/* 
-                  <Table.Cell>
-                    {customer.id}
-                  </Table.Cell> 
-                  */}
-                  <Table.Cell>{customer.last_name}, {customer.first_name}</Table.Cell>
-                  <Table.Cell>{customer.email}</Table.Cell>
-                  <Table.Cell>{customer.phone_number}</Table.Cell>
-                  <Table.Cell>
-                    <p>{customer.shipping_addresses[0]?.street || 0}</p>
-                    <p>{customer.shipping_addresses[0]?.city || 0}, {customer.shipping_addresses[0]?.zip_code || 0} {/* , {customer.shipping_addresses[0]?.country || 0} */} </p>
-                  </Table.Cell>
-                  <Table.Cell>
+                      </Link>
+                    </Table.Cell>
+                    <Table.Cell>{customer.last_name}, {customer.first_name}</Table.Cell>
+                    <Table.Cell>{new Date(job.created_at).toLocaleDateString()}</Table.Cell>
+                    <Table.Cell>{job.type}</Table.Cell>
+                    <Table.Cell>
+                      <div className="flex flex-wrap gap-2">
+                        <div className="flex items-center gap-2">
+                          <Checkbox id={`completed-${idx}-${jobIdx}`} checked={job.is_completed} readOnly disabled />
+                          <Label htmlFor={`completed-${idx}-${jobIdx}`} className="text-xs">Completed</Label>
                       
-                    {customer.prints && customer.prints.length > 0 && (
-                      <Badge color="indigo" className="text-xxs font-light me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-300"> {customer.prints.length} prints</Badge>
-                    )}
-                    {customer.scans && customer.scans.length > 0 && (
-                      <Badge color="purple" className="text-xxs font-light me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-300">{customer.scans.length} scans</Badge>
-                    )}
-                    {customer.frames && customer.frames.length > 0 && (
-                      <Badge color="pink" className="text-xxs font-light me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-300">{customer.frames.length} frames</Badge>
-                    )}
-                  </Table.Cell>
-                  <Modal 
-                    dismissible
-                    show={openModal} 
-                    size={'lg'} 
-                    onClose={closeEditModal}
-                    className={`bg-transparent backdrop-blur-sm`}
-                  >
-                      {selectedCustomer && <EditCustomer customerData={selectedCustomer} />}
-                  </Modal>
-                </Table.Row>
-                
-                 
-              ))}
+                          <Checkbox id={`notified-${idx}-${jobIdx}`} checked={job.client_notified} readOnly disabled/>
+                          <Label htmlFor={`notified-${idx}-${jobIdx}`} className="text-xs">Client Notified</Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox id={`deposit-${idx}-${jobIdx}`} checked={job.deposit} readOnly disabled/>
+                          <Label htmlFor={`deposit-${idx}-${jobIdx}`} className="text-xs">Deposit</Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox id={`balance-${idx}-${jobIdx}`} checked={job.balance_paid} readOnly disabled/>
+                          <Label htmlFor={`balance-${idx}-${jobIdx}`} className="text-xs">Balance Paid</Label>
+                        </div>
+                      </div>
+                    </Table.Cell>
+                  </Table.Row>
+                ));
+              })}
             </Table.Body>
           </Table>
         </div>
-    {/* 
-      <div>
-            <Accordion collapseAll>
-                <Accordion.Panel>
-                    <Accordion.Title>Add Customer</Accordion.Title>
-                    <Accordion.Content>
-                      
-                        <AddCustomer customer={null}/>
-                      
-                    </Accordion.Content>
-                </Accordion.Panel>
-            </Accordion>
-        </div> */}
+        <Modal
+          dismissible
+          show={openModal}
+          size={'lg'}
+          onClose={closeEditModal}
+          className={`bg-transparent backdrop-blur-sm`}
+        >
+          {selectedCustomer && <EditCustomer customerData={selectedCustomer} />}
+        </Modal>
+      </div>
     </div>
-      </div>      
   );
 }
