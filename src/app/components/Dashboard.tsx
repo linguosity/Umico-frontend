@@ -42,6 +42,9 @@ export default function Dashboard() {
                     <Sidebar.Item href="/" icon={HiChartPie} className="flex items-center p-2 text-[rgb(31,107,151)] rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                       Dashboard
                     </Sidebar.Item>
+                    <Sidebar.Item href="/customers" icon={HiUser} onClick={handleClose} className="text-[rgb(31,107,151)]">
+                      Customers
+                    </Sidebar.Item>
                     <Sidebar.Item href="/frames" icon={HiInbox} onClick={handleClose} className="text-[rgb(31,107,151)]">
                       Frames
                     </Sidebar.Item>
@@ -51,9 +54,10 @@ export default function Dashboard() {
                     <Sidebar.Item href="/scans" icon={HiShoppingBag} onClick={handleClose} className="text-[rgb(31,107,151)]">
                       Scans
                     </Sidebar.Item>
-                    <Sidebar.Item href="/customers" icon={HiUser} onClick={handleClose} className="text-[rgb(31,107,151)]">
-                      Customers
+                    <Sidebar.Item href="/misc" icon={HiShoppingBag} onClick={handleClose} className="text-[rgb(31,107,151)]">
+                      Misc
                     </Sidebar.Item>
+                    
                   </Sidebar.ItemGroup>
                 </Sidebar.Items>
               </div>

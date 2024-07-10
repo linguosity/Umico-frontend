@@ -1,93 +1,67 @@
-import { Card, List, Table, Accordion } from 'flowbite-react';
+import { Table, Checkbox, Label } from 'flowbite-react';
 
 const Loading = () => {
-    return (
-      <div role="status" className="animate-pulse p-4 w-full">
-        <Card className="m-4 bg-amber-200">
-          <List horizontal>
-            <List.Item>
-              <div className="h-8 w-8 bg-gray-200 rounded-full dark:bg-gray-700 mb-4"></div>
-            </List.Item>
-            <List.Item>
-              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-            </List.Item>
-            <List.Item>
-              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-12 mb-4"></div>
-            </List.Item>
-            <List.Item>
-              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-2 mb-4"></div>
-            </List.Item>
-            <List.Item>
-              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-            </List.Item>
-            <List.Item>
-              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-36 mb-4"></div>
-            </List.Item>
-            <List.Item>
-              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-36 mb-4"></div>
-            </List.Item>
-          </List>
-        </Card>
-  
-        <Card className="flex flex-col w-full p-4 bg-white rounded-lg shadow-md">
-          <div className="overflow-x-auto">
-            <Table hoverable>
-              <Table.Head>
-                <Table.HeadCell>
-                  <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-16"></div>
-                </Table.HeadCell>
-                <Table.HeadCell>
-                  <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-16"></div>
-                </Table.HeadCell>
-                <Table.HeadCell>
-                  <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24"></div>
-                </Table.HeadCell>
-                <Table.HeadCell>
-                  <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24"></div>
-                </Table.HeadCell>
-                <Table.HeadCell>
-                  <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24"></div>
-                </Table.HeadCell>
-                <Table.HeadCell>
-                  <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24"></div>
-                </Table.HeadCell>
-                <Table.HeadCell>
-                  <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24"></div>
-                </Table.HeadCell>
-              </Table.Head>
-              <Table.Body>
-                {Array.from({ length: 15 }).map((_, idx) => (
-                  <Table.Row key={idx}>
-                    <Table.Cell>
-                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-          </div>
-        </Card>
+  return (
+    <div className="animate-pulse">
+      <div className="p-4">
+        <div className="overflow-x-auto">
+          <Table hoverable>
+            <Table.Head>
+              <Table.HeadCell className="h-10 w-[5%]"></Table.HeadCell>
+              <Table.HeadCell className="h-10 w-[25%]">
+                <div className="bg-gray-200 rounded-full w-24"></div>
+              </Table.HeadCell>
+              <Table.HeadCell className="h-10 w-[20%]">
+                <div className="bg-gray-200 rounded-full w-20"></div>
+              </Table.HeadCell>
+              <Table.HeadCell className="h-10 w-[15%]">
+                <div className="bg-gray-200 rounded-full w-16"></div>
+              </Table.HeadCell>
+              <Table.HeadCell className="h-10 w-[35%]">
+                <div className="bg-gray-200 rounded-full w-32"></div>
+              </Table.HeadCell>
+            </Table.Head>
+            <Table.Body className="divide-y">
+              {[...Array(10)].map((_, rowIdx) => (
+                <Table.Row key={rowIdx}>
+                  <Table.Cell className="w-[5%]">
+                    <div className="h-6 w-6 bg-gray-200 rounded-full mx-auto"></div>
+                  </Table.Cell>
+                  <Table.Cell className="w-[25%]">
+                    <div className="h-2 bg-gray-200 rounded-full w-24"></div>
+                  </Table.Cell>
+                  <Table.Cell className="w-[20%]">
+                    <div className="h-2 bg-gray-200 rounded-full w-20"></div>
+                  </Table.Cell>
+                  <Table.Cell className="w-[15%]">
+                    <div className="h-2 bg-gray-200 rounded-full w-16"></div>
+                  </Table.Cell>
+                  <Table.Cell className="w-[35%]">
+                    <div className="flex flex-wrap gap-2">
+                      <div className="flex items-center gap-2">
+                        <Checkbox disabled />
+                        <div className="h-2 bg-gray-200 rounded-full w-16"></div>
+                        <Checkbox disabled />
+                        <div className="h-2 bg-gray-200 rounded-full w-20"></div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Checkbox disabled />
+                        <div className="h-2 bg-gray-200 rounded-full w-12"></div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Checkbox disabled />
+                        <div className="h-2 bg-gray-200 rounded-full w-20"></div>
+                      </div>
+                    </div>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </div>
       </div>
-    );
-  }
-  
-  export default Loading;
-  
+    </div>
+  );
+}
+
+export default Loading;

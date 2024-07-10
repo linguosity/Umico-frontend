@@ -126,18 +126,6 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans
                 ))}
                 </Table.Body>
             </Table>
-
-            <div>
-                <Accordion collapseAll>
-                    <Accordion.Panel>
-                        <Accordion.Title>Add Frame</Accordion.Title>
-                        <Accordion.Content>
-                                <AddFrame id={customerData?.id} />
-                        </Accordion.Content>
-                    </Accordion.Panel>
-                </Accordion>
-            </div>
-
         </Tabs.Item>
         <Tabs.Item title="Prints" icon={MdDashboard}>
             <Table hoverable>
@@ -175,17 +163,6 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans
             </Table.Body>
             </Table>
             
-            <div>
-                <Accordion collapseAll>
-                    <Accordion.Panel>
-                        <Accordion.Title>Add Print</Accordion.Title>
-                        <Accordion.Content>
-
-                            <AddPrint id={customerData?.id} />
-                        </Accordion.Content>
-                    </Accordion.Panel>
-                </Accordion>
-            </div>
             
         </Tabs.Item>
 
@@ -233,16 +210,7 @@ const CustomerPage: React.FC<CustomerPageProps> = ({ customerData, prints, scans
                 ))}
                 </Table.Body>
             </Table>
-            <div>
-                <Accordion collapseAll>
-                    <Accordion.Panel>
-                        <Accordion.Title>Add Scan</Accordion.Title>
-                        <Accordion.Content>
-                            <AddScan id={customerData?.id} />
-                        </Accordion.Content>
-                    </Accordion.Panel>
-                </Accordion>
-            </div>
+            
         </Tabs.Item>
         </Tabs>
         

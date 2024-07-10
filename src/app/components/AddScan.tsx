@@ -26,7 +26,7 @@ const AddScan: React.FC<AddScanProps> = ({ id }) => {
         notification_date: null,
         final_location: '',
         payment_type: '',
-        deposit_made: false,
+        deposit: false,
         balance_paid: false,
         job_notes: 'ipsum lorem'
     });

@@ -17,14 +17,22 @@ interface EditFrameProps {
 const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
     const [form, setForm] = useState(frame);
     const router = useRouter(); // Initialize useRouter
+    console.log("here's the frame", frame);
+
+    useEffect(() => {
+        console.log("Frame prop updated in child component:", frame);
+        setForm(frame);
+    }, [frame]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, type, checked, value } = e.target;
-        setForm({
-            ...form!,
+        setForm((prevForm) => prevForm ? {
+            ...prevForm,
             [name]: type === 'checkbox' ? checked : value
-        });
+        } : prevForm);
     };
+    // This adds a null check for `form` to ensure it's not undefined before updating its state.
+    
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -38,9 +46,6 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
         }
     }
 
-    useEffect(() => {
-        console.log("Frame prop updated in child component:", frame);
-    }, [frame]);
     
     return(
         <div className="m-4 grid grid-flow-row auto-rows-max">
@@ -87,24 +92,24 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
                             <div className="flex items-center space-x-1">
                                 {/* image_width */}
                                 <TextInput
-                                id="image_width"
-                                onChange={handleChange}
-                                name="image_width"
-                                value={form?.image_width}
-                                type="number"
-                                placeholder="W"
-                                className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
+                                    id="image_width"
+                                    onChange={handleChange}
+                                    name="image_width"
+                                    value={form?.image_width?.toString() || ''}
+                                    type="number"
+                                    placeholder="W"
+                                    className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
                                 />
                                 <span className="text-sm font-medium text-gray-900 dark:text-white">x</span>
                                 {/* image_height */}
                                 <TextInput
-                                id="image_height"
-                                onChange={handleChange}
-                                name="image_height"
-                                value={form?.image_height}
-                                type="number"
-                                placeholder="H"
-                                className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
+                                    id="image_height"
+                                    onChange={handleChange}
+                                    name="image_height"
+                                    value={form?.image_height?.toString() || ''}
+                                    type="number"
+                                    placeholder="H"
+                                    className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
                                 />
                             </div>
                         </div>
@@ -184,7 +189,14 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
                         </div>
                         <div className="relative z-0 w-3/4 mb-5 group">
                             {/* moulding_number */}
-                            <input type="number" name="moulding_number" value={form?.moulding_number.toString()} onChange={handleChange} id="moulding_number" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <input 
+                                type="number" 
+                                name="moulding_number" 
+                                value={form?.moulding_number ? form.moulding_number.toString() : ''} 
+                                onChange={handleChange} 
+                                id="moulding_number" 
+                                className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required 
+                            />
                             <Label htmlFor="moulding_number" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">#</Label>
                         </div>
                     </div>
@@ -251,12 +263,30 @@ const EditFrame: React.FC<EditFrameProps> = ({ frame, onRefresh }) => {
                         
                         <div className="relative z-0 w-3/4 mb-5 group">
                             {/* mat */}
-                            <input type="text" name="mat" id="mat" onChange={handleChange} value={form?.mat} className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <input 
+                                type="text" 
+                                name="mat" 
+                                id="mat" 
+                                onChange={handleChange} 
+                                value={form?.mat} 
+                                className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                                placeholder=" " 
+                                required 
+                            />
                             <Label htmlFor="mat" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">mat</Label>
                         </div>
                         <div className="relative z-0 w-3/4 mb-5 group">
                             {/* mat_number */}
-                            <input type="number" name="mat_number" onChange={handleChange} value={form?.mat_number.toString()} id="mat_number" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                            <input 
+                                type="number" 
+                                name="mat_number" 
+                                onChange={handleChange}   
+                                value={form?.mat_number ? form.mat_number.toString() : ''} 
+                                id="mat_number" 
+                                className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                                placeholder=" " 
+                                required 
+                            />
                             <Label htmlFor="mat_number" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">#</Label>
                         </div>
                     </div>

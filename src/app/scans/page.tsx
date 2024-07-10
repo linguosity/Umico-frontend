@@ -45,18 +45,17 @@ export default function Page() {
           <Table.Head>
             <Table.HeadCell> Client </Table.HeadCell>
             <Table.HeadCell>Deadline</Table.HeadCell>
-            <Table.HeadCell>Thumbnail</Table.HeadCell>
             <Table.HeadCell>Job Status</Table.HeadCell>
             <Table.HeadCell>Payment Status</Table.HeadCell>
-            <Table.HeadCell>Image Width</Table.HeadCell>
+            {/* <Table.HeadCell>Image Width</Table.HeadCell>
             <Table.HeadCell>Image Height</Table.HeadCell>
             <Table.HeadCell>File Type</Table.HeadCell>
             <Table.HeadCell>DPI</Table.HeadCell>
             <Table.HeadCell>Notification Date</Table.HeadCell>
             <Table.HeadCell>Final Location</Table.HeadCell>
-            <Table.HeadCell>Payment Type</Table.HeadCell>
+            <Table.HeadCell>Payment Type</Table.HeadCell> */}
             </Table.Head>
-            <Table.Body>
+            <Table.Body className="divide-y">
             {scanList.map((scan, idx) => (
                 <Table.Row key={idx}>
 
@@ -64,8 +63,6 @@ export default function Page() {
               <Table.Cell> {scan.deadline ? 
                         new Date(scan.deadline).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'N/A'}          
                     </Table.Cell>
-
-                <Table.Cell><img src={scan.thumbnail} alt="Thumbnail" className="w-16 h-16" /></Table.Cell>
                     <Table.Cell>
                         <div className="flex max-w-md flex-col gap-4" id="checkbox">
                             <div className="flex items-center gap-2">
@@ -84,12 +81,12 @@ export default function Page() {
                     </Table.Cell>
                     <Table.Cell>
                         <div className="flex max-w-md flex-col gap-4" id="checkbox">
-                            {/* <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2">
                                 <Checkbox id="mat_window" checked={scan.deposit} disabled/>
                                 <Label htmlFor="accept" className="flex">
                                     deposit
                                 </Label>
-                            </div> */}
+                            </div> 
                             <div className="flex items-center gap-2">
                                 <Checkbox id="mat_double" checked={scan.balance_paid} disabled/>
                                 <Label htmlFor="promotion">
@@ -99,7 +96,7 @@ export default function Page() {
                         </div>
                     </Table.Cell>
 
-                <Table.Cell>{scan.image_width}</Table.Cell>
+                {/* <Table.Cell>{scan.image_width}</Table.Cell>
                 <Table.Cell>{scan.image_height}</Table.Cell>
                 <Table.Cell>{scan.file_type}</Table.Cell>
                 <Table.Cell>{scan.dpi}</Table.Cell>

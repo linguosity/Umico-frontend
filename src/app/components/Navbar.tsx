@@ -1,9 +1,17 @@
+// components/Navbar.tsx
+
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Dashboard from "../components/Dashboard";
 import Image from 'next/image';
+import { Spinner, Dropdown, Modal } from "flowbite-react";
+import AddFrame from '../components/AddFrame';
+import AddPrint from '../components/AddPrint';
+import AddScan from '../components/AddScan';
+import AddMisc from '../components/AddMisc';
+import CustomerSelection from '../components/CustomerSelection';
 
 interface Customer {
   id: number;
@@ -20,12 +28,17 @@ interface Customer {
 const Navbar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [results, setResults] = useState<Customer[]>([]);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [modalContent, setModalContent] = useState<string | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [orderStep, setOrderStep] = useState<number>(1);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
   const handleSearch = async (query: string) => {
+    setIsSearching(true);
     if (query.trim()) {
       try {
         const token = process.env.NEXT_PUBLIC_API_TOKEN;
@@ -51,20 +64,23 @@ const Navbar: React.FC = () => {
     } else {
       setResults([]);
     }
+    setIsSearching(false);
   };
-  
-
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      handleSearch(searchQuery);
-    }, 300); // Adjust debounce delay as needed
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleSearch(searchQuery);
+  };
+
+  const toggleModal = (content: string | null) => {
+    setModalContent(content);
+    setOrderStep(1);
+    setSelectedCustomer(null);
+  };
+
+  const handleCustomerSelect = (customer: Customer) => {
+    setSelectedCustomer(customer);
+    setOrderStep(2);
   };
 
   return (
@@ -82,7 +98,7 @@ const Navbar: React.FC = () => {
             </div>
             <Dashboard />
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center relative">
             <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
               <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
               <div className="relative">
@@ -98,11 +114,46 @@ const Navbar: React.FC = () => {
                   placeholder="Search customers..." 
                   value={searchQuery}
                   onChange={handleInputChange}
-                  required 
+                  required
+                  autoComplete="off"
                 />
-                <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+                {isSearching && (
+                  <div className="absolute end-2.5 bottom-2.5">
+                    <Spinner aria-label="Searching..." />
+                  </div>
+                )}
               </div>
+              {results.length > 0 ? (
+                <div className="absolute bg-white w-full shadow-lg z-50 mt-2 rounded-lg">
+                  <ul>
+                    {results.map((result) => (
+                      <li key={result.id} className="p-4 border-b hover:bg-gray-100">
+                        <Link href={`/customers/${result.id}`}>
+                          {result.first_name} {result.last_name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (searchQuery.trim() !== '' && !results.length) ? (
+                <div className="absolute bg-white w-full shadow-lg z-50 mt-2 rounded-lg">
+                  <ul>
+                    <li className="p-4 border-b hover:bg-gray-100">
+                      <span>No results</span>
+                    </li>
+                  </ul>
+                </div>
+              ) : null}
             </form>
+
+            {/* New Order Creation Dropdown */}
+            <Dropdown label="Create New Order" className="mx-2">
+              <Dropdown.Item onClick={() => toggleModal('frame')}>New Frame Order</Dropdown.Item>
+              <Dropdown.Item onClick={() => toggleModal('print')}>New Print Order</Dropdown.Item>
+              <Dropdown.Item onClick={() => toggleModal('scan')}>New Scan Order</Dropdown.Item>
+              <Dropdown.Item onClick={() => toggleModal('misc')}>New Misc Order</Dropdown.Item>
+            </Dropdown>
+
             <div className="flex items-center ms-3">
               <div>
                 <button type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
@@ -138,19 +189,41 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
-      {results.length > 0 && (
-        <div className="absolute bg-white w-full shadow-lg z-50 mt-2 rounded-lg">
-          <ul>
-            {results.map((result) => (
-              <li key={result.id} className="p-4 border-b hover:bg-gray-100">
-                <Link href={`/customers/${result.id}`}>
-                    {result.first_name} {result.last_name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+
+      {/* Modal for new orders */}
+      <Modal
+        show={!!modalContent}
+        position="center"
+        onClose={() => toggleModal(null)}
+        dismissible
+        size={'4xl'}
+        className={`bg-opacity-20 backdrop-blur-sm modal-backdrop ${!!modalContent ? 'show' : ''}`}
+      >
+        <Modal.Header>
+          {modalContent === 'frame' && 'New Frame Order'}
+          {modalContent === 'print' && 'New Print Order'}
+          {modalContent === 'scan' && 'New Scan Order'}
+          {modalContent === 'misc' && 'New Misc Order'}
+        </Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6 p-6">
+            {orderStep === 1 && (
+              <CustomerSelection onSelect={handleCustomerSelect} />
+            )}
+            {orderStep === 2 && (
+              <>
+                {modalContent === 'frame' && <AddFrame id={selectedCustomer?.id ?? -1} />}
+                {modalContent === 'print' && <AddPrint id={selectedCustomer?.id ?? -1} />}
+                {modalContent === 'scan' && <AddScan id={selectedCustomer?.id ?? -1} />}
+                {modalContent === 'misc' && <AddMisc id={selectedCustomer?.id ?? -1} />}
+              </>
+            )}
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          {/* Add any footer content if needed */}
+        </Modal.Footer>
+      </Modal>
     </nav>
   );
 };

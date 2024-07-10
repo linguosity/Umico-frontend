@@ -68,7 +68,7 @@ export default function Page() {
                 <Table.HeadCell>Deadline</Table.HeadCell>
                 <Table.HeadCell>Job Status </Table.HeadCell>
                 <Table.HeadCell> Payment Status </Table.HeadCell>
-                <Table.HeadCell>Image Dimensions</Table.HeadCell>
+                {/* <Table.HeadCell>Image Dimensions</Table.HeadCell>
                 <Table.HeadCell>Frame Dimensions</Table.HeadCell>
                 <Table.HeadCell>Moulding</Table.HeadCell>
                 <Table.HeadCell>Mat</Table.HeadCell>
@@ -94,9 +94,9 @@ export default function Page() {
                 <Table.HeadCell>Art Condition</Table.HeadCell>
                 <Table.HeadCell>Notification Date</Table.HeadCell>
                 <Table.HeadCell>Final Location</Table.HeadCell>
-                <Table.HeadCell>Payment Type</Table.HeadCell>
+                <Table.HeadCell>Payment Type</Table.HeadCell> */}
               </Table.Head>
-              <Table.Body>
+              <Table.Body className="divide-y">
                 {frameList.map((frame, idx) => (
                   <Table.Row key={idx}> 
                     <Table.Cell>{frame.customer.last_name}, {frame.customer.first_name}</Table.Cell>
@@ -134,7 +134,7 @@ export default function Page() {
                             </div>
                         </div>
                     </Table.Cell>
-                    <Table.Cell>{frame.image_width} x {frame.image_height}</Table.Cell>
+                    {/* <Table.Cell>{frame.image_width} x {frame.image_height}</Table.Cell>
                     <Table.Cell>{frame.frame_width} x {frame.frame_height}</Table.Cell>
                     <Table.Cell>{frame.moulding}</Table.Cell>
                     <Table.Cell>{frame.mat}</Table.Cell>
@@ -166,7 +166,7 @@ export default function Page() {
                     <Table.Cell>{frame.final_location}</Table.Cell>
                     <Table.Cell>{frame.payment_type}</Table.Cell>
                     <Table.Cell>{frame.deposit ? 'Yes' : 'No'}</Table.Cell>
-                    <Table.Cell>{frame.balance_paid ? 'Yes' : 'No'}</Table.Cell>
+                    <Table.Cell>{frame.balance_paid ? 'Yes' : 'No'}</Table.Cell>*/}
                   </Table.Row>
                 ))}
               </Table.Body>
