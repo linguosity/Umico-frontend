@@ -6,24 +6,15 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Dashboard from "../components/Dashboard";
 import Image from 'next/image';
-import { Spinner, Dropdown, Modal } from "flowbite-react";
+import { Spinner, Dropdown, Modal, Button } from "flowbite-react";
 import AddFrame from '../components/AddFrame';
 import AddPrint from '../components/AddPrint';
 import AddScan from '../components/AddScan';
 import AddMisc from '../components/AddMisc';
+import { Customer } from '../types/customer';
 import CustomerSelection from '../components/CustomerSelection';
+import AddCustomer from '../components/AddCustomer';
 
-interface Customer {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number: string;
-  shipping_addresses: {
-    city: string;
-    state: string;
-  }[];
-}
 
 const Navbar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -32,6 +23,7 @@ const Navbar: React.FC = () => {
   const [modalContent, setModalContent] = useState<string | null>(null);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [orderStep, setOrderStep] = useState<number>(1);
+  const [showNewCustomerForm, setShowNewCustomerForm] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -81,6 +73,16 @@ const Navbar: React.FC = () => {
   const handleCustomerSelect = (customer: Customer) => {
     setSelectedCustomer(customer);
     setOrderStep(2);
+  };
+
+  const handleCreateNewCustomer = () => {
+    setShowNewCustomerForm(true);
+  };
+
+  const handleNewCustomerSubmit = (newCustomer: Customer) => {
+    setSelectedCustomer(newCustomer);
+    setOrderStep(2);
+    setShowNewCustomerForm(false);
   };
 
   return (
@@ -200,6 +202,7 @@ const Navbar: React.FC = () => {
         className={`bg-opacity-20 backdrop-blur-sm modal-backdrop ${!!modalContent ? 'show' : ''}`}
       >
         <Modal.Header>
+          {orderStep === 1 && 'Select or Create Customer'}  
           {modalContent === 'frame' && 'New Frame Order'}
           {modalContent === 'print' && 'New Print Order'}
           {modalContent === 'scan' && 'New Scan Order'}
@@ -207,17 +210,26 @@ const Navbar: React.FC = () => {
         </Modal.Header>
         <Modal.Body>
           <div className="space-y-6 p-6">
-            {orderStep === 1 && (
-              <CustomerSelection onSelect={handleCustomerSelect} />
-            )}
-            {orderStep === 2 && (
-              <>
-                {modalContent === 'frame' && <AddFrame id={selectedCustomer?.id ?? -1} />}
-                {modalContent === 'print' && <AddPrint id={selectedCustomer?.id ?? -1} />}
-                {modalContent === 'scan' && <AddScan id={selectedCustomer?.id ?? -1} />}
-                {modalContent === 'misc' && <AddMisc id={selectedCustomer?.id ?? -1} />}
-              </>
-            )}
+          {orderStep === 1 && showNewCustomerForm && (
+            <AddCustomer 
+              customer={null} 
+              onSubmit={handleNewCustomerSubmit}
+            />
+          )}
+          {orderStep === 1 && !showNewCustomerForm && (
+              <CustomerSelection 
+                onSelect={handleCustomerSelect} 
+                onCreateNew={handleCreateNewCustomer}
+              />
+          )}
+          {orderStep === 2 && (
+            <>
+              {modalContent === 'frame' && <AddFrame id={selectedCustomer?.id ?? -1} />}
+              {modalContent === 'print' && <AddPrint id={selectedCustomer?.id ?? -1} />}
+              {modalContent === 'scan' && <AddScan id={selectedCustomer?.id ?? -1} />}
+              {modalContent === 'misc' && <AddMisc id={selectedCustomer?.id ?? -1} />}
+            </>
+          )}
           </div>
         </Modal.Body>
         <Modal.Footer>

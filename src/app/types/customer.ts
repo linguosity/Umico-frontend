@@ -1,6 +1,7 @@
 import { Scan } from './scan';
 import { Print } from './print';
 import { Frame } from './frames';
+import { Misc } from './misc';
 
 // Structured with ChatGPT's guidance to match the client's order form to the defined TypeScript interfaces.
 export interface Address {
@@ -23,4 +24,5 @@ export interface Address {
     scans?: Scan[];
     prints?: Print[];
     frames?: Frame[];
+    misc?: Misc[];
   }

@@ -1,25 +1,15 @@
 // components/CustomerSelection.tsx
 
 import React, { useState, useEffect } from 'react';
-import { Spinner } from 'flowbite-react';
-
-interface Customer {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number: string;
-  shipping_addresses: {
-    city: string;
-    state: string;
-  }[];
-}
+import { Spinner, Button } from 'flowbite-react';
+import { Customer } from '../types/customer';
 
 interface CustomerSelectionProps {
   onSelect: (customer: Customer) => void;
+  onCreateNew: () => void;
 }
 
-const CustomerSelection: React.FC<CustomerSelectionProps> = ({ onSelect }) => {
+const CustomerSelection: React.FC<CustomerSelectionProps> = ({ onSelect, onCreateNew }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [results, setResults] = useState<Customer[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -98,6 +88,11 @@ const CustomerSelection: React.FC<CustomerSelectionProps> = ({ onSelect }) => {
       {searchQuery.trim() !== '' && !results.length && !isSearching && (
         <p className="mt-4 text-gray-500">No results found</p>
       )}
+      <div className="mt-4">
+        <Button onClick={onCreateNew} color="light">
+          Create New Customer
+        </Button>
+      </div>
     </div>
   );
 };

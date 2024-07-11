@@ -11,6 +11,11 @@ interface EditCustomerProps {
     customer: Customer | null;
 }
 
+interface AddCustomerProps extends EditCustomerProps {
+    onSubmit: (customer: Customer) => void;
+  }
+
+
 const usStates = [
     'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 
     'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 
@@ -21,7 +26,7 @@ const usStates = [
     'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
 ];
 
-const AddCustomer: React.FC<EditCustomerProps> = ({ customer }) => {
+const AddCustomer: React.FC<AddCustomerProps> = ({ customer, onSubmit }) => {
     const newAddress: Address = {
         id: 0,
         customer: 0,
@@ -65,18 +70,18 @@ const AddCustomer: React.FC<EditCustomerProps> = ({ customer }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (form) {
-            try {
-                const customerData = {
-                    ...form
-                };
-                console.log('Submitting form data:', JSON.stringify(customerData, null, 2));
-                await createCustomer(customerData, router);
-                router.push('/');
-            } catch (error) {
-                console.error('Failed to create the customer:', error);
-            }
+          try {
+            const customerData = {
+              ...form
+            };
+            console.log('Submitting form data:', JSON.stringify(customerData, null, 2));
+            const newCustomer = await createCustomer(customerData, router);
+            onSubmit(newCustomer);
+          } catch (error) {
+            console.error('Failed to create the customer:', error);
+          }
         }
-    };
+      };
 
     return (
         <>
