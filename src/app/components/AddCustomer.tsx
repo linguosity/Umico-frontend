@@ -30,7 +30,7 @@ const libraries: Libraries = ['places'];
 
 const useGoogleMapsScript = () => useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-    libraries: libraries,
+    libraries: libraries, // This ensures async loading
 });
 
 const AddCustomer: React.FC<AddCustomerProps> = ({ customer, onSubmit }) => {

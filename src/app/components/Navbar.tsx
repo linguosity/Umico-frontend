@@ -6,6 +6,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Dashboard from "../components/Dashboard";
 import Image from 'next/image';
+import { useAuth } from '../contexts/AuthContext';
+import SignIn from './SignIn';
 import { Spinner, Dropdown, Modal, Button } from "flowbite-react";
 import AddFrame from '../components/AddFrame';
 import AddPrint from '../components/AddPrint';
@@ -23,10 +25,23 @@ const Navbar: React.FC = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [orderStep, setOrderStep] = useState<number>(1);
   const [showNewCustomerForm, setShowNewCustomerForm] = useState(true);
+  const [showSignInModal, setShowSignInModal] = useState(false);
+  const { user, signOut } = useAuth();
+
   console.log('showNewCustomerForm:', showNewCustomerForm); // Add this line
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      // Optionally, you can add a notification here that the user has been signed out
+    } catch (error) {
+      console.error('Sign out failed', error);
+      // Optionally, you can add an error notification here
+    }
   };
 
   const handleSearch = async (query: string) => {
@@ -165,38 +180,17 @@ const Navbar: React.FC = () => {
               ) : null}
             </form>
 
-            {/* <div className="flex items-center ms-3">
-              <div>
-                <button type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                  <span className="sr-only">Open user menu</span>
-                  <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
-                </button>
-              </div>
-              <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
-                <div className="px-4 py-3" role="none">
-                  <p className="text-sm text-gray-900 dark:text-white" role="none">
-                    Neil Sims
-                  </p>
-                  <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                    neil.sims@flowbite.com
-                  </p>
-                </div>
-                <ul className="py-1" role="none">
-                  <li>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
-                  </li>
-                  <li>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
-                  </li>
-                  <li>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Earnings</a>
-                  </li>
-                  <li>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
-                  </li>
-                </ul>
-              </div>
-            </div> */}
+            <div className="flex items-center ms-3">
+        {user ? (
+          <Dropdown label={user.username || 'User'} color="gray">
+            <Dropdown.Item onClick={handleSignOut}>Sign Out</Dropdown.Item>
+          </Dropdown>
+        ) : (
+          <Button onClick={() => setShowSignInModal(true)}>Sign In</Button>
+        )}
+      </div>
+      <SignIn show={showSignInModal} onClose={() => setShowSignInModal(false)} />
+
           </div>
         </div>
       </div>
