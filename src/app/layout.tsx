@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Head from 'next/head'
-
 import Navbar from "./components/Navbar";
+import { AuthProvider } from './contexts/AuthContext';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,14 +19,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-       <Head>
+      <Head>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
       </Head>
       <body className={`${inter.className} flex flex-col`}>
-        <Navbar/>
-        <main className="flex-1 p-4 z-1">
-          {children}
-        </main>
+        <AuthProvider>
+          <Navbar/>
+          <main className="flex-1 p-4 z-1">
+            {children}
+          </main>
+        </AuthProvider>
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
       </body>
     </html>
