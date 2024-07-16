@@ -83,6 +83,13 @@ const AddCustomer: React.FC<AddCustomerProps> = ({ customer, onSubmit }) => {
         }
     };
 
+    useEffect(() => {
+        console.log('Script loaded:', isLoaded);
+        console.log('Load error:', loadError);
+      }, [isLoaded, loadError]);
+
+    console.log('API Key:', process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
         const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
@@ -168,7 +175,10 @@ const AddCustomer: React.FC<AddCustomerProps> = ({ customer, onSubmit }) => {
                     <Label htmlFor="street" value="Street" className="mb-2 block" />
                     {isLoaded && !loadError ? (
                         <Autocomplete
-                            onLoad={(autocomplete) => { autocompleteRef.current = autocomplete; }}
+                            onLoad={(autocomplete) => { 
+                            console.log('Autocomplete loaded');
+                            autocompleteRef.current = autocomplete; 
+                            }}
                             onPlaceChanged={handlePlaceSelect}
                         >
                             <TextInput
@@ -181,14 +191,17 @@ const AddCustomer: React.FC<AddCustomerProps> = ({ customer, onSubmit }) => {
                             />
                         </Autocomplete>
                     ) : (
-                        <TextInput
-                            name="street"
-                            id="street"
-                            placeholder="Enter your address"
-                            required
-                            value={form.shipping_addresses[0]?.street || ''}
-                            onChange={handleChange}
-                        />
+                        <>
+                            {loadError && console.error('Error loading Google Maps script:', loadError)}
+                            <TextInput
+                                name="street"
+                                id="street"
+                                placeholder="Enter your address"
+                                required
+                                value={form.shipping_addresses[0]?.street || ''}
+                                onChange={handleChange}
+                            />
+                        </>
                     )}
                 </div>
                 {/* City */}
