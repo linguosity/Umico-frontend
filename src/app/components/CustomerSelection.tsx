@@ -56,7 +56,6 @@ const CustomerSelection: React.FC<CustomerSelectionProps> = ({ onSelect, onCreat
 
   return (
     <div className="w-full">
-      <h2 className="text-xl font-bold mb-4">Select a Customer</h2>
       <div className="relative">
         <input
           type="search"
@@ -73,7 +72,7 @@ const CustomerSelection: React.FC<CustomerSelectionProps> = ({ onSelect, onCreat
         )}
       </div>
       {results.length > 0 && (
-        <ul className="mt-4 bg-white border border-gray-200 rounded-lg divide-y divide-gray-200">
+        <ul className="absolute z-50 mt-1 w-1/3 bg-white border border-gray-200 rounded-lg divide-y divide-gray-200 shadow-lg max-h-60 overflow-auto">
           {results.map((customer) => (
             <li
               key={customer.id}

@@ -15,7 +15,6 @@ import { Customer } from '../types/customer';
 import CustomerSelection from '../components/CustomerSelection';
 import AddCustomer from '../components/AddCustomer';
 
-
 const Navbar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [results, setResults] = useState<Customer[]>([]);
@@ -23,7 +22,8 @@ const Navbar: React.FC = () => {
   const [modalContent, setModalContent] = useState<string | null>(null);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [orderStep, setOrderStep] = useState<number>(1);
-  const [showNewCustomerForm, setShowNewCustomerForm] = useState(false);
+  const [showNewCustomerForm, setShowNewCustomerForm] = useState(true);
+  console.log('showNewCustomerForm:', showNewCustomerForm); // Add this line
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -66,8 +66,16 @@ const Navbar: React.FC = () => {
 
   const toggleModal = (content: string | null) => {
     setModalContent(content);
-    setOrderStep(1);
-    setSelectedCustomer(null);
+    if (content === null) {
+      // Only reset when closing the modal
+      setOrderStep(1);
+      setSelectedCustomer(null);
+      setShowNewCustomerForm(true); // Set it back to true when closing
+    } else {
+      // When opening a new modal, don't change showNewCustomerForm
+      setOrderStep(1);
+      setSelectedCustomer(null);
+    }
   };
 
   const handleCustomerSelect = (customer: Customer) => {
@@ -82,7 +90,6 @@ const Navbar: React.FC = () => {
   const handleNewCustomerSubmit = (newCustomer: Customer) => {
     setSelectedCustomer(newCustomer);
     setOrderStep(2);
-    setShowNewCustomerForm(false);
   };
 
   return (
@@ -99,7 +106,17 @@ const Navbar: React.FC = () => {
               />
             </div>
             <Dashboard />
+
+            {/* New Order Creation Dropdown */}
+            <Dropdown label="Create New Order" className="mx-2" color="gray">
+              <Dropdown.Item onClick={() => toggleModal('frame')}>New Frame Order</Dropdown.Item>
+              <Dropdown.Item onClick={() => toggleModal('print')}>New Print Order</Dropdown.Item>
+              <Dropdown.Item onClick={() => toggleModal('scan')}>New Scan Order</Dropdown.Item>
+              <Dropdown.Item onClick={() => toggleModal('misc')}>New Misc Order</Dropdown.Item>
+            </Dropdown>
+
           </div>
+          
           <div className="flex items-center relative">
             <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
               <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
@@ -148,15 +165,7 @@ const Navbar: React.FC = () => {
               ) : null}
             </form>
 
-            {/* New Order Creation Dropdown */}
-            <Dropdown label="Create New Order" className="mx-2">
-              <Dropdown.Item onClick={() => toggleModal('frame')}>New Frame Order</Dropdown.Item>
-              <Dropdown.Item onClick={() => toggleModal('print')}>New Print Order</Dropdown.Item>
-              <Dropdown.Item onClick={() => toggleModal('scan')}>New Scan Order</Dropdown.Item>
-              <Dropdown.Item onClick={() => toggleModal('misc')}>New Misc Order</Dropdown.Item>
-            </Dropdown>
-
-            <div className="flex items-center ms-3">
+            {/* <div className="flex items-center ms-3">
               <div>
                 <button type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                   <span className="sr-only">Open user menu</span>
@@ -187,13 +196,14 @@ const Navbar: React.FC = () => {
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
 
       {/* Modal for new orders */}
-      <Modal
+      
+        <Modal
         show={!!modalContent}
         position="center"
         onClose={() => toggleModal(null)}
@@ -203,38 +213,44 @@ const Navbar: React.FC = () => {
       >
         <Modal.Header>
           {orderStep === 1 && 'Select or Create Customer'}  
-          {modalContent === 'frame' && 'New Frame Order'}
-          {modalContent === 'print' && 'New Print Order'}
-          {modalContent === 'scan' && 'New Scan Order'}
-          {modalContent === 'misc' && 'New Misc Order'}
+          {orderStep === 2 && modalContent === 'frame' && 'New Frame Order'}
+          {orderStep === 2 && modalContent === 'print' && 'New Print Order'}
+          {orderStep === 2 && modalContent === 'scan' && 'New Scan Order'}
+          {orderStep === 2 && modalContent === 'misc' && 'New Misc Order'}
         </Modal.Header>
         <Modal.Body>
           <div className="space-y-6 p-6">
-          {orderStep === 1 && showNewCustomerForm && (
-            <AddCustomer 
-              customer={null} 
-              onSubmit={handleNewCustomerSubmit}
-            />
-          )}
-          {orderStep === 1 && !showNewCustomerForm && (
-              <CustomerSelection 
-                onSelect={handleCustomerSelect} 
-                onCreateNew={handleCreateNewCustomer}
-              />
-          )}
-          {orderStep === 2 && (
-            <>
-              {modalContent === 'frame' && <AddFrame id={selectedCustomer?.id ?? -1} />}
-              {modalContent === 'print' && <AddPrint id={selectedCustomer?.id ?? -1} />}
-              {modalContent === 'scan' && <AddScan id={selectedCustomer?.id ?? -1} />}
-              {modalContent === 'misc' && <AddMisc id={selectedCustomer?.id ?? -1} />}
-            </>
-          )}
+            {orderStep === 1 && (
+              <>
+                <CustomerSelection 
+                  onSelect={handleCustomerSelect} 
+                  onCreateNew={handleCreateNewCustomer}
+                />
+                <hr className="my-6 border-gray-300" />
+
+              {console.log('Rendering customer form section, showNewCustomerForm:', showNewCustomerForm)}
+                {showNewCustomerForm ? (
+                  <AddCustomer 
+                    customer={null} 
+                    onSubmit={handleNewCustomerSubmit}
+                  />
+                ) : (
+                  <Button onClick={handleCreateNewCustomer} color="light">
+                    Create New Customer
+                  </Button>
+                )}
+              </>
+            )}
+            {orderStep === 2 && (
+              <>
+                {modalContent === 'frame' && <AddFrame id={selectedCustomer?.id ?? -1} />}
+                {modalContent === 'print' && <AddPrint id={selectedCustomer?.id ?? -1} />}
+                {modalContent === 'scan' && <AddScan id={selectedCustomer?.id ?? -1} />}
+                {modalContent === 'misc' && <AddMisc id={selectedCustomer?.id ?? -1} />}
+              </>
+            )}
           </div>
         </Modal.Body>
-        <Modal.Footer>
-          {/* Add any footer content if needed */}
-        </Modal.Footer>
       </Modal>
     </nav>
   );

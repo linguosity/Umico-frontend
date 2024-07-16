@@ -1,11 +1,12 @@
 'use client';
 
+import { useLoadScript, Autocomplete, Libraries } from '@react-google-maps/api';
 import { Customer, Address } from '../types/customer';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Select, Card, Button, Label, TextInput } from 'flowbite-react';
+import { Select, Button, Label, TextInput } from 'flowbite-react';
 import { createCustomer } from '../api/customerOperations';
-import { HiMail } from 'react-icons/hi';
+import { HiMail, HiPhone } from 'react-icons/hi';
 
 interface EditCustomerProps {
     customer: Customer | null;
@@ -13,8 +14,7 @@ interface EditCustomerProps {
 
 interface AddCustomerProps extends EditCustomerProps {
     onSubmit: (customer: Customer) => void;
-  }
-
+}
 
 const usStates = [
     'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 
@@ -25,6 +25,13 @@ const usStates = [
     'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 
     'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
 ];
+
+const libraries: Libraries = ['places'];
+
+const useGoogleMapsScript = () => useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+    libraries: libraries,
+});
 
 const AddCustomer: React.FC<AddCustomerProps> = ({ customer, onSubmit }) => {
     const newAddress: Address = {
@@ -48,6 +55,33 @@ const AddCustomer: React.FC<AddCustomerProps> = ({ customer, onSubmit }) => {
 
     const [form, setForm] = useState<Customer>(customer || newCustomer);
     const router = useRouter();
+    const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+    const { isLoaded, loadError } = useGoogleMapsScript();
+
+    const handlePlaceSelect = () => {
+        const place = autocompleteRef.current?.getPlace();
+        if (place && place.address_components) {
+            const addressComponents = place.address_components;
+            const streetNumber = addressComponents.find(component => component.types.includes('street_number'))?.long_name || '';
+            const streetName = addressComponents.find(component => component.types.includes('route'))?.long_name || '';
+            const city = addressComponents.find(component => component.types.includes('locality'))?.long_name || '';
+            const state = addressComponents.find(component => component.types.includes('administrative_area_level_1'))?.short_name || '';
+            const zipCode = addressComponents.find(component => component.types.includes('postal_code'))?.long_name || '';
+            const country = addressComponents.find(component => component.types.includes('country'))?.long_name || '';
+
+            setForm(prevForm => ({
+                ...prevForm,
+                shipping_addresses: [{
+                    ...prevForm.shipping_addresses[0],
+                    street: `${streetNumber} ${streetName}`.trim(),
+                    city,
+                    state,
+                    zip_code: zipCode,
+                    country,
+                }],
+            }));
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
@@ -64,120 +98,134 @@ const AddCustomer: React.FC<AddCustomerProps> = ({ customer, onSubmit }) => {
                 [name]: newValue
             }));
         }
-        console.log("Updated form state:", form);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (form) {
-          try {
-            const customerData = {
-              ...form
-            };
-            console.log('Submitting form data:', JSON.stringify(customerData, null, 2));
-            const newCustomer = await createCustomer(customerData, router);
-            onSubmit(newCustomer);
-          } catch (error) {
-            console.error('Failed to create the customer:', error);
-          }
+            try {
+                const customerData = {
+                    ...form
+                };
+                console.log('Submitting form data:', JSON.stringify(customerData, null, 2));
+                const newCustomer = await createCustomer(customerData, router);
+                onSubmit(newCustomer);
+            } catch (error) {
+                console.error('Failed to create the customer:', error);
+            }
         }
-      };
+    };
 
     return (
-        <>
-            <Card>
-                <form className="grid grid-cols-2 gap-8" onSubmit={handleSubmit}>
+        <form className="grid grid-cols-2 gap-8" onSubmit={handleSubmit}>
+            <div>
+                {/* First name */}
+                <div>
+                    <Label htmlFor="first_name" value="First Name" className="mb-2 block" />
+                    <TextInput name="first_name" id="first_name" placeholder="" required value={form.first_name} onChange={handleChange} />
+                </div>
+                {/* Last name */}
+                <div className="mt-4">
+                    <Label htmlFor="last_name" value="Last Name" className="mb-2 block" />
+                    <TextInput name="last_name" id="last_name" placeholder="" required value={form.last_name} onChange={handleChange} />
+                </div>
+                {/* Email */}
+                <div className="mt-4">
+                    <Label htmlFor="email" value="Your Email" className="mb-2 block" />
+                    <TextInput 
+                        id="email" 
+                        name="email" 
+                        type="email" 
+                        icon={HiMail} 
+                        placeholder="name@flowbite.com" 
+                        required 
+                        value={form.email} 
+                        onChange={handleChange} 
+                        style={{ paddingLeft: '2.5rem' }}
+                    />
+                </div>
+                {/* Phone number */}
+                <div className="mt-4">
+                    <Label htmlFor="phone_number" value="Phone Number" className="mb-2 block" />
+                    <TextInput 
+                        type="text" 
+                        id="phone_number" 
+                        icon={HiPhone} 
+                        name="phone_number" 
+                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
+                        placeholder="123-456-7890" 
+                        required 
+                        value={form.phone_number} 
+                        onChange={handleChange} 
+                        style={{ paddingLeft: '2.5rem' }}
+                    />
+                    <p className="mt-2 text-sm text-gray-500">Format: xxx-xxx-xxxx</p>
+                </div>
+            </div>
+            <div>
+                {/* Street */}
+                <div>
+                    <Label htmlFor="street" value="Street" className="mb-2 block" />
+                    {isLoaded && !loadError ? (
+                        <Autocomplete
+                            onLoad={(autocomplete) => { autocompleteRef.current = autocomplete; }}
+                            onPlaceChanged={handlePlaceSelect}
+                        >
+                            <TextInput
+                                name="street"
+                                id="street"
+                                placeholder="Enter your address"
+                                required
+                                value={form.shipping_addresses[0]?.street || ''}
+                                onChange={handleChange}
+                            />
+                        </Autocomplete>
+                    ) : (
+                        <TextInput
+                            name="street"
+                            id="street"
+                            placeholder="Enter your address"
+                            required
+                            value={form.shipping_addresses[0]?.street || ''}
+                            onChange={handleChange}
+                        />
+                    )}
+                </div>
+                {/* City */}
+                <div className="mt-4">
+                    <Label htmlFor="city" value="City" className="mb-2 block" />
+                    <TextInput name="city" id="city" placeholder="" required value={form.shipping_addresses[0]?.city || ''} onChange={handleChange} />
+                </div>
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                    {/* State */}
                     <div>
-                        {/* First name */}
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="first_name" value="First Name" />
-                            </div>
-                            <TextInput name="first_name" id="first_name" placeholder="" required value={form.first_name} onChange={handleChange} />
-                        </div>
-                        {/* Last name */}
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="last_name" value="Last Name" />
-                            </div>
-                            <TextInput name="last_name" id="last_name" placeholder="" required value={form.last_name} onChange={handleChange} />
-                        </div>
-                        {/* Email */}
-                        <div>
-                            <div className="max-w-md">
-                                <div className="mb-2 block">
-                                    <Label htmlFor="email" value="Your Email" />
-                                </div>
-                                <TextInput id="email" name="email" type="email" icon={HiMail} placeholder="name@flowbite.com" required value={form.email} onChange={handleChange} />
-                            </div>
-                        </div>
-                        {/* Phone number */}
-                        <div>
-                            <label htmlFor="phone_number" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number:</label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
-                                    <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 19 18">
-                                        <path d="M18 13.446a3.02 3.02 0 0 0-.946-1.985l-1.4-1.4a3.054 3.054 0 0 0-4.218 0l-.7.7a.983.983 0 0 1-1.39 0l-2.1-2.1a.983.983 0 0 1 0-1.389l.7-.7a2.98 2.98 0 0 0 0-4.217l-1.4-1.4a2.824 2.824 0 0 0-4.218 0c-3.619 3.619-3 8.229 1.752 12.979C6.785 16.639 9.45 18 11.912 18a7.175 7.175 0 0 0 5.139-2.325A2.9 2.9 0 0 0 18 13.446Z"/>
-                                    </svg>
-                                </div>
-                                <TextInput type="text" id="phone_number" name="phone_number" aria-describedby="helper-text-explanation" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890" required value={form.phone_number} onChange={handleChange} />
-                            </div>
-                            <p id="helper-text-explanation" className="mt-2 text-sm text-gray-500 dark:text-gray-400">Select a phone number that matches the format.</p>
-                        </div>
+                        <Label htmlFor="state" value="State" className="mb-2 block" />
+                        <Select id="state" name="state" required value={form.shipping_addresses[0]?.state || ''} onChange={handleChange}>
+                            <option value="">Select a state</option>
+                            {usStates.map(state => (
+                                <option key={state} value={state}>{state}</option>
+                            ))}
+                        </Select>
                     </div>
+                    {/* Zip Code */}
                     <div>
-                        {/* Street */}
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="street" value="Street" />
-                            </div>
-                            <TextInput name="street" id="street" placeholder="" required value={form.shipping_addresses[0]?.street || ''} onChange={handleChange} />
-                        </div>
-                        {/* City */}
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="city" value="City" />
-                            </div>
-                            <TextInput name="city" id="city" placeholder="" required value={form.shipping_addresses[0]?.city || ''} onChange={handleChange} />
-                        </div>
-                        {/* State */}
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="state" value="Select your state" />
-                            </div>
-                            <Select id="state" name="state" required value={form.shipping_addresses[0]?.state || ''} onChange={handleChange}>
-                                <option value="" disabled>Select a state</option>
-                                {usStates.map(state => (
-                                    <option key={state} value={state}>{state}</option>
-                                ))}
-                            </Select>
-                        </div>
-                        {/* Zip Code */}
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="zip_code" value="Zip Code" />
-                            </div>
-                            <TextInput id="zip_code" name="zip_code" placeholder="" required value={form.shipping_addresses[0]?.zip_code || ''} onChange={handleChange} />
-                        </div>
-                        {/* Country */}
-                        <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="country" value="Select your country" />
-                            </div>
-                            <Select id="country" name="country" required value={form.shipping_addresses[0]?.country || ''} onChange={handleChange}>
-                                <option value="" disabled>Select a country</option>
-                                <option>United States</option>
-                                <option>Canada</option>
-                                <option>Mexico</option>
-                            </Select>
-                        </div>
-                        
-                        <Button type="submit" color="blue">Submit</Button>
+                        <Label htmlFor="zip_code" value="Zip Code" className="mb-2 block" />
+                        <TextInput id="zip_code" name="zip_code" placeholder="" required value={form.shipping_addresses[0]?.zip_code || ''} onChange={handleChange} />
                     </div>
-                    
-                </form>
-            </Card>
-        </>
+                </div>
+                {/* Country */}
+                <div className="mt-4">
+                    <Label htmlFor="country" value="Country" className="mb-2 block" />
+                    <Select id="country" name="country" required value={form.shipping_addresses[0]?.country || ''} onChange={handleChange}>
+                        <option value="">Select a country</option>
+                        <option value="United States">United States</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Mexico">Mexico</option>
+                    </Select>
+                </div>
+                <Button type="submit" color="blue" className="mt-4">Submit</Button>
+            </div>
+        </form>
     );
 };
 
