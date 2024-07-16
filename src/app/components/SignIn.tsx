@@ -1,3 +1,5 @@
+'use client' 
+
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Modal, TextInput, Label, Button } from 'flowbite-react';

@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Customer } from '../types/customer';
 import { useRouter } from 'next/navigation';

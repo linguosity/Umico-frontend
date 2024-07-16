@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Misc } from '../types/misc';
 import { useRouter } from 'next/navigation';

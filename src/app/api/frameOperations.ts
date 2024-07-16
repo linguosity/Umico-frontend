@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Frame } from '../types/frames';
 import { useRouter } from 'next/navigation';

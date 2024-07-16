@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { Print } from '../types/print';
 import { useRouter } from 'next/navigation';
