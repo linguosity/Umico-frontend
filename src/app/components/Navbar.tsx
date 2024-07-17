@@ -8,7 +8,7 @@ import Dashboard from "../components/Dashboard";
 import Image from 'next/image';
 import { useAuth } from '../contexts/AuthContext';
 import SignIn from './SignIn';
-import { Spinner, Dropdown, Modal, Button } from "flowbite-react";
+import { Spinner, Dropdown, Modal, Button, Avatar, Navbar as FlowbiteNavbar } from "flowbite-react";
 import AddFrame from '../components/AddFrame';
 import AddPrint from '../components/AddPrint';
 import AddScan from '../components/AddScan';
@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
   const [showSignInModal, setShowSignInModal] = useState(false);
   const { user, signOut } = useAuth();
 
-  console.log('showNewCustomerForm:', showNewCustomerForm); // Add this line
+  console.log('showNewCustomerForm:', showNewCustomerForm);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -82,12 +82,10 @@ const Navbar: React.FC = () => {
   const toggleModal = (content: string | null) => {
     setModalContent(content);
     if (content === null) {
-      // Only reset when closing the modal
       setOrderStep(1);
       setSelectedCustomer(null);
-      setShowNewCustomerForm(true); // Set it back to true when closing
+      setShowNewCustomerForm(true);
     } else {
-      // When opening a new modal, don't change showNewCustomerForm
       setOrderStep(1);
       setSelectedCustomer(null);
     }
@@ -129,7 +127,6 @@ const Navbar: React.FC = () => {
               <Dropdown.Item onClick={() => toggleModal('scan')}>New Scan Order</Dropdown.Item>
               <Dropdown.Item onClick={() => toggleModal('misc')}>New Misc Order</Dropdown.Item>
             </Dropdown>
-
           </div>
           
           <div className="flex items-center relative">
@@ -180,24 +177,39 @@ const Navbar: React.FC = () => {
               ) : null}
             </form>
 
-            <div className="flex items-center ms-3">
-        {user ? (
-          <Dropdown label={user.username || 'User'} color="gray">
-            <Dropdown.Item onClick={handleSignOut}>Sign Out</Dropdown.Item>
-          </Dropdown>
-        ) : (
-          <Button onClick={() => setShowSignInModal(true)}>Sign In</Button>
-        )}
-      </div>
-      <SignIn show={showSignInModal} onClose={() => setShowSignInModal(false)} />
-
+            <div className="flex md:order-2 ml-3">
+              {user ? (
+                <Dropdown
+                  arrowIcon={false}
+                  inline
+                  label={
+                    <Avatar 
+                      alt="User settings" 
+                      img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" 
+                      rounded 
+                    />
+                  }
+                >
+                  <Dropdown.Header>
+                    <span className="block text-sm">{user.username}</span>
+                    <span className="block truncate text-sm font-medium">{user.email}</span>
+                  </Dropdown.Header>
+                  <Dropdown.Item>Dashboard</Dropdown.Item>
+                  <Dropdown.Item>Settings</Dropdown.Item>
+                  <Dropdown.Item>Earnings</Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
+                </Dropdown>
+              ) : (
+                <Button onClick={() => setShowSignInModal(true)}>Sign In</Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Modal for new orders */}
-      
-        <Modal
+      <Modal
         show={!!modalContent}
         position="center"
         onClose={() => toggleModal(null)}
@@ -222,7 +234,7 @@ const Navbar: React.FC = () => {
                 />
                 <hr className="my-6 border-gray-300" />
 
-              {console.log('Rendering customer form section, showNewCustomerForm:', showNewCustomerForm)}
+                {console.log('Rendering customer form section, showNewCustomerForm:', showNewCustomerForm)}
                 {showNewCustomerForm ? (
                   <AddCustomer 
                     customer={null} 
@@ -246,6 +258,8 @@ const Navbar: React.FC = () => {
           </div>
         </Modal.Body>
       </Modal>
+      
+      <SignIn show={showSignInModal} onClose={() => setShowSignInModal(false)} />
     </nav>
   );
 };
