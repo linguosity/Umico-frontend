@@ -9,19 +9,25 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   const { user, isLoading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
-  const [loading, setLoading] = useState(true);  // Line added
+  const [localLoading, setLocalLoading] = useState(true);
 
   useEffect(() => {
     console.log('ProtectedRoute useEffect triggered', { user, isLoading, pathname });
-    if (!isLoading && !user && pathname !== '/login') {
-      console.log('Redirecting to login');
-      router.push('/login');
+    if (isLoading) {
+      // If still loading authentication status, wait
+      setLocalLoading(true);
     } else {
-      setLoading(false);  // Line updated
+      // Authentication check completed
+      if (!user && pathname !== '/login') {
+        console.log('Redirecting to login');
+        router.push('/login');
+      } else {
+        setLocalLoading(false);
+      }
     }
   }, [user, isLoading, router, pathname]);
 
-  if (loading) {  // Line updated
+  if (localLoading) {
     console.log('Auth is loading');
     return <div>Loading...</div>;
   }

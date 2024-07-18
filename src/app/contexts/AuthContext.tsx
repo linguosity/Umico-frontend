@@ -1,9 +1,7 @@
-// contexts/AuthContext.tsx
 'use client'
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { signIn as apiSignIn, signOut as apiSignOut, validateToken } from '../api/authOperations';
-
 
 interface AuthContextType {
   user: any | null;
@@ -20,9 +18,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const token = localStorage.getItem('authToken');
-      if (token) {
-        try {
+      try {
+        const token = localStorage.getItem('authToken');
+        if (token) {
           const userData = await validateToken(token);
           if (userData.valid) {
             setUser({
@@ -32,15 +30,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               email: userData.email
             });
           } else {
-            // Token is invalid, remove it
             localStorage.removeItem('authToken');
           }
-        } catch (error) {
-          console.error('Token validation failed:', error);
-          localStorage.removeItem('authToken');
         }
+      } catch (error) {
+        console.error('Token validation failed:', error);
+        localStorage.removeItem('authToken');
+      } finally {
+        setIsLoading(false);  // Ensure this is always called
       }
-      setIsLoading(false);
     };
 
     initializeAuth();
