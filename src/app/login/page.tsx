@@ -1,20 +1,27 @@
-// app/login/page.tsx
 'use client'
 
+import { useState, useEffect } from 'react';
+import SignIn from '../components/SignIn'
 import { useRouter } from 'next/navigation';
-import SignIn from '../components/SignIn';
 
-export default function Login() {
+export default function LoginPage() {
+  console.log('LoginPage component rendered');
+
+  useEffect(() => {
+    console.log('LoginPage useEffect triggered');
+  }, []);
+
+  const [showModal, setShowModal] = useState(true);
   const router = useRouter();
 
   const handleClose = () => {
-    // Redirect to home page or dashboard when the modal is closed
+    console.log('Modal close triggered');
     router.push('/');
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <SignIn show={true} onClose={handleClose} />
+      <SignIn show={showModal} onClose={handleClose} />
     </div>
   );
 }

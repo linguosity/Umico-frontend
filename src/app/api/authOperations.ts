@@ -3,25 +3,29 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const signIn = async (username: string, password: string) => {
-  try {
-    const response = await fetch(`${API_URL}/api/token/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+      const data = { username, password };
+      console.log('Sending sign in data:', data);
+      const response = await fetch(`${API_URL}/api/token/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Sign in error details:', errorData);
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      return await response.json();
+    } catch (error) {
+      console.error('Sign in failed:', error);
+      throw error;
     }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Sign in failed:', error);
-    throw error;
-  }
-};
+  };
 
 export const signOut = async () => {
   try {
