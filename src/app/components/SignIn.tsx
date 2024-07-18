@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Modal, TextInput, Label, Button } from 'flowbite-react';
 import { useRouter } from 'next/navigation';
@@ -10,14 +10,7 @@ interface SignInProps {
   onClose: () => void;
 }
 
-
 const SignIn: React.FC<SignInProps> = ({ show, onClose }) => {
-    console.log('SignIn component rendered, show:', show);
-  
-    useEffect(() => {
-      console.log('SignIn useEffect triggered');
-    }, []);
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { signIn } = useAuth();
@@ -31,6 +24,7 @@ const SignIn: React.FC<SignInProps> = ({ show, onClose }) => {
       router.push('/dashboard');
     } catch (error) {
       console.error('Sign in failed', error);
+      // Handle error (e.g., show error message)
     }
   };
 
@@ -58,7 +52,10 @@ const SignIn: React.FC<SignInProps> = ({ show, onClose }) => {
               required
             />
           </div>
-          <Button type="submit" color="blue">
+          <Button 
+            type="submit"
+            color="blue"
+          >
             Sign In
           </Button>
         </form>
