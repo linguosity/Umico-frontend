@@ -1,9 +1,10 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Head from 'next/head'
 import Navbar from "./components/Navbar";
 import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,15 +20,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
-      </Head>
+      <head>
+        <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+          rel="stylesheet"
+        />
+      </head>
       <body className={`${inter.className} flex flex-col`}>
         <AuthProvider>
-          <Navbar/>
-          <main className="flex-1 p-4 z-1">
-            {children}
-          </main>
+          <ProtectedRoute>
+            <Navbar/>
+            <main className="flex-1 p-4 z-1">
+              {children}
+            </main>
+          </ProtectedRoute>
         </AuthProvider>
         <script async src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
       </body>

@@ -45,3 +45,24 @@ export const signOut = async () => {
     localStorage.removeItem('authToken');
   }
 };
+
+export const validateToken = async (token: string) => {
+  try {
+    const response = await fetch(`${API_URL}/api/validate-token/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Token validation failed');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Token validation error:', error);
+    throw error;
+  }
+};

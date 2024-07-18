@@ -1,10 +1,13 @@
+// contexts/AuthContext.tsx
 'use client'
 
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { signIn, signOut } from '../api/authOperations';
+import { signIn as apiSignIn, signOut as apiSignOut, validateToken } from '../api/authOperations';
+
 
 interface AuthContextType {
   user: any | null;
+  isLoading: boolean;
   signIn: (username: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -13,41 +16,65 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for existing auth token in localStorage
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      // Validate token and set user
-      // This is a placeholder, implement actual token validation
-      setUser({ token });
-    }
+    const initializeAuth = async () => {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        try {
+          const userData = await validateToken(token);
+          if (userData.valid) {
+            setUser({
+              token,
+              id: userData.user_id,
+              username: userData.username,
+              email: userData.email
+            });
+          } else {
+            // Token is invalid, remove it
+            localStorage.removeItem('authToken');
+          }
+        } catch (error) {
+          console.error('Token validation failed:', error);
+          localStorage.removeItem('authToken');
+        }
+      }
+      setIsLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
-  const handleSignIn = async (username: string, password: string) => {
+  const signIn = async (username: string, password: string) => {
+    setIsLoading(true);
     try {
-      const data = await signIn(username, password);
+      const data = await apiSignIn(username, password);
       localStorage.setItem('authToken', data.token);
       setUser(data);
     } catch (error) {
       console.error('Sign in failed', error);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleSignOut = async () => {
+  const signOut = async () => {
+    setIsLoading(true);
     try {
-      await signOut();
+      await apiSignOut();
+      localStorage.removeItem('authToken');
       setUser(null);
     } catch (error) {
       console.error('Sign out failed', error);
-      // Even if the server request fails, we still want to clear the user state
-      setUser(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn: handleSignIn, signOut: handleSignOut }}>
+    <AuthContext.Provider value={{ user, isLoading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
