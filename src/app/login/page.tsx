@@ -25,7 +25,12 @@ export default function LoginPage() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+        <div className="loading-screen">
+          {/* Optionally, add a spinner or text here */}
+          <p>Loading...</p>
+        </div>
+      );
   }
 
   if (user) {

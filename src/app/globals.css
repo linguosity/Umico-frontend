@@ -51,31 +51,29 @@ body {
 }
 
 /* global.css */
+/* Add to your global CSS or a specific module CSS file */
+/* Add this to your global CSS or a specific module CSS file */
 
-.modal-backdrop {
-  animation: blurIn 0.3s ease-in-out forwards;
+/* Loading screen styling */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0; /* Match this with your login page background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999; /* Ensure it's above other content */
 }
 
-.modal-content {
-  animation: modalAppear 0.3 ease-in-out forwards;
+/* Modal fade-in animation */
+.modal {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
 }
 
-@keyframes blurIn {
-  from {
-      backdrop-filter: blur(0);
-  }
-  to {
-      backdrop-filter: blur(10px);
-  }
-}
-
-@keyframes modalAppear {
-  from {
-      opacity: 0;
-      transform: translateY(850px);
-  }
-  to {
-      opacity: 1;
-      transform: translateY(0);
-  }
+.modal.show {
+  opacity: 1;
 }

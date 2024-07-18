@@ -29,7 +29,7 @@ const SignIn: React.FC<SignInProps> = ({ show, onClose }) => {
   };
 
   return (
-    <Modal show={show} onClose={onClose}>
+    <Modal show={show} onClose={onClose} className={`modal ${show ? 'show' : ''}`}>
       <Modal.Header>Sign In</Modal.Header>
       <Modal.Body>
         <form onSubmit={handleSubmit} className="space-y-6">

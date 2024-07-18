@@ -29,7 +29,13 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
   if (localLoading) {
     console.log('Auth is loading');
-    return <div>Loading...</div>;
+    return (
+        <div className="loading-screen">
+          <div className="modal show">
+            <p>Loading...</p>
+          </div>
+        </div>
+      );
   }
 
   if (pathname === '/login' || pathname === '/') {
