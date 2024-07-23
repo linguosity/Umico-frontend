@@ -66,6 +66,9 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
             ? (e.target as HTMLInputElement).checked
             : value;
 
+        console.log(`handleChange called with name: ${name}, value: ${value}, type: ${type}, newValue: ${newValue}`);
+
+
         if (name === 'straight_to_frame') {
             setStraightToFrame(newValue as boolean);
         } else if (name === 'showFloat') {
@@ -76,10 +79,16 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
             setShowCanvasFloat(newValue as boolean);
         }
 
-        setForm(prevForm => ({
-            ...prevForm,
-            [name]: newValue
-        }));
+        setForm(prevForm => {
+            console.log(`Updating form state for ${name} to ${newValue}`);
+            return {
+                ...prevForm,
+                [name]: newValue
+            };
+        });
+
+    console.log(`Current state after update: straightToFrame: ${straightToFrame}, showFloat: ${showFloat}, showWindowMat: ${showWindowMat}, showCanvasFloat: ${showCanvasFloat}`);
+
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -104,6 +113,8 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
             }
         }
     };
+
+    console.log(`Rendering with state: straightToFrame: ${straightToFrame}, showFloat: ${showFloat}, showWindowMat: ${showWindowMat}, showCanvasFloat: ${showCanvasFloat}`);
 
     return (
         <div className="bg-gray-50 min-h-screen p-8">
