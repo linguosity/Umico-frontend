@@ -301,8 +301,7 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
                                                     <TextInput 
                                                         id="float_in_total" 
                                                         onChange={handleChange} 
-                                                        name="float_in_total" 
-                                                        placeholder="e.g., 2.5" 
+                                                        name="float_in_total"placeholder="e.g., 2.5" 
                                                         className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                                     />
                                                 </div>
@@ -371,193 +370,193 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
                                                 </div>
                                                 <div>
                                                     <Label htmlFor="mat_in_total" className="block text-sm font-medium text-gray-700 mb-2">Total (in)</Label>
+                                                    <TextInput 
+                                                        id="mat_in_total" 
+                                                        onChange={handleChange} 
+                                                        name="mat_in_total" 
+                                                        placeholder="e.g., 4" 
+                                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {showCanvasFloat && (
+                                        <div className="mb-6 p-6 bg-white rounded-lg shadow-md">
+                                            <h3 className="text-lg font-semibold mb-4 text-gray-800">Canvas Floater Options</h3>
+                                            <div>
+                                                <Label htmlFor="canvas_floater_inches" className="block text-sm font-medium text-gray-700 mb-2">Floater Depth (inches)</Label>
                                                 <TextInput 
-                                                    id="mat_in_total" 
+                                                    id="canvas_floater_inches" 
                                                     onChange={handleChange} 
-                                                    name="mat_in_total" 
-                                                    placeholder="e.g., 4" 
+                                                    name="canvas_floater_inches" 
+                                                    placeholder="e.g., 1.5" 
                                                     className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                                 />
                                             </div>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
 
-                                {showCanvasFloat && (
-                                    <div className="mb-6 p-6 bg-white rounded-lg shadow-md">
-                                        <h3 className="text-lg font-semibold mb-4 text-gray-800">Canvas Floater Options</h3>
-                                        <div>
-                                            <Label htmlFor="canvas_floater_inches" className="block text-sm font-medium text-gray-700 mb-2">Floater Depth (inches)</Label>
-                                            <TextInput 
-                                                id="canvas_floater_inches" 
-                                                onChange={handleChange} 
-                                                name="canvas_floater_inches" 
-                                                placeholder="e.g., 1.5" 
-                                                className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                            />
-                                        </div>
-                                    </div>
-                                )}
-
-                                {(showFloat || showWindowMat || showCanvasFloat) && (
-                                    <div className="mb-6 p-6 bg-white rounded-lg shadow-md">
-                                        <h3 className="text-lg font-semibold mb-4 text-gray-800">Additional Options</h3>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div>
-                                                <Label htmlFor="glazing" className="block text-sm font-medium text-gray-700 mb-2">Glazing</Label>
-                                                <Select 
-                                                    id="glazing" 
-                                                    name="glazing" 
-                                                    onChange={handleChange}
-                                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                >
-                                                    <option value="">Select Glazing</option>
-                                                    <option value="regular_glass">Regular Glass</option>
-                                                    <option value="non_glare_glass">Non-Glare Glass</option>
-                                                    <option value="museum_glass">Museum Glass</option>
-                                                    <option value="plexiglass">Plexiglass</option>
-                                                </Select>
-                                            </div>
-                                            <div>
-                                                <Label htmlFor="spacers" className="block text-sm font-medium text-gray-700 mb-2">Spacers</Label>
-                                                <Select 
-                                                    id="spacers" 
-                                                    name="spacers" 
-                                                    onChange={handleChange}
-                                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                >
-                                                    <option value="">Select Spacers</option>
-                                                    <option value="none">None</option>
-                                                    <option value="regular">Regular</option>
-                                                    <option value="archival">Archival</option>
-                                                </Select>
+                                    {(showFloat || showWindowMat || showCanvasFloat) && (
+                                        <div className="mb-6 p-6 bg-white rounded-lg shadow-md">
+                                            <h3 className="text-lg font-semibold mb-4 text-gray-800">Additional Options</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <Label htmlFor="glazing" className="block text-sm font-medium text-gray-700 mb-2">Glazing</Label>
+                                                    <Select 
+                                                        id="glazing" 
+                                                        name="glazing" 
+                                                        onChange={handleChange}
+                                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    >
+                                                        <option value="">Select Glazing</option>
+                                                        <option value="regular_glass">Regular Glass</option>
+                                                        <option value="non_glare_glass">Non-Glare Glass</option>
+                                                        <option value="museum_glass">Museum Glass</option>
+                                                        <option value="plexiglass">Plexiglass</option>
+                                                    </Select>
+                                                </div>
+                                                <div>
+                                                    <Label htmlFor="spacers" className="block text-sm font-medium text-gray-700 mb-2">Spacers</Label>
+                                                    <Select 
+                                                        id="spacers" 
+                                                        name="spacers" 
+                                                        onChange={handleChange}
+                                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    >
+                                                        <option value="">Select Spacers</option>
+                                                        <option value="none">None</option>
+                                                        <option value="regular">Regular</option>
+                                                        <option value="archival">Archival</option>
+                                                    </Select>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )}
-                            </>
-                        )}
-                    </div>
-                </div>
-
-                {/* Step 3: Job Notes */}
-                <div className="mb-12">
-                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">Step 3: Job Notes</h2>
-                    <div className="bg-gray-100 p-6 rounded-lg">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <Label htmlFor="art_location" className="block text-sm font-medium text-gray-700 mb-2">Artwork Location</Label>
-                                <TextInput 
-                                    onChange={handleChange} 
-                                    name="art_location" 
-                                    id="art_location" 
-                                    placeholder="e.g., Main Gallery" 
-                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                            </div>
-                            <div>
-                                <Label htmlFor="art_condition" className="block text-sm font-medium text-gray-700 mb-2">Artwork Condition</Label>
-                                <TextInput 
-                                    onChange={handleChange} 
-                                    name="art_condition" 
-                                    id="art_condition" 
-                                    placeholder="e.g., Excellent" 
-                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                            </div>
-                            <div>
-                                <Label htmlFor="final_location" className="block text-sm font-medium text-gray-700 mb-2">Final Location</Label>
-                                <TextInput 
-                                    onChange={handleChange} 
-                                    name="final_location" 
-                                    id="final_location" 
-                                    placeholder="e.g., Client's Office" 
-                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                            </div>
-                            <div>
-                                <Label htmlFor="payment_type" className="block text-sm font-medium text-gray-700 mb-2">Payment Type</Label>
-                                <TextInput 
-                                    onChange={handleChange} 
-                                    name="payment_type" 
-                                    id="payment_type" 
-                                    placeholder="e.g., Credit Card" 
-                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                            </div>
+                                    )}
+                                </>
+                            )}
                         </div>
-                        <div className="mt-6 flex flex-wrap justify-between items-center">
-                            <div className="flex items-center mb-4 mr-6">
-                                <Checkbox 
-                                    id="is_completed" 
-                                    onChange={handleChange} 
-                                    name="is_completed"
-                                    className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
-                                />
-                                <Label htmlFor="is_completed" className="ml-2 text-gray-700">Completed</Label>
-                            </div>
-                            <div className="flex items-center mb-4 mr-6">
-                                <Checkbox 
-                                    id="client_notified" 
-                                    onChange={handleChange} 
-                                    name="client_notified"
-                                    checked={form.client_notified}
-                                    className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
-                                />
-                                <Label htmlFor="client_notified" className="ml-2 text-gray-700">Client Notified</Label>
-                            </div>
-                            <div className="flex items-center mb-4 mr-6">
-                                <Checkbox 
-                                    id="deposit" 
-                                    onChange={handleChange} 
-                                    name="deposit"
-                                    className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
-                                />
-                                <Label htmlFor="deposit" className="ml-2 text-gray-700">Deposit Received</Label>
-                            </div>
-                            <div className="flex items-center mb-4">
-                                <Checkbox 
-                                    id="balance_paid" 
-                                    onChange={handleChange} 
-                                    name="balance_paid"
-                                    className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
-                                />
-                                <Label htmlFor="balance_paid" className="ml-2 text-gray-700">Balance Paid</Label>
-                            </div>
-                        </div>
-                        {form.client_notified && (
-                            <div className="mt-4">
-                                <Label htmlFor="notification_date" className="block text-sm font-medium text-gray-700 mb-2">Notification Date</Label>
-                                <Datepicker 
-                                    onChange={handleChange} 
-                                    name="notification_date" 
-                                    datepicker-format="yyyy/MM/dd"
-                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                />
-                            </div>
-                        )}
                     </div>
-                </div>
 
-                {/* Submit and Delete Buttons */}
-                <div className="flex justify-between">
-                    <button 
-                        type="submit" 
-                        className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300"
-                    >
-                        Submit Frame
-                    </button>
-                    <button 
-                        type="button" 
-                        className="px-6 py-2 bg-red-600 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300"
-                    >
-                        Delete Frame
-                    </button>
-                </div>
-            </form>
+                    {/* Step 3: Job Notes */}
+                    <div className="mb-12">
+                        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Step 3: Job Notes</h2>
+                        <div className="bg-gray-100 p-6 rounded-lg">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <Label htmlFor="art_location" className="block text-sm font-medium text-gray-700 mb-2">Artwork Location</Label>
+                                    <TextInput 
+                                        onChange={handleChange} 
+                                        name="art_location" 
+                                        id="art_location" 
+                                        placeholder="e.g., Main Gallery" 
+                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    />
+                                </div>
+                                <div>
+                                    <Label htmlFor="art_condition" className="block text-sm font-medium text-gray-700 mb-2">Artwork Condition</Label>
+                                    <TextInput 
+                                        onChange={handleChange} 
+                                        name="art_condition" 
+                                        id="art_condition" 
+                                        placeholder="e.g., Excellent" 
+                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    />
+                                </div>
+                                <div>
+                                    <Label htmlFor="final_location" className="block text-sm font-medium text-gray-700 mb-2">Final Location</Label>
+                                    <TextInput 
+                                        onChange={handleChange} 
+                                        name="final_location" 
+                                        id="final_location" 
+                                        placeholder="e.g., Client's Office" 
+                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    />
+                                </div>
+                                <div>
+                                    <Label htmlFor="payment_type" className="block text-sm font-medium text-gray-700 mb-2">Payment Type</Label>
+                                    <TextInput 
+                                        onChange={handleChange} 
+                                        name="payment_type" 
+                                        id="payment_type" 
+                                        placeholder="e.g., Credit Card" 
+                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    />
+                                </div>
+                            </div>
+                            <div className="mt-6 flex flex-wrap justify-between items-center">
+                                <div className="flex items-center mb-4 mr-6">
+                                    <Checkbox 
+                                        id="is_completed" 
+                                        onChange={handleChange} 
+                                        name="is_completed"
+                                        className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                    />
+                                    <Label htmlFor="is_completed" className="ml-2 text-gray-700">Completed</Label>
+                                </div>
+                                <div className="flex items-center mb-4 mr-6">
+                                    <Checkbox 
+                                        id="client_notified" 
+                                        onChange={handleChange} 
+                                        name="client_notified"
+                                        checked={form.client_notified}
+                                        className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                    />
+                                    <Label htmlFor="client_notified" className="ml-2 text-gray-700">Client Notified</Label>
+                                </div>
+                                <div className="flex items-center mb-4 mr-6">
+                                    <Checkbox 
+                                        id="deposit" 
+                                        onChange={handleChange} 
+                                        name="deposit"
+                                        className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                    />
+                                    <Label htmlFor="deposit" className="ml-2 text-gray-700">Deposit Received</Label>
+                                </div>
+                                <div className="flex items-center mb-4">
+                                    <Checkbox 
+                                        id="balance_paid" 
+                                        onChange={handleChange} 
+                                        name="balance_paid"
+                                        className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                    />
+                                    <Label htmlFor="balance_paid" className="ml-2 text-gray-700">Balance Paid</Label>
+                                </div>
+                            </div>
+                            {form.client_notified && (
+                                <div className="mt-4">
+                                    <Label htmlFor="notification_date" className="block text-sm font-medium text-gray-700 mb-2">Notification Date</Label>
+                                    <Datepicker 
+                                        onChange={handleChange} 
+                                        name="notification_date" 
+                                        datepicker-format="yyyy/MM/dd"
+                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Submit and Delete Buttons */}
+                    <div className="flex justify-between">
+                        <button 
+                            type="submit" 
+                            className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300"
+                        >
+                            Submit Frame
+                        </button>
+                        <button 
+                            type="button" 
+                            className="px-6 py-2 bg-red-600 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300"
+                        >
+                            Delete Frame
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-);}
-
+    );
+}
 
 export default AddFrame;
