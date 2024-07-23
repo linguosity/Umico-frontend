@@ -69,7 +69,7 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
         if (name === 'straight_to_frame') {
             setStraightToFrame(newValue as boolean);
         } else if (name === 'float_type') {
-            setShowFloat(value === 'float');
+            setShowFloat(newValue === 'float');
         } else if (name === 'mat_window') {
             setShowWindowMat(newValue as boolean);
         } else if (name === 'canvas_floater') {
