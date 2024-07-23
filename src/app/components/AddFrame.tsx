@@ -106,521 +106,446 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
     };
 
     return (
-        <div className="m-4 grid grid-flow-row auto-rows-max">
-            <form onSubmit={handleSubmit} method="POST">
-                <div className="grid grid-cols-2 gap-4 m-4">
-                    <div>
-                        <div className="grid grid-cols-2">
-                            <div className="relative w-full mb-5 group">
+        <div className="bg-gray-50 min-h-screen p-8">
+            <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
+                    <h1 className="text-3xl font-bold text-white">Add New Frame</h1>
+                </div>
+                <form onSubmit={handleSubmit} className="p-8">
+                    {/* Step 1: Basic Information */}
+                    <div className="mb-12">
+                        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Step 1: Basic Information</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <Label htmlFor="deadline" className="block text-sm font-medium text-gray-700 mb-2">Deadline</Label>
                                 <Datepicker 
                                     onChange={handleChange} 
                                     datepicker-format="yyyy/MM/dd" 
                                     name="deadline" 
                                     id="deadline" 
-                                    className="block py-2.5 pl-0 w-full text-xs text-gray-900 bg-transparent appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer z-10" 
+                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                     required 
                                 />
-                                <Label htmlFor="deadline" className="peer-focus:font-medium text-xs text-gray-500 dark:text-gray-400 absolute duration-300 transform -translate-y-6 scale-75 top-3 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Deadline</Label>
                             </div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div className="flex items-center space-x-2">
-                                <span className="text-sm font-medium text-gray-900 dark:text-white">Image dimensions:</span>
-                                <div className="flex items-center space-x-1">
-                                    <TextInput
-                                        id="image_width"
-                                        onChange={handleChange}
-                                        name="image_width"
-                                        type="number"
-                                        placeholder="W"
-                                        className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
-                                    />
-                                    <span className="text-sm font-medium text-gray-900 dark:text-white">x</span>
-                                    <TextInput
-                                        id="image_height"
-                                        onChange={handleChange}
-                                        name="image_height"
-                                        type="number"
-                                        placeholder="H"
-                                        className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
-                                    />
-                                </div>
-                            </div>
-                            <div></div>
                             <div>
-                                <div className="flex items-center space-x-2">
-                                    <span className="text-sm font-medium text-gray-900 dark:text-white">Frame dimensions:</span>
-                                    <div className="flex items-center space-x-1">
-                                        <TextInput
-                                            name="frame_width"
-                                            onChange={handleChange}
-                                            id="width"
-                                            type="number"
-                                            placeholder="W"
-                                            className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
-                                        />
-                                        <span className="text-sm font-medium text-gray-900 dark:text-white">x</span>
-                                        <TextInput
-                                            name="frame_height"
-                                            onChange={handleChange}
-                                            id="height"
-                                            type="number"
-                                            placeholder="H"
-                                            className="block w-24 p-1.5 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="grid grid-cols-1">
-                            <div className="relative z-0 w-full mb-4 group">
-                                <div id="fileUpload" className="max-w-md">
-                                    <div className="mb-2 block">
-                                        <Label htmlFor="thumbnail" />
-                                    </div>
-                                    <FileInput id="thumbnail" onChange={handleChange} helperText="Upload" name="thumbnail" />
-                                </div>
-                            </div>
-                            <div className="flex ">
-                                <img src="" width="35%" className="h-auto max-w-xs rounded-lg" />
-                            </div>
-                        </div>
-
-                        {/* Straight to Frame option */}
-                        <div className="col-span-2 mt-4">
-                            <h3 className="text-lg font-semibold mb-2">Straight to Frame</h3>
-                            <div className="flex items-center gap-2">
-                                <Checkbox
-                                    id="straight_to_frame"
-                                    onChange={handleChange}
-                                    name="straight_to_frame"
-                                    checked={straightToFrame}
+                                <Label htmlFor="thumbnail" className="block text-sm font-medium text-gray-700 mb-2">Upload Image</Label>
+                                <FileInput 
+                                    id="thumbnail" 
+                                    onChange={handleChange} 
+                                    name="thumbnail" 
+                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                 />
-                                <Label htmlFor="straight_to_frame">Straight to frame</Label>
+                            </div>
+                            <div>
+                                <Label htmlFor="image_dimensions" className="block text-sm font-medium text-gray-700 mb-2">Image Dimensions (W x H)</Label>
+                                <div className="flex items-center space-x-2">
+                                    <TextInput 
+                                        id="image_width" 
+                                        onChange={handleChange} 
+                                        name="image_width" 
+                                        type="number" 
+                                        placeholder="Width" 
+                                        className="w-1/2 rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                                    />
+                                    <span className="text-gray-500">x</span>
+                                    <TextInput 
+                                        id="image_height" 
+                                        onChange={handleChange} 
+                                        name="image_height" 
+                                        type="number" 
+                                        placeholder="Height" 
+                                        className="w-1/2 rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <Label htmlFor="frame_dimensions" className="block text-sm font-medium text-gray-700 mb-2">Frame Dimensions (W x H)</Label>
+                                <div className="flex items-center space-x-2">
+                                    <TextInput 
+                                        name="frame_width" 
+                                        onChange={handleChange} 
+                                        id="width" 
+                                        type="number" 
+                                        placeholder="Width" 
+                                        className="w-1/2 rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                                    />
+                                    <span className="text-gray-500">x</span>
+                                    <TextInput 
+                                        name="frame_height" 
+                                        onChange={handleChange} 
+                                        id="height" 
+                                        type="number" 
+                                        placeholder="Height" 
+                                        className="w-1/2 rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    {straightToFrame ? (
-                        <>
-                            {/* Glazing section */}
-                            <div>
-                                <h3 className="text-lg font-semibold mb-2">Glazing</h3>
-                                <div className="">
-                                    <fieldset>
-                                        <div className="grid grid-cols-2 gap-4" id="checkbox">
-                                            <div className="group">
-                                                <Radio id="glazing_glass" onChange={handleChange} name="glazing" value="glass" />
-                                                <Label htmlFor="glazing_glass">Glass</Label>
-                                            </div>
-                                            <div className="group">
-                                                <Radio id="glazing_plexi" onChange={handleChange} name="glazing" value="plexi" />
-                                                <Label htmlFor="glazing_plexi">Plexiglass</Label>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-
-                                    <ul className="items-center w-full text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                        <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div className="flex items-center ps-3">
-                                                <input id="premium_clear" onChange={handleChange} value='pc' name="glazing_type" type="radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label htmlFor="premium_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Premium Clear </label>
-                                            </div>
-                                        </li>
-                                        <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div className="flex items-center ps-3">
-                                                <input id="conservation_clear" onChange={handleChange} value='cc' type="radio" name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label htmlFor="conservation_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Conservation Clear</label>
-                                            </div>
-                                        </li>
-                                        <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div className="flex items-center ps-3">
-                                                <input id="museum" type="radio" onChange={handleChange} value='m' name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label htmlFor="museum" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Museum</label>
-                                            </div>
-                                        </li>
-                                    </ul>
+    
+                    {/* Step 2: Frame Options */}
+                    <div className="mb-12">
+                        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Step 2: Frame Options</h2>
+                        <div className="bg-gray-100 p-6 rounded-lg">
+                            <div className="flex flex-wrap justify-between items-center mb-6">
+                                <div className="flex items-center mb-4 mr-6">
+                                    <Checkbox 
+                                        id="straight_to_frame" 
+                                        onChange={handleChange} 
+                                        name="straight_to_frame" 
+                                        checked={straightToFrame}
+                                        className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                    />
+                                    <Label htmlFor="straight_to_frame" className="ml-2 text-gray-700">Straight to Frame</Label>
                                 </div>
-                            </div>
-
-                            {/* Spacers section */}
-                            <div>
-                                <h3 className="text-lg font-semibold mb-2">Spacers</h3>
-                                <div className="">
-                                    <fieldset>
-                                        <div className="grid grid-cols-2 gap-4" id="checkbox">
-                                            <div className="group">
-                                                <Radio id="spacers_true" onChange={handleChange} name="spacers" value="true" />
-                                                <Label htmlFor="spacers_true">Yes</Label>
-                                            </div>
-                                            <div className="group">
-                                                <Radio id="spacers_false" onChange={handleChange} name="spacers" value="false" />
-                                                <Label htmlFor="spacers_false">No</Label>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-
-                                    <ul className="items-center w-full text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                        <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div className="flex items-center ps-3">
-                                                <input id="spacers_clear" onChange={handleChange} type="radio" value='c' name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label htmlFor="spacers_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">clear </label>
-                                            </div>
-                                        </li>
-                                        <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div className="flex items-center ps-3">
-                                                <input id="spacers_white" onChange={handleChange} type="radio" value='w' name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label htmlFor="spacers_white" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">white</label>
-                                            </div>
-                                        </li>
-                                        <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div className="flex items-center ps-3">
-                                                <input id="spacers_match" onChange={handleChange} type="radio" value='m' name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label htmlFor="spacers_match" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">match</label>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <div className="flex items-center mb-4 mr-6">
+                                    <Checkbox 
+                                        id="float" 
+                                        onChange={handleChange} 
+                                        name="float_type" 
+                                        checked={showFloat}
+                                        className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                    />
+                                    <Label htmlFor="float" className="ml-2 text-gray-700">Float</Label>
                                 </div>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            {/* Float section */}
-                            <div>
-                                <h3 className="text-lg font-semibold mb-2">Float</h3>
-                                <div className="w-full grid grid-cols-3 gap-4">
-                                    <div>
-                                        <fieldset>
-                                            <div className="grid grid-cols-1 gap-4" id="checkbox">
-                                                <div className="group">
-                                                    <Radio 
-                                                        id="float_type_float" 
-                                                        onChange={handleChange} 
-                                                        name="float_type" 
-                                                        value="float"
-                                                    />
-                                                    <Label htmlFor="float_type_float">float</Label>
-                                                </div>
-                                                <div className="group">
-                                                    <Radio 
-                                                        id="float_type_raised" 
-                                                        onChange={handleChange} 
-                                                        name="float_type"
-                                                        value="raised"
-                                                    />
-                                                    <Label htmlFor="float_type_raised">raised</Label>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    {showFloat && (
-                                        <>
-                                            <div>
-                                                <label htmlFor="float_in_visible" className="block mb-2 text-xs text-gray-900 dark:text-white">in. visible</label>
-                                                <input 
-                                                    type="text" 
-                                                    id="float_in_visible" 
-                                                    onChange={handleChange} 
-                                                    name="float_in_visible" 
-                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                                    placeholder="999" 
-                                                    required 
-                                                />
-                                            </div>
-                                            <div>
-                                                <label htmlFor="float_in_total" className="block mb-2 text-xs text-gray-900 dark:text-white">in. total</label>
-                                                <input 
-                                                    type="text" 
-                                                    id="float_in_total" 
-                                                    onChange={handleChange} 
-                                                    name="float_in_total" 
-                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                                    placeholder="999" 
-                                                    required 
-                                                />
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* Window Mat section */}
-                            <div>
-                                <h3 className="text-lg font-semibold mb-2">Window Mat</h3>
-                                <div className="flex items-center gap-2">
-                                    <Checkbox
-                                        id="mat_window"
-                                        onChange={handleChange}
-                                        name="mat_window"
+                                <div className="flex items-center mb-4 mr-6">
+                                    <Checkbox 
+                                        id="mat_window" 
+                                        onChange={handleChange} 
+                                        name="mat_window" 
                                         checked={showWindowMat}
+                                        className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
                                     />
-                                    <Label htmlFor="mat_window">Window mat</Label>
+                                    <Label htmlFor="mat_window" className="ml-2 text-gray-700">Window Mat</Label>
                                 </div>
-                                {showWindowMat && (
-                                    <>
-                                        <div className="mt-4">
-                                            <label htmlFor="mat_number" className="block mb-2 text-xs text-gray-900 dark:text-white">Mat #</label>
-                                            <input 
-                                                type="number" 
-                                                name="mat_number" 
-                                                onChange={handleChange} 
-                                                id="mat_number" 
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                                placeholder="Mat number" 
-                                                required 
-                                            />
+                                <div className="flex items-center mb-4">
+                                    <Checkbox 
+                                        id="canvas_floater" 
+                                        onChange={handleChange} 
+                                        name="canvas_floater" 
+                                        checked={showCanvasFloat}
+                                        className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                    />
+                                    <Label htmlFor="canvas_floater" className="ml-2 text-gray-700">Canvas Floater</Label>
+                                </div>
+                            </div>
+    
+                            {/* Conditional Sections */}
+                            {straightToFrame && (
+                                <div className="mb-6 p-6 bg-white rounded-lg shadow-md">
+                                    <h3 className="text-lg font-semibold mb-4 text-gray-800">Straight to Frame Options</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <Label htmlFor="glazing" className="block text-sm font-medium text-gray-700 mb-2">Glazing</Label>
+                                            <Select 
+                                                id="glazing" 
+                                                name="glazing" 
+                                                onChange={handleChange}
+                                                className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            >
+                                                <option value="">Select Glazing</option>
+                                                <option value="regular_glass">Regular Glass</option>
+                                                <option value="non_glare_glass">Non-Glare Glass</option>
+                                                <option value="museum_glass">Museum Glass</option>
+                                                <option value="plexiglass">Plexiglass</option>
+                                            </Select>
                                         </div>
-                                        <div className="mt-4">
-                                            <label className="block mb-2 text-xs text-gray-900 dark:text-white">Mat Ply</label>
-                                            <div className="flex gap-4">
-                                                <div className="flex items-center">
-                                                    <Radio id="mat_ply_2" onChange={handleChange} name="mat_ply" value="2-ply" />
-                                                    <Label htmlFor="mat_ply_2" className="ml-2">2-ply</Label>
+                                        <div>
+                                            <Label htmlFor="spacers" className="block text-sm font-medium text-gray-700 mb-2">Spacers</Label>
+                                            <Select 
+                                                id="spacers" 
+                                                name="spacers" 
+                                                onChange={handleChange}
+                                                className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                            >
+                                                <option value="">Select Spacers</option>
+                                                <option value="none">None</option>
+                                                <option value="regular">Regular</option>
+                                                <option value="archival">Archival</option>
+                                            </Select>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+    
+                            {!straightToFrame && (
+                                <>
+                                    {showFloat && (
+                                        <div className="mb-6 p-6 bg-white rounded-lg shadow-md">
+                                            <h3 className="text-lg font-semibold mb-4 text-gray-800">Float Options</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <Label htmlFor="float_in_visible" className="block text-sm font-medium text-gray-700 mb-2">Visible (in)</Label>
+                                                    <TextInput 
+                                                        id="float_in_visible" 
+                                                        onChange={handleChange} 
+                                                        name="float_in_visible" 
+                                                        placeholder="e.g., 0.25" 
+                                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    />
                                                 </div>
-                                                <div className="flex items-center">
-                                                    <Radio id="mat_ply_4" onChange={handleChange} name="mat_ply" value="4-ply" />
-                                                    <Label htmlFor="mat_ply_4" className="ml-2">4-ply</Label>
-                                                </div>
-                                                <div className="flex items-center">
-                                                    <Radio id="mat_ply_8" onChange={handleChange} name="mat_ply" value="8-ply" />
-                                                    <Label htmlFor="mat_ply_8" className="ml-2">8-ply</Label>
+                                                <div>
+                                                    <Label htmlFor="float_in_total" className="block text-sm font-medium text-gray-700 mb-2">Total (in)</Label>
+                                                    <TextInput 
+                                                        id="float_in_total" 
+                                                        onChange={handleChange} 
+                                                        name="float_in_total" 
+                                                        placeholder="e.g., 2.5" 
+                                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="mt-4">
-                                            <label htmlFor="mat_in_visible" className="block mb-2 text-xs text-gray-900 dark:text-white">in. visible</label>
-                                            <input 
-                                                type="text" 
-                                                id="mat_in_visible" 
-                                                onChange={handleChange} 
-                                                name="mat_in_visible" 
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                                placeholder="999" 
-                                                required 
-                                            />
+                                    )}
+    
+                                    {showWindowMat && (
+                                        <div className="mb-6 p-6 bg-white rounded-lg shadow-md">
+                                            <h3 className="text-lg font-semibold mb-4 text-gray-800">Window Mat Options</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <Label htmlFor="mat_number" className="block text-sm font-medium text-gray-700 mb-2">Mat Number</Label>
+                                                    <TextInput 
+                                                        name="mat_number" 
+                                                        onChange={handleChange} 
+                                                        id="mat_number" 
+                                                        placeholder="e.g., M123" 
+                                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <Label htmlFor="mat_ply" className="block text-sm font-medium text-gray-700 mb-2">Mat Ply</Label>
+                                                    <div className="flex justify-between">
+                                                        <div className="flex items-center">
+                                                            <Radio 
+                                                                id="mat_ply_2" 
+                                                                onChange={handleChange} 
+                                                                name="mat_ply" 
+                                                                value="2-ply"
+                                                                className="w-4 h-4 text-indigo-600 focus:ring-indigo-500"
+                                                            />
+                                                            <Label htmlFor="mat_ply_2" className="ml-2 text-sm text-gray-700">2-ply</Label>
+                                                        </div>
+                                                        <div className="flex items-center">
+                                                            <Radio 
+                                                                id="mat_ply_4" 
+                                                                onChange={handleChange} 
+                                                                name="mat_ply" 
+                                                                value="4-ply"
+                                                                className="w-4 h-4 text-indigo-600 focus:ring-indigo-500"
+                                                            />
+                                                            <Label htmlFor="mat_ply_4" className="ml-2 text-sm text-gray-700">4-ply</Label>
+                                                        </div>
+                                                        <div className="flex items-center">
+                                                            <Radio 
+                                                                id="mat_ply_8" 
+                                                                onChange={handleChange} 
+                                                                name="mat_ply" 
+                                                                value="8-ply"
+                                                                className="w-4 h-4 text-indigo-600 focus:ring-indigo-500"
+                                                            />
+                                                            <Label htmlFor="mat_ply_8" className="ml-2 text-sm text-gray-700">8-ply</Label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <Label htmlFor="mat_in_visible" className="block text-sm font-medium text-gray-700 mb-2">Visible (in)</Label>
+                                                    <TextInput 
+                                                        id="mat_in_visible" 
+                                                        onChange={handleChange} 
+                                                        name="mat_in_visible" 
+                                                        placeholder="e.g., 2.5" 
+                                                        className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <Label htmlFor="mat_in_total" className="block text-sm font-medium text-gray-700 mb-2">Total (in)</Label>
+                                                <TextInput 
+                                                    id="mat_in_total" 
+                                                    onChange={handleChange} 
+                                                    name="mat_in_total" 
+                                                    placeholder="e.g., 4" 
+                                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                />
+                                            </div>
                                         </div>
-                                        <div className="mt-4">
-                                            <label htmlFor="mat_in_total" className="block mb-2 text-xs text-gray-900 dark:text-white">in. total</label>
-                                            <input 
-                                                type="text" 
-                                                id="mat_in_total" 
-                                                onChange={handleChange} 
-                                                name="mat_in_total" 
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                                placeholder="999" 
-                                                required 
-                                            />
-                                        </div>
-                                    </>
+                                    </div>
                                 )}
-                            </div>
 
-                            {/* Canvas Floater section */}
-                            <div>
-                                <h3 className="text-lg font-semibold mb-2">Canvas Floater</h3>
-                                <div className="flex items-center gap-2">
-                                    <Checkbox
-                                        id="canvas_floater"
-                                        onChange={handleChange}
-                                        name="canvas_floater"
-                                        checked={showCanvasFloat}
-                                    />
-                                    <Label htmlFor="canvas_floater">Canvas float</Label>
-                                </div>
                                 {showCanvasFloat && (
-                                    <div className="mt-4">
-                                        <label htmlFor="canvas_floater_inches" className="block mb-2 text-xs text-gray-900 dark:text-white">Inches</label>
-                                        <input 
-                                            type="number" 
-                                            id="canvas_floater_inches" 
-                                            onChange={handleChange} 
-                                            name="canvas_floater_inches" 
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                            placeholder="Inches" 
-                                            required 
-                                        />
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Glazing and Spacers sections */}
-                            {(showFloat || showWindowMat || showCanvasFloat) && (
-                                <>
-                                    {/* Glazing section */}
-                                    <div>
-                                        <h3 className="text-lg font-semibold mb-2">Glazing</h3>
-                                        <div className="">
-                                            <fieldset>
-                                                <div className="grid grid-cols-2 gap-4" id="checkbox">
-                                                    <div className="group">
-                                                        <Radio id="glazing_glass" onChange={handleChange} name="glazing" value="glass" />
-                                                        <Label htmlFor="glazing_glass">Glass</Label>
-                                                    </div>
-                                                    <div className="group">
-                                                        <Radio id="glazing_plexi" onChange={handleChange} name="glazing" value="plexi" />
-                                                        <Label htmlFor="glazing_plexi">Plexiglass</Label>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-
-                                            <ul className="items-center w-full text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                                    <div className="flex items-center ps-3">
-                                                        <input id="premium_clear" onChange={handleChange} value='pc' name="glazing_type" type="radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                        <label htmlFor="premium_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Premium Clear </label>
-                                                    </div>
-                                                </li>
-                                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                                    <div className="flex items-center ps-3">
-                                                        <input id="conservation_clear" onChange={handleChange} value='cc' type="radio" name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                        <label htmlFor="conservation_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Conservation Clear</label>
-                                                    </div>
-                                                </li>
-                                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                                    <div className="flex items-center ps-3">
-                                                    <input id="museum" type="radio" onChange={handleChange} value='m' name="glazing_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                        <label htmlFor="museum" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">Museum</label>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    {/* Spacers section */}
-                                    <div>
-                                        <h3 className="text-lg font-semibold mb-2">Spacers</h3>
-                                        <div className="">
-                                            <fieldset>
-                                                <div className="grid grid-cols-2 gap-4" id="checkbox">
-                                                    <div className="group">
-                                                        <Radio id="spacers_true" onChange={handleChange} name="spacers" value="true" />
-                                                        <Label htmlFor="spacers_true">Yes</Label>
-                                                    </div>
-                                                    <div className="group">
-                                                        <Radio id="spacers_false" onChange={handleChange} name="spacers" value="false" />
-                                                        <Label htmlFor="spacers_false">No</Label>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-
-                                            <ul className="items-center w-full text-xs font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                                    <div className="flex items-center ps-3">
-                                                        <input id="spacers_clear" onChange={handleChange} type="radio" value='c' name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                        <label htmlFor="spacers_clear" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">clear </label>
-                                                    </div>
-                                                </li>
-                                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                                    <div className="flex items-center ps-3">
-                                                        <input id="spacers_white" onChange={handleChange} type="radio" value='w' name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                        <label htmlFor="spacers_white" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">white</label>
-                                                    </div>
-                                                </li>
-                                                <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                                    <div className="flex items-center ps-3">
-                                                        <input id="spacers_match" onChange={handleChange} type="radio" value='m' name="spacers_type" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                        <label htmlFor="spacers_match" className="w-full py-3 ms-2 text-xs font-medium text-gray-900 dark:text-gray-300">match</label>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </>
-                            )}
-                        </>
-                    )}
-                </div>
-                <div>
-                    <div className="w-full grid grid-cols-1">
-                        <div className="inline-flex items-center justify-center w-full">
-                            <hr className="w-full h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-                            <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left- dark:text-white dark:bg-gray-900">Job Notes</span>
-                        </div>
-                    
-                    
-                        <div className="grid grid-cols-2 gap-8 m-8 w-full">
-                            <div>
-                                <div className="relative z-0 w-full mb-5 group">
-                                    <input type="text" onChange={handleChange} name="art_location" id="art_location" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                    <Label htmlFor="art_location" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Artwork Location</Label>
-                                </div>
-                                <div className="relative z-0 w-full mb-5 group">
-                                    <input type="text" onChange={handleChange} name="art_condition" id="art_condition" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                    <Label htmlFor="art_condition" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Artwork Condition</Label>
-                                </div>
-
-                                <div className="grid md:grid-cols-2 md:gap-6">
-                                    <div className="grid grid-cols-2 gap-8" id="checkbox">
-                                        <div className="flex items-center gap-2">
-                                            <Checkbox id="is_completed" onChange={handleChange} name="is_completed" />
-                                            <Label htmlFor="is_completed">Completed</Label>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Checkbox 
-                                                id="client_notified" 
+                                    <div className="mb-6 p-6 bg-white rounded-lg shadow-md">
+                                        <h3 className="text-lg font-semibold mb-4 text-gray-800">Canvas Floater Options</h3>
+                                        <div>
+                                            <Label htmlFor="canvas_floater_inches" className="block text-sm font-medium text-gray-700 mb-2">Floater Depth (inches)</Label>
+                                            <TextInput 
+                                                id="canvas_floater_inches" 
                                                 onChange={handleChange} 
-                                                name="client_notified"
-                                                checked={form.client_notified}
+                                                name="canvas_floater_inches" 
+                                                placeholder="e.g., 1.5" 
+                                                className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                             />
-                                            <Label htmlFor="client_notified">Notified</Label>
                                         </div>
                                     </div>
-                                    <div></div>
-                                </div>
-                                {form.client_notified && (
-                                    <div className='mt-8 relative'>
-                                        <Datepicker 
-                                            onChange={handleChange} 
-                                            name="notification_date" 
-                                            datepicker-format="yyyy/MM/dd"
-                                            className="block py-2.5 pl-10 w-full text-xs text-gray-900 bg-transparent appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer z-10"
-                                        />
+                                )}
+
+                                {(showFloat || showWindowMat || showCanvasFloat) && (
+                                    <div className="mb-6 p-6 bg-white rounded-lg shadow-md">
+                                        <h3 className="text-lg font-semibold mb-4 text-gray-800">Additional Options</h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <Label htmlFor="glazing" className="block text-sm font-medium text-gray-700 mb-2">Glazing</Label>
+                                                <Select 
+                                                    id="glazing" 
+                                                    name="glazing" 
+                                                    onChange={handleChange}
+                                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                >
+                                                    <option value="">Select Glazing</option>
+                                                    <option value="regular_glass">Regular Glass</option>
+                                                    <option value="non_glare_glass">Non-Glare Glass</option>
+                                                    <option value="museum_glass">Museum Glass</option>
+                                                    <option value="plexiglass">Plexiglass</option>
+                                                </Select>
+                                            </div>
+                                            <div>
+                                                <Label htmlFor="spacers" className="block text-sm font-medium text-gray-700 mb-2">Spacers</Label>
+                                                <Select 
+                                                    id="spacers" 
+                                                    name="spacers" 
+                                                    onChange={handleChange}
+                                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                >
+                                                    <option value="">Select Spacers</option>
+                                                    <option value="none">None</option>
+                                                    <option value="regular">Regular</option>
+                                                    <option value="archival">Archival</option>
+                                                </Select>
+                                            </div>
+                                        </div>
                                     </div>
                                 )}
+                            </>
+                        )}
+                    </div>
+                </div>
+
+                {/* Step 3: Job Notes */}
+                <div className="mb-12">
+                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">Step 3: Job Notes</h2>
+                    <div className="bg-gray-100 p-6 rounded-lg">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <Label htmlFor="art_location" className="block text-sm font-medium text-gray-700 mb-2">Artwork Location</Label>
+                                <TextInput 
+                                    onChange={handleChange} 
+                                    name="art_location" 
+                                    id="art_location" 
+                                    placeholder="e.g., Main Gallery" 
+                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                />
                             </div>
                             <div>
-                                <div className="relative z-0 w-full mb-5 group">
-                                    <input type="text" onChange={handleChange} name="final_location" id="final_location" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                    <Label htmlFor="final_location" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Final Location</Label>
-                                </div>
-
-                                <div className="relative z-0 w-full mb-5 group">
-                                    <input type="text" onChange={handleChange} name="payment_type" id="floating_company" className="block py-2.5 px-0 w-full text-xs text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                                    <Label htmlFor="payment_type" className="peer-focus:font-medium absolute text-xs text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Payment Type</Label>
-                                </div>
-                                <div className="grid grid-cols-2 gap-4" id="checkbox">
-                                    <div className="flex items-center gap-2">
-                                        <Checkbox id="deposit" onChange={handleChange} name="deposit" />
-                                        <Label htmlFor="deposit">Deposit</Label>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Checkbox id="balance_paid" onChange={handleChange} name="balance_paid" />
-                                        <Label htmlFor="balance_paid">Balance Paid</Label>
-                                    </div>
-                                </div>
+                                <Label htmlFor="art_condition" className="block text-sm font-medium text-gray-700 mb-2">Artwork Condition</Label>
+                                <TextInput 
+                                    onChange={handleChange} 
+                                    name="art_condition" 
+                                    id="art_condition" 
+                                    placeholder="e.g., Excellent" 
+                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="final_location" className="block text-sm font-medium text-gray-700 mb-2">Final Location</Label>
+                                <TextInput 
+                                    onChange={handleChange} 
+                                    name="final_location" 
+                                    id="final_location" 
+                                    placeholder="e.g., Client's Office" 
+                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="payment_type" className="block text-sm font-medium text-gray-700 mb-2">Payment Type</Label>
+                                <TextInput 
+                                    onChange={handleChange} 
+                                    name="payment_type" 
+                                    id="payment_type" 
+                                    placeholder="e.g., Credit Card" 
+                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                />
                             </div>
                         </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
+                        <div className="mt-6 flex flex-wrap justify-between items-center">
+                            <div className="flex items-center mb-4 mr-6">
+                                <Checkbox 
+                                    id="is_completed" 
+                                    onChange={handleChange} 
+                                    name="is_completed"
+                                    className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                />
+                                <Label htmlFor="is_completed" className="ml-2 text-gray-700">Completed</Label>
+                            </div>
+                            <div className="flex items-center mb-4 mr-6">
+                                <Checkbox 
+                                    id="client_notified" 
+                                    onChange={handleChange} 
+                                    name="client_notified"
+                                    checked={form.client_notified}
+                                    className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                />
+                                <Label htmlFor="client_notified" className="ml-2 text-gray-700">Client Notified</Label>
+                            </div>
+                            <div className="flex items-center mb-4 mr-6">
+                                <Checkbox 
+                                    id="deposit" 
+                                    onChange={handleChange} 
+                                    name="deposit"
+                                    className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                />
+                                <Label htmlFor="deposit" className="ml-2 text-gray-700">Deposit Received</Label>
+                            </div>
+                            <div className="flex items-center mb-4">
+                                <Checkbox 
+                                    id="balance_paid" 
+                                    onChange={handleChange} 
+                                    name="balance_paid"
+                                    className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                />
+                                <Label htmlFor="balance_paid" className="ml-2 text-gray-700">Balance Paid</Label>
+                            </div>
                         </div>
-                        <div>
-                            <button
-                                type="button"
-                                className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                            >
-                                Delete
-                            </button>
-                        </div>
+                        {form.client_notified && (
+                            <div className="mt-4">
+                                <Label htmlFor="notification_date" className="block text-sm font-medium text-gray-700 mb-2">Notification Date</Label>
+                                <Datepicker 
+                                    onChange={handleChange} 
+                                    name="notification_date" 
+                                    datepicker-format="yyyy/MM/dd"
+                                    className="w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                />
+                            </div>
+                        )}
                     </div>
+                </div>
+
+                {/* Submit and Delete Buttons */}
+                <div className="flex justify-between">
+                    <button 
+                        type="submit" 
+                        className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300"
+                    >
+                        Submit Frame
+                    </button>
+                    <button 
+                        type="button" 
+                        className="px-6 py-2 bg-red-600 text-white font-semibold rounded-md shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300"
+                    >
+                        Delete Frame
+                    </button>
                 </div>
             </form>
         </div>
-    );
-}
+    </div>
+);}
+
 
 export default AddFrame;
