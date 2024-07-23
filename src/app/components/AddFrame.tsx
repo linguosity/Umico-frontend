@@ -72,6 +72,7 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
         if (name === 'straight_to_frame') {
             setStraightToFrame(newValue as boolean);
         } else if (name === 'showFloat') {
+            console.log(`Setting showFloat to ${newValue}`);
             setShowFloat(newValue as boolean);
         } else if (name === 'mat_window') {
             setShowWindowMat(newValue as boolean);
@@ -213,7 +214,7 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
                                     <Checkbox 
                                         id="float" 
                                         onChange={handleChange} 
-                                        name="show_float" 
+                                        name="showFloat" 
                                         checked={showFloat}
                                         className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
                                     />
