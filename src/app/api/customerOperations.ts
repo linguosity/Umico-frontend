@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 
 export const createCustomer = async (form: Customer, router: any) => {
     const URL = `${process.env.NEXT_PUBLIC_API_URL}/customers/add_customer/`;
-    console.log("data being sent:", form);
     try {
         const response = await fetch(URL, {
             method: 'POST',
@@ -22,7 +21,6 @@ export const createCustomer = async (form: Customer, router: any) => {
         }
 
         const data = await response.json();
-        console.log("this was sent back from backend: ", data)
         return data;
 
     } catch (error) {

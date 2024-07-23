@@ -68,8 +68,8 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
 
         if (name === 'straight_to_frame') {
             setStraightToFrame(newValue as boolean);
-        } else if (name === 'float_type') {
-            setShowFloat(newValue === 'float');
+        } else if (name === 'showFloat') {
+            setShowFloat(newValue as boolean);
         } else if (name === 'mat_window') {
             setShowWindowMat(newValue as boolean);
         } else if (name === 'canvas_floater') {
@@ -202,7 +202,7 @@ const AddFrame: React.FC<EditFrameProps> = ({ id }) => {
                                     <Checkbox 
                                         id="float" 
                                         onChange={handleChange} 
-                                        name="float_type" 
+                                        name="show_float" 
                                         checked={showFloat}
                                         className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
                                     />
